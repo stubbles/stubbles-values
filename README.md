@@ -40,7 +40,7 @@ libraries this is known as an Optional. To create an instance call
 
 #### `isPresent()`
 
-Returns ´true` when result contains a value which not `null`.
+Returns `true` when result contains a value which not `null`.
 
 
 #### `isEmpty()`
