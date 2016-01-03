@@ -12,7 +12,6 @@ namespace stubbles\values {
     /**
      * returns error message from last error that occurred
      *
-     * @param   string  $default  optional  message to return in case no last error available
      * @return  \stubbles\values\Result
      * @since   3.4.2
      */
