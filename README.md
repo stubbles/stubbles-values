@@ -428,5 +428,5 @@ instance of `stubbles\values\Result`.
 Returns the correct type of given value.
 
 For objects the actual class name will be returned. In case of resources the
-return value will be _resource[type_of_resource], e.g. _resource[stream]_. For
+return value will be _resource[type_of_resource]_, e.g. _resource[stream]_. For
 all other types the result is call to PHP's native `gettype()` function.
