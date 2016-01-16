@@ -40,4 +40,17 @@ namespace stubbles\values {
 
         return \gettype($value);
     }
+
+    /**
+     * creates a pattern from given regular expression which can be used to match other string values
+     *
+     * @api
+     * @param   string  $regex  regular expression
+     * @return  \stubbles\values\Pattern
+     * @since   7.1.0
+     */
+    function pattern($regex)
+    {
+        return new Pattern($regex);
+    }
 }

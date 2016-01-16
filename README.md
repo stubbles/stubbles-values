@@ -430,3 +430,16 @@ Returns the correct type of given value.
 For objects the actual class name will be returned. In case of resources the
 return value will be _resource[type_of_resource]_, e.g. _resource[stream]_. For
 all other types the result is call to PHP's native `gettype()` function.
+
+
+### `pattern($pattern)`
+
+_Available since release 7.1.0._
+
+Creates a pattern from regular expression which can be used to match other
+string values.
+
+The pattern uses preg_match() and checks if the value occurs exactly one time.
+Please make sure that the supplied regular expression contains correct
+delimiters, they will not be applied automatically. The matches() method throws
+a \RuntimeException in case the regular expression is invalid.
