@@ -22,7 +22,6 @@ if (!defined('PREG_JIT_STACKLIMIT_ERROR')) {
  * correct delimiters, they will not be applied automatically. The matches()
  * method throws a \RuntimeException in case the regular expression is invalid.
  *
- * @api
  * @since  7.1.0
  */
 class Pattern
