@@ -423,7 +423,7 @@ Returns the message of the native PHP function `error_get_last()['message']` as
 instance of `stubbles\values\Result`.
 
 
-### `typeOf(&$value)`
+### `stubbles\values\typeOf(&$value)`
 
 Returns the correct type of given value.
 
@@ -432,7 +432,7 @@ return value will be _resource[type_of_resource]_, e.g. _resource[stream]_. For
 all other types the result is call to PHP's native `gettype()` function.
 
 
-### `pattern($pattern)`
+### `stubbles\values\pattern($pattern)`
 
 _Available since release 7.1.0._
 
