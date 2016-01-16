@@ -7,7 +7,7 @@
  *
  * @package  stubbles\values
  */
-namespace stubbles\values;;
+namespace stubbles\values;
 /**
  * Class to read and parse properties.
  *
