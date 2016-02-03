@@ -1,3 +1,10 @@
+7.2.0 (2016-02-03)
+------------------
+
+  * added `stubbles\values\Rootpath`
+  * added `stubbles\values\ResourceLoader`
+
+
 7.1.0 (2016-01-??)
 ------------------
 
