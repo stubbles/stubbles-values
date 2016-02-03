@@ -416,6 +416,8 @@ Returns an unmodifiable instance from the modifiable properties.
 
 ### `stubbles\values\ResourceLoader`
 
+_Available since release 7.2.0_
+
 #### Description
 
 The `stubbles\values\ResourceLoader` allows to load resources from different
@@ -474,6 +476,8 @@ vendor resources is also in alphabetical order of vendor/package names.
 
 
 ### `stubbles\values\Rootpath`
+
+_Available since release 7.2.0_
 
 #### Description
 
