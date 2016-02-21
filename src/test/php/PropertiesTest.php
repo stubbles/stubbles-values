@@ -15,6 +15,8 @@ use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
+use function bovigo\assert\predicate\contains;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
 use function bovigo\assert\predicate\isNotSameAs;
@@ -352,16 +354,17 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
      */
     public function fromNonExistantFileThrowsInvalidArgumentException()
     {
-        Properties::fromFile(__DIR__ . '/doesNotExist.ini');
+        expect(function() {
+                Properties::fromFile(__DIR__ . '/doesNotExist.ini');
+        })
+        ->throws(\InvalidArgumentException::class);
     }
 
     /**
      * @test
-     * @expectedException  UnexpectedValueException
      */
     public function invalidIniFileThrowsIOException()
     {
@@ -369,7 +372,10 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         vfsStream::newFile('invalid.ini')
                  ->at($root)
                  ->withContent("[invalid{");
-        Properties::fromFile(vfsStream::url('config/invalid.ini'));
+        expect(function() {
+                Properties::fromFile(vfsStream::url('config/invalid.ini'));
+        })
+        ->throws(\UnexpectedValueException::class);
     }
 
     /**
@@ -387,14 +393,16 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
-     * @expectedExceptionMessage  Property string contains errors and can not be parsed: syntax error, unexpected $end
      * @since  2.0.0
      * @group  bug213
      */
     public function invalidIniStringThrowsException()
     {
-        Properties::fromString("[invalid{");
+        expect(function() {
+                Properties::fromString("[invalid{");
+        })
+        ->throws(\InvalidArgumentException::class)
+        ->message(contains('Property string contains errors and can not be parsed: syntax error, unexpected $end'));
     }
 
     /**
@@ -496,17 +504,17 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @group  secure_string
+     * @group  secret
      * @since  5.0.0
-     * @expectedException   LogicException
      */
     public function parseSecretThrowsIllegalAccessException()
     {
-        assert(
+        expect(function() {
                 (new Properties(['foo' => ['password' => 'baz']]))
-                        ->parse('foo', 'password'),
-                isInstanceOf(Secret::class)
-        );
+                        ->parse('foo', 'password');
+        })
+        ->throws(\LogicException::class)
+        ->withMessage('Can not parse fields with passwords');
     }
 
     /**

@@ -20,6 +20,7 @@ use function bovigo\assert\assert;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
 use function bovigo\assert\predicate\doesNotContain;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isSameAs;
@@ -81,21 +82,25 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      * @dataProvider  emptyValues
-     * @expectedException  InvalidArgumentException
-     * @expectedExceptionMessage  Given string was null or empty, if you explicitly want to create a Secret with value null use Secret::forNull()
      */
     public function createWithEmptyValueThrowsIllegalArgumentException($value)
     {
-        Secret::create($value);
+        expect(function() use ($value) {
+                Secret::create($value);
+        })
+        ->throws(\InvalidArgumentException::class)
+        ->withMessage('Given string was null or empty, if you explicitly want to create a Secret with value null use Secret::forNull()');
     }
 
     /**
      * @test
-     * @expectedException  LogicException
      */
     public function notSerializable()
     {
-        serialize(Secret::create('payload'));
+        expect(function() {
+                serialize(Secret::create('payload'));
+        })
+        ->throws(\LogicException::class);
     }
 
     /**
@@ -202,11 +207,13 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
      */
     public function substringWithStartOutOfRangeThrowsIllegalArgumentException()
     {
-        Secret::create('payload')->substring(50);
+        expect(function() {
+                Secret::create('payload')->substring(50);
+        })
+        ->throws(\InvalidArgumentException::class);
     }
 
     /**
@@ -223,8 +230,8 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
      */
     public function createFromSecretReturnsInstance()
     {
-        $secureString = Secret::create('payload');
-        assert(Secret::create($secureString), isSameAs($secureString));
+        $secret = Secret::create('payload');
+        assert(Secret::create($secret), isSameAs($secret));
     }
 
     /**
@@ -233,48 +240,56 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
     public function creationNeverThrowsException()
     {
         Secret::switchBacking('__none');
-        try {
-            $secureString = Secret::create('payload');
-        } catch (\Exception $e) {
-            fail('Exception thrown where no exception may be thrown');
-        }
-
-        assertFalse($secureString->isContained());
+        expect(function() {
+            Secret::create('payload');
+        })
+        ->doesNotThrow();
     }
 
     /**
      * @test
-     * @expectedException  LogicException
      */
-    public function unveilThrowsIllegalStateExceptionWhenCreationHasFailed()
+    public function secretDoesNotContainAnythingWithoutBacking()
     {
         Secret::switchBacking('__none');
-        try {
-            $secureString = Secret::create('payload');
-        } catch (\Exception $e) {
-            fail('Exception thrown where no exception may be thrown');
-        }
-
-        $secureString->unveil();
+        $secret = Secret::create('payload');
+        assertFalse($secret->isContained());
     }
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
+     */
+    public function unveilThrowsLogicExceptionWhenCreationHasFailed()
+    {
+        Secret::switchBacking('__none');
+        $secret = Secret::create('payload');
+        expect(function() use ($secret) {
+                $secret->unveil();
+        })
+        ->throws(\LogicException::class);
+    }
+
+    /**
+     * @test
      */
     public function switchToInvalidBackingTypeThrowsIllegalArgumentException()
     {
-        Secret::switchBacking(404);
+        expect(function() {
+                Secret::switchBacking(404);
+        })
+        ->throws(\InvalidArgumentException::class);
     }
 
     /**
      * @test
-     * @expectedException  LogicException
      */
     public function switchBackingWhenSecretInstancesExistThrowsIllegalStateException()
     {
-        $secureString = Secret::create('payload');
-        Secret::switchBacking(Secret::BACKING_PLAINTEXT);
+        $secret = Secret::create('payload');
+        expect(function() {
+                Secret::switchBacking(Secret::BACKING_PLAINTEXT);
+        })
+        ->throws(\LogicException::class);
     }
 
     /**
@@ -282,8 +297,11 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
      */
     public function canSwitchBackingWhenAllSecretInstancesDestroyed()
     {
-        $secureString = Secret::create('payload');
-        $secureString = null;
-        assertTrue(Secret::switchBacking(Secret::BACKING_PLAINTEXT));
+        $secret = Secret::create('payload');
+        $secret = null;
+        expect(function() {
+                assertTrue(Secret::switchBacking(Secret::BACKING_PLAINTEXT));
+        })
+        ->doesNotThrow();
     }
 }

@@ -14,6 +14,7 @@ use stubbles\streams\file\FileInputStream;
 use function bovigo\assert\assert;
 use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
 use function bovigo\assert\predicate\contains;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
@@ -51,22 +52,26 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  DomainException
      * @since  4.0.0
      */
     public function openNonExistingResourceThrowsDomainException()
     {
-        $this->resourceLoader->open('lang/doesNotExist.ini');
+        expect(function() {
+                $this->resourceLoader->open('lang/doesNotExist.ini');
+        })
+        ->throws(\DomainException::class);
     }
 
     /**
      * @test
-     * @expectedException  DomainException
      * @since  4.0.0
      */
     public function loadNonExistingResourceThrowsDomainException()
     {
-        $this->resourceLoader->load('lang/doesNotExist.ini');
+        expect(function() {
+                $this->resourceLoader->load('lang/doesNotExist.ini');
+        })
+        ->throws(\DomainException::class);
     }
 
     /**
@@ -96,12 +101,14 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
      * @since  7.0.0
      */
     public function openLocalResourceWithNonExistingClassThrowsInvalidArgumentException()
     {
-        $this->resourceLoader->open('lang/stubbles.ini', 'DoesNotExist');
+        expect(function() {
+                $this->resourceLoader->open('lang/stubbles.ini', 'DoesNotExist');
+        })
+        ->throws(\InvalidArgumentException::class);
     }
 
     /**
@@ -188,44 +195,52 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  DomainException
      * @since  4.0.0
      */
     public function openResourceWithCompletePathOutsideRootThrowsDomainException()
     {
-        $this->resourceLoader->open(tempnam(sys_get_temp_dir(), 'test.txt'));
+        expect(function() {
+                $this->resourceLoader->open(tempnam(sys_get_temp_dir(), 'test.txt'));
+        })
+        ->throws(\DomainException::class);
     }
 
     /**
      * @test
-     * @expectedException  DomainException
      * @since  4.0.0
      */
     public function loadResourceWithCompletePathOutsideRootThrowsDomainException()
     {
-        $this->resourceLoader->load(tempnam(sys_get_temp_dir(), 'test.txt'));
+        expect(function() {
+                $this->resourceLoader->load(tempnam(sys_get_temp_dir(), 'test.txt'));
+        })
+        ->throws(\DomainException::class);
     }
 
     /**
      * @test
-     * @expectedException  OutOfBoundsException
      * @since  4.0.0
      */
     public function openResourceWithCompleteRealpathOutsideRootThrowsOutOfBoundsException()
     {
-        $resourceLoader = new ResourceLoader(__DIR__);
-        $resourceLoader->open(__DIR__ . '/../../main/php/ResourceLoader.php');
+        expect(function() {
+                $resourceLoader = new ResourceLoader(__DIR__);
+                $resourceLoader->open(__DIR__ . '/../../main/php/ResourceLoader.php');
+        })
+        ->throws(\OutOfBoundsException::class);
     }
 
     /**
      * @test
-     * @expectedException  OutOfBoundsException
      * @since  4.0.0
      */
     public function loadResourceWithCompleteRealpathOutsideRootThrowsOutOfBoundsException()
     {
-        $resourceLoader = new ResourceLoader(__DIR__);
-        $resourceLoader->load(__DIR__ . '/../../main/php/ResourceLoader.php');
+        expect(function() {
+                $resourceLoader = new ResourceLoader(__DIR__);
+                $resourceLoader->load(__DIR__ . '/../../main/php/ResourceLoader.php');
+        })
+        ->throws(\OutOfBoundsException::class);
     }
 
     /**

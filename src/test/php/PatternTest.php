@@ -10,6 +10,7 @@
 namespace stubbles\values;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
 /**
  * Tests for stubbles\values\Pattern.
  *
@@ -64,31 +65,37 @@ class PatternTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
-     * @expectedExceptionMessage  Given value of type "integer" can not be matched against a regular expression
      */
     public function nonStringsThrowInvalidArgumentException()
     {
-        pattern('/^([a-z]{3})$/')->matches(303);
+        expect(function() {
+                pattern('/^([a-z]{3})$/')->matches(303);
+        })
+        ->throws(\InvalidArgumentException::class)
+        ->withMessage('Given value of type "integer" can not be matched against a regular expression.');
     }
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
-     * @expectedExceptionMessage  Given value of type "NULL" can not be matched against a regular expression
      */
     public function nullThrowInvalidArgumentException()
     {
-        pattern('/^([a-z]{3})$/')->matches(null);
+        expect(function() {
+                pattern('/^([a-z]{3})$/')->matches(null);
+        })
+        ->throws(\InvalidArgumentException::class)
+        ->withMessage('Given value of type "NULL" can not be matched against a regular expression.');
     }
 
     /**
      * @test
-     * @expectedException  RuntimeException
-     * @expectedExceptionMessage  Failure while matching "^([a-z]{3})$", reason: invalid regular expression.
      */
     public function invalidRegexThrowsRuntimeExceptionOnEvaluation()
     {
-        pattern('^([a-z]{3})$')->matches('foo');
+        expect(function() {
+                pattern('^([a-z]{3})$')->matches('foo');
+        })
+        ->throws(\RuntimeException::class)
+        ->withMessage('Failure while matching "^([a-z]{3})$", reason: invalid regular expression.');
     }
 }

@@ -12,6 +12,7 @@ use org\bovigo\vfs\vfsStream;
 
 use function bovigo\assert\assert;
 use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
 /**
@@ -252,16 +253,17 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
      */
     public function fromNonExistantFileThrowsInvalidArgumentException()
     {
-        ModifiableProperties::fromFile(__DIR__ . '/doesNotExist.ini');
+        expect(function() {
+                ModifiableProperties::fromFile(__DIR__ . '/doesNotExist.ini');
+        })
+        ->throws(\InvalidArgumentException::class);
     }
 
     /**
      * @test
-     * @expectedException  UnexpectedValueException
      */
     public function invalidIniFileThrowsException()
     {
@@ -269,7 +271,10 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
         vfsStream::newFile('invalid.ini')
                  ->at($root)
                  ->withContent("[invalid{");
-        ModifiableProperties::fromFile(vfsStream::url('config/invalid.ini'));
+        expect(function() {
+                ModifiableProperties::fromFile(vfsStream::url('config/invalid.ini'));
+        })
+        ->throws(\UnexpectedValueException::class);
     }
 
     /**
@@ -287,13 +292,15 @@ class ModifiablePropertiesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
      * @since  2.0.0
      * @group  bug213
      */
     public function invalidIniStringThrowsException()
     {
-        ModifiableProperties::fromString("[invalid{");
+        expect(function() {
+                ModifiableProperties::fromString("[invalid{");
+        })
+        ->throws(\InvalidArgumentException::class);
     }
 
     /**

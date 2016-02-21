@@ -14,6 +14,7 @@ use function bovigo\assert\assert;
 use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isSameAs;
 /**
@@ -37,11 +38,13 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
      */
     public function constructWithNonExistingPathThrowsIllegalArgumentException()
     {
-        new Rootpath(__DIR__ . '/doesNotExist');
+        expect(function() {
+                new Rootpath(__DIR__ . '/doesNotExist');
+        })
+        ->throws(\InvalidArgumentException::class);
     }
 
     /**
@@ -94,11 +97,13 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
      */
     public function castFromWithNonExistingPathThrowsIllegalArgumentException()
     {
-        Rootpath::castFrom(__DIR__ . '/doesNotExist');
+        expect(function() {
+                Rootpath::castFrom(__DIR__ . '/doesNotExist');
+        })
+        ->throws(\InvalidArgumentException::class);
     }
 
     /**

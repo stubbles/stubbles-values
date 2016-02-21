@@ -11,6 +11,7 @@ namespace stubbles\values;
 use function bovigo\assert\assert;
 use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 /**
  * Helper class for the test.
@@ -503,33 +504,39 @@ class ParseTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  ReflectionException
      */
     public function toClassWithNonExistingClassThrowsReflectionException()
     {
-        Parse::toClass('does\not\Exist.class');
+        expect(function() {
+                Parse::toClass('does\not\Exist.class');
+        })
+        ->throws(\ReflectionException::class);
     }
 
     /**
      * @test
-     * @expectedException  ReflectionException
      * @since  5.0.0
      */
     public function asClassWithNonExistingClassThrowsReflectionException()
     {
         $parse = new Parse('does\not\Exist.class');
-        $parse->asClass();
+        expect(function() use ($parse) {
+                $parse->asClass();
+        })
+        ->throws(\ReflectionException::class);
     }
 
     /**
      * @test
-     * @expectedException  ReflectionException
      * @since  5.0.0
      */
     public function asClassWithNonExistingClassAndDefaultThrowsReflectionException()
     {
         $parse = new Parse('does\not\Exist.class');
-        $parse->defaultingTo(__CLASS__ . '.class')->asClass();
+        expect(function() use ($parse) {
+                $parse->defaultingTo(__CLASS__ . '.class')->asClass();
+        })
+        ->throws(\ReflectionException::class);
     }
 
     /**
