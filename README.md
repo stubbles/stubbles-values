@@ -19,7 +19,7 @@ _stubbles/values_ is distributed as [Composer](https://getcomposer.org/)
 package. To install it as a dependency of your package use the following
 command:
 
-    composer require "stubbles/values": "^7.2"
+    composer require "stubbles/values": "^7.1"
 
 
 Requirements
@@ -416,7 +416,7 @@ Returns an unmodifiable instance from the modifiable properties.
 
 ### `stubbles\values\ResourceLoader`
 
-_Available since release 7.2.0_
+_Available since release 7.1.0_
 
 #### Description
 
@@ -477,7 +477,7 @@ vendor resources is also in alphabetical order of vendor/package names.
 
 ### `stubbles\values\Rootpath`
 
-_Available since release 7.2.0_
+_Available since release 7.1.0_
 
 #### Description
 
