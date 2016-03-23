@@ -1,3 +1,10 @@
+7.2.0 (2016-03-??)
+-----------------
+
+  * added `stubbles\values\values()`
+  * added `stubbles\values\Value`
+
+
 7.1.0 (2016-02-21)
 ------------------
 

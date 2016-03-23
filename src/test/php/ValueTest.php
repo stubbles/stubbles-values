@@ -11,235 +11,143 @@ namespace stubbles\values;
 use function bovigo\assert\assert;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isSameAs;
 /**
- * Tests for stubbles\values\Result.
+ * Tests for stubbles\values\Value.
  *
- * @since  6.0.0
+ * @since  7.2.0
  * @group  types
+ * @group  values
+ * @group  value_checks
  */
-class ResultTest extends \PHPUnit_Framework_TestCase
+class ValueTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
      */
-    public function resultOfNullIsAlwaysSame()
+    public function valueOfNullIsAlwaysSame()
     {
-        assert(Result::of(null), isSameAs(Result::of(null)));
+        assert(value(null), isSameAs(value(null)));
     }
 
     /**
      * @test
      */
-    public function resultOfNullMeansResultNotPresent()
+    public function valueReturnsValue()
     {
-        assertFalse(Result::of(null)->isPresent());
+        assert(value(303)->value(), equals(303));
+    }
+    
+    /**
+     * @return  array
+     */
+    public function validValues()
+    {
+        return [['/^([a-z]{3})$/', 'foo'],
+                ['/^([a-z]{3})$/i', 'foo'],
+                ['/^([a-z]{3})$/i', 'Bar']
+        ];
     }
 
     /**
+     * @param  string  $pattern
+     * @param  string  $value
      * @test
+     * @dataProvider  validValues
      */
-    public function resultOfNonNullMeansResultPresent()
+    public function validValueEvaluatesToTrue($pattern, $value)
     {
-        assertTrue(Result::of(303)->isPresent());
-    }
-
-    /**
-     * @test
-     */
-    public function valueReturnsResultValue()
-    {
-        assert(Result::of(303)->value(), equals(303));
-    }
-
-    /**
-     * @test
-     */
-    public function filterOnResultOfNullReturnsResultOfNull()
-    {
-        assert(
-                Result::of(null)->filter(function($value) { return true; }),
-                isSameAs(Result::of(null))
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function filterOnResultOfNonNullReturnsResultOfNullWhenPredicateDenies()
-    {
-        assert(
-                Result::of(303)->filter(function($value) { return false; }),
-                isSameAs(Result::of(null))
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function filterOnResultOfNonNullReturnsResultWhenPredicateApproves()
-    {
-        $result = Result::of(303);
-        assert(
-                $result->filter(function($value) { return true; }),
-                isSameAs($result)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function mapResultOfNullReturnsResultOfNull()
-    {
-        assert(
-                Result::of(null)->map(function($value) { return 909; }),
-                isSameAs(Result::of(null))
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function mapResultOfNonNullReturnsMappedResult()
-    {
-        assert(
-                Result::of(303)->map(function($value) { return 909; }),
-                equals(Result::of(909))
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function whenNullOnResultOfNullReturnsOther()
-    {
-        assert(Result::of(null)->whenNull(909)->value(), equals(909));
-    }
-
-    /**
-     * @test
-     */
-    public function whenNullOnResultOfNonNullReturnsValue()
-    {
-        assert(Result::of(303)->whenNull(909)->value(), equals(303));
-    }
-
-    /**
-     * @test
-     */
-    public function applyhenNullOnResultOfNullReturnsOther()
-    {
-        assert(
-                Result::of(null)
-                        ->applyWhenNull(function() { return 909; })
-                        ->value(),
-                equals(909)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function applyWhenNullOnResultOfNonNullReturnsValue()
-    {
-        assert(
-                Result::of(303)
-                        ->applyWhenNull(function() { return 909; })
-                        ->value(),
-                equals(303)
-        );
+        assertTrue(value($value)->isMatchedBy($pattern));
     }
 
     /**
      * @return  array
      */
-    public function emptyValues()
+    public function invalidValues()
     {
-        return [[null], [''], [[]]];
+        return [['/^([a-z]{3})$/', 'Bar'],
+                ['/^([a-z]{3})$/', 'baz0123'],
+                ['/^([a-z]{3})$/i', 'baz0123']
+        ];
     }
 
     /**
-     * @param  mixed  $value
+     * @param  string  $pattern
+     * @param  string  $value
      * @test
-     * @dataProvider  emptyValues
-     * @since  6.2.0
+     * @dataProvider  invalidValues
      */
-    public function isEmptyForEmptyValues($value)
+    public function invalidValueEvaluatesToFalse($pattern, $value)
     {
-        assertTrue(Result::of($value)->isEmpty());
+        assertFalse(value($value)->isMatchedBy($pattern));
     }
 
     /**
-     * @return  array
-     */
-    public function nonEmptyValues()
-    {
-        return [[0], [303], ['foo'], [['foo']]];
-    }
-
-    /**
-     * @param  mixed  $value
      * @test
-     * @dataProvider  nonEmptyValues
-     * @since  6.2.0
      */
-    public function isNotEmptyForNomEmptyValues($value)
+    public function valueSatisfiesCallableWhenCallableReturnsTrue()
     {
-        assertFalse(Result::of($value)->isEmpty());
+        assertTrue(value(303)->satisfies(
+                function($value) { return $value === 303; }
+        ));
     }
 
     /**
-     * @param  mixed  $value
      * @test
-     * @dataProvider  emptyValues
-     * @since  6.2.0
      */
-    public function whenEmptyOnResultOfEmptyReturnsOther($value)
+    public function valueDoesNotSatisfyCallableWhenCallableReturnsFalse()
     {
-        assert(Result::of($value)->whenEmpty(909)->value(), equals(909));
+        assertFalse(value(303)->satisfies(
+                function($value) { return $value !== 303; }
+        ));
     }
 
     /**
-     * @param  mixed  $value
      * @test
-     * @dataProvider  nonEmptyValues
-     * @since  6.2.0
      */
-    public function whenEmptyOnResultOfNonEmptyReturnsValue($value)
+    public function useUndefinedCheckMethodThrowsBadMethodCallException()
     {
-        assert(Result::of($value)->whenEmpty(909)->value(), equals($value));
+        expect(function() {
+                value(303)->isAwesome();
+        })
+        ->throws(\BadMethodCallException::class)
+        ->withMessage('Method ' . Value::class . '::isAwesome() does not exist.');
     }
 
     /**
-     * @param  mixed  $value
      * @test
-     * @dataProvider  emptyValues
-     * @since  6.2.0
      */
-    public function applyhenEmptyOnResultOfEmptyReturnsOther($value)
+    public function useDefinedCheckReturnsResultOfDefinedCheck()
     {
-        assert(
-                Result::of($value)
-                        ->applyWhenEmpty(function() { return 909; })
-                        ->value(),
-                equals(909)
+        Value::defineCheck(
+                'isReallyAwesome',
+                function($value) { return $value === 303; }
         );
+        assertTrue(value(303)->isReallyAwesome());
     }
 
     /**
-     * @param  mixed  $value
      * @test
-     * @dataProvider  nonEmptyValues
-     * @since  6.2.0
      */
-    public function applyWhenEmptyOnResultOfNonEmptyReturnsValue($value)
+    public function internalPhpFunctionsAreAlreadyDefinedAsChecks()
     {
-        assert(
-                Result::of($value)
-                        ->applyWhenEmpty(function() { return 909; })
-                        ->value(),
-                equals($value)
-        );
+        assertTrue(value(303)->is_int());
+    }
+
+    /**
+     * @test
+     */
+    public function internalPhpFunctionChecksCanNotBeOverwritten()
+    {
+        expect(function() {
+            Value::defineCheck(
+                    'is_integer',
+                    function($value) { return $value === 303; }
+            );
+        })
+        ->throws(\InvalidArgumentException::class)
+        ->withMessage('Can not overwrite internal PHP function is_integer().');
     }
 }

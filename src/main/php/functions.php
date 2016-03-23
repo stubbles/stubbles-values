@@ -53,4 +53,17 @@ namespace stubbles\values {
     {
         return new Pattern($regex);
     }
+
+    /**
+     * creates a value instance
+     *
+     * @api
+     * @param   mixed  $value
+     * @return  \stubbles\values\Value
+     * @since   7.1.0
+     */
+    function value($value)
+    {
+        return Value::of($value);
+    }
 }
