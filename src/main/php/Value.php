@@ -9,7 +9,7 @@
  */
 namespace stubbles\values;
 /**
- * Provides functions for parsing strings to a target type.
+ * Provides functionality to work with single values.
  *
  * @api
  * @since  7.2.0
@@ -103,18 +103,18 @@ class Value
     }
 
     /**
-     * checks that value contains any of the given values
+     * checks that value contains any of the given elements
      *
-     * @param   array  $contained
+     * @param   array  $elements
      * @return  bool
      */
-    public function containsAnyOf(array $contained)
+    public function containsAnyOf(array $elements)
     {
         if (!is_scalar($this->value) || null === $this->value) {
             return false;
         }
 
-        foreach ($contained as $needle) {
+        foreach ($elements as $needle) {
             if (is_bool($needle) && $this->value === $needle) {
                 return true;
             } elseif (!is_bool($needle) && ($this->value === $needle || false !== strpos($this->value, (string) $needle))) {
