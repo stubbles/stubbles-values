@@ -187,7 +187,7 @@ class Rootpath
             if (\Phar::running() !== '') {
                 $rootpath = dirname(\Phar::running(false));
             } elseif (file_exists(__DIR__ . '/../../../../../autoload.php')) {
-                // stubbles/core is inside the vendor dir of the application
+                // stubbles/values is inside the vendor dir of the application
                 // it is a dependency of
                 $rootpath = realpath(__DIR__ . '/../../../../../../');
             } else {
@@ -199,4 +199,3 @@ class Rootpath
         return $rootpath;
     }
 }
-
