@@ -18,7 +18,6 @@ use function bovigo\assert\expect;
 use function bovigo\assert\predicate\contains;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isInstanceOf;
-use function stubbles\reflect\annotationsOf;
 /**
  * Tests for stubbles\values\ResourceLoader.
  *
@@ -40,14 +39,6 @@ class ResourceLoaderTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->resourceLoader = new ResourceLoader();
-    }
-
-    /**
-     * @test
-     */
-    public function isAnnotatedAsSingleton()
-    {
-        assertTrue(annotationsOf($this->resourceLoader)->contain('Singleton'));
     }
 
     /**
