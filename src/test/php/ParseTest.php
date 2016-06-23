@@ -643,7 +643,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
             [['foo', 'bar', 'baz'], '[foo|bar|baz]'],
             [[1, 2, 3, 4, 5], '1..5'],
             [['a', 'b', 'c', 'd', 'e'], 'a..e'],
-            [new \ReflectionClass($this), __CLASS__ . '.class'],
+            [new \ReflectionClass(__CLASS__), __CLASS__ . '.class'],
             [MyClass::TEST_CONSTANT, MyClass::class . '::TEST_CONSTANT'],
             ['just a string', 'just a string']
         ];
