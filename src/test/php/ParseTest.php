@@ -452,7 +452,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function stringToClassConversions()
     {
         return [
-            [new \ReflectionClass($this), __CLASS__ . '.class'],
+            [new \ReflectionClass(__CLASS__), __CLASS__ . '.class'],
             [new \ReflectionClass(SomeInterface::class), SomeInterface::class . '.class'],
             [null, null],
             [null, ''],
