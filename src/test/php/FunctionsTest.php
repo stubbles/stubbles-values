@@ -41,7 +41,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
             $expected = 'file_get_contents(' . __DIR__ . '/doesNotExist.txt): failed to open stream: No such file or directory';
         }
 
-        assert(astErrorMessage()->value(), equals($expected));
+        assert(lastErrorMessage()->value(), equals($expected));
     }
 
     /**
