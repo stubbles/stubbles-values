@@ -398,11 +398,17 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function invalidIniStringThrowsException()
     {
+        if (defined('HHVM_VERSION')) {
+            $expected = "No ending delimiter '^' found: [^([a-z]{3})$]";
+        } else {
+            $expected = 'syntax error, unexpected $end';
+        }
+
         expect(function() {
                 Properties::fromString("[invalid{");
         })
         ->throws(\InvalidArgumentException::class)
-        ->message(contains('Property string contains errors and can not be parsed: syntax error, unexpected $end'));
+        ->message(contains('Property string contains errors and can not be parsed: ' . $expected));
     }
 
     /**
