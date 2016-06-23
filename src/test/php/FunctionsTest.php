@@ -35,10 +35,13 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function lastErrorMessageShouldContainLastError()
     {
         @file_get_contents(__DIR__ . '/doesNotExist.txt');
-        assert(
-                lastErrorMessage()->value(),
-                equals('file_get_contents(' . __DIR__ . '/doesNotExist.txt): failed to open stream: No such file or directory')
-        );
+        if (defined('HHVM_VERSION')) {
+            $expected = 'No such file or directory';
+        } else {
+            $expected = 'file_get_contents(' . __DIR__ . '/doesNotExist.txt): failed to open stream: No such file or directory';
+        }
+
+        assert(astErrorMessage()->value(), equals($expected));
     }
 
     /**
