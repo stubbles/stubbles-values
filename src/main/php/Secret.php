@@ -213,7 +213,7 @@ class Secret
         try {
             $encrypt = self::$encrypt;
             self::$store[$self->id] = ['payload' => $encrypt($string),
-                                       'length'  => iconv_strlen($string)
+                                       'length'  => \iconv_strlen($string)
                                       ];
         } catch (\Exception $e) {
             $e = null;

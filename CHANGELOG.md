@@ -1,3 +1,9 @@
+7.2.1 (2016-07-06)
+------------------
+
+  * explicity require ext-iconv now in composer.json
+
+
 7.2.0 (2016-06-08)
 -----------------
 
