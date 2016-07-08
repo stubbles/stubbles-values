@@ -4,37 +4,37 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "48440f4c15d8d92950af1f3e37c6b18a",
-    "content-hash": "4e6a67ce03c2d5012075d56c60b11b7a",
+    "hash": "aeaadbd025e4b36632fa1ab87a5b36c1",
+    "content-hash": "62b707e49f7f2e28a91a33a3aa462889",
     "packages": [],
     "packages-dev": [
         {
             "name": "bovigo/assert",
-            "version": "v1.7.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikey179/bovigo-assert.git",
-                "reference": "d93e10ece407dc91a777ab1877df46d05fabc8c1"
+                "reference": "3c8b4813bd4f2b88ee896e800c03fcdb55bf55be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/bovigo-assert/zipball/d93e10ece407dc91a777ab1877df46d05fabc8c1",
-                "reference": "d93e10ece407dc91a777ab1877df46d05fabc8c1",
+                "url": "https://api.github.com/repos/mikey179/bovigo-assert/zipball/3c8b4813bd4f2b88ee896e800c03fcdb55bf55be",
+                "reference": "3c8b4813bd4f2b88ee896e800c03fcdb55bf55be",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.0",
+                "php": "^7.0",
                 "sebastian/comparator": "^1.2",
                 "sebastian/exporter": "^1.2"
             },
             "require-dev": {
                 "mikey179/vfsstream": "^1.6",
-                "phpunit/phpunit": "^5.2"
+                "phpunit/phpunit": "^5.4"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.7.x-dev"
+                    "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
@@ -51,27 +51,27 @@
                 "BSD-3-Clause"
             ],
             "description": "Provides assertions for unit tests.",
-            "time": "2016-06-28 14:52:46"
+            "time": "2016-07-08 18:03:16"
         },
         {
             "name": "bovigo/callmap",
-            "version": "v2.1.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikey179/bovigo-callmap.git",
-                "reference": "18164f739cd4d88a6ebc0173258c1b45d62b1c32"
+                "reference": "4c74641142319e4de92cc266e870ff1c7c6bc863"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikey179/bovigo-callmap/zipball/18164f739cd4d88a6ebc0173258c1b45d62b1c32",
-                "reference": "18164f739cd4d88a6ebc0173258c1b45d62b1c32",
+                "url": "https://api.github.com/repos/mikey179/bovigo-callmap/zipball/4c74641142319e4de92cc266e870ff1c7c6bc863",
+                "reference": "4c74641142319e4de92cc266e870ff1c7c6bc863",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.0"
+                "php": "^7.0"
             },
             "require-dev": {
-                "bovigo/assert": " ^1.6",
+                "bovigo/assert": " ^2.0",
                 "phpunit/phpunit": "~5.4"
             },
             "suggest": {
@@ -82,7 +82,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1.x-dev"
+                    "dev-master": "3.0.x-dev"
                 }
             },
             "autoload": {
@@ -98,7 +98,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Allows to stub and mock method calls by applying a callmap.",
-            "time": "2016-06-20 15:01:55"
+            "time": "2016-07-08 22:49:07"
         },
         {
             "name": "doctrine/instantiator",
@@ -1449,7 +1449,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.6.0",
+        "php": "^7.0",
         "ext-iconv": "*"
     },
     "platform-dev": []
