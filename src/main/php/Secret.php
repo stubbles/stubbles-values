@@ -119,6 +119,11 @@ class Secret
                 self::$decrypt = function() { return null; };
                 break;
 
+            case '__none_error':
+                self::$encrypt = function() { throw new \Error('No backing set'); };
+                self::$decrypt = function() { return null; };
+                break;
+
             default:
                 throw new \InvalidArgumentException('Unknown backing ' . $type);
         }
@@ -189,9 +194,6 @@ class Secret
     /**
      * creates an instance for given characters
      *
-     * Please note the given characters are passed as reference and will be
-     * blanked out after creation of the instance.
-     *
      * @param   string|\stubbles\values\Secret  $string  characters to secure
      * @return  \stubbles\values\Secret
      * @throws  \InvalidArgumentException
@@ -216,8 +218,8 @@ class Secret
             self::$store[$self->id] = ['payload' => $encrypt($string),
                                        'length'  => \iconv_strlen($string)
                                       ];
-        } catch (\Exception $e) {
-            $e = null;
+        } catch (\Throwable $t) {
+            $t = null;
             // This intentionally catches *ALL* exceptions, in order not to fail
             // and produce a stacktrace containing arguments on the stack that
             // were supposed to be protected.

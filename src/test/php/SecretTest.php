@@ -249,6 +249,19 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  8.0.0
+     */
+    public function creationNeverThrowsError()
+    {
+        Secret::switchBacking('__none_error');
+        expect(function() {
+            Secret::create('payload');
+        })
+        ->doesNotThrow();
+    }
+
+    /**
+     * @test
      */
     public function secretDoesNotContainAnythingWithoutBacking()
     {

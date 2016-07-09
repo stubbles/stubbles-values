@@ -8,6 +8,11 @@
   * `stubbles\values\Value::containsAnyOf()` now evaluates to `false` if it is checked that a number is contained in another number, except the value is a string
 
 
+  ### Other changes
+
+    * `stubbles\values\Secret::create()` now swallows `\Error` as well
+
+
 7.2.1 (2016-07-06)
 ------------------
 
