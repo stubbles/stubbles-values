@@ -297,11 +297,13 @@ class Secret
     /**
      * returns a substring of the secured string as a new Secret instance
      *
+     * If no $length is provided the substring will be from start position to
+     * end of the current secret.
+     *
      * @param   int  $start
      * @param   int  $length  optional
      * @return  \stubbles\values\Secret
      * @throws  \InvalidArgumentException
-     * @link    http://php.net/manual/en/function.substr.php
      */
     public function substring(int $start, int $length = null): self
     {
@@ -309,9 +311,13 @@ class Secret
             return $this;
         }
 
-        $substring = null === $length ? substr($this->unveil(), $start) : substr($this->unveil(), $start, $length);
+        $substring = null === $length ?
+                substr($this->unveil(), $start)
+              : substr($this->unveil(), $start, $length);
         if (false === $substring) {
-            throw new \InvalidArgumentException('Given start offset is out of range');
+            throw new \InvalidArgumentException(
+                    'Given start offset is out of range'
+            );
         }
 
         return self::create($substring);
