@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -8,12 +9,6 @@
  * @package  stubbles\values
  */
 namespace stubbles\values;
-/**
- * define this constant for PHP < 7.0
- */
-if (!defined('PREG_JIT_STACKLIMIT_ERROR')) {
-    define('PREG_JIT_STACKLIMIT_ERROR', 6);
-}
 /**
  * Pattern to ensure a value complies to a given regular expression.
  *
@@ -52,7 +47,7 @@ class Pattern
      *
      * @param  string  $regex  regular expression to use for validation
      */
-    public function __construct($regex)
+    public function __construct(string $regex)
     {
         $this->pattern = $regex;
     }
@@ -62,18 +57,10 @@ class Pattern
      *
      * @param   string  $value
      * @return  bool
-     * @throws  \InvalidArgumentException  in case given value is not a string
      * @throws  \RuntimeException  in case the used regular expresion is invalid
      */
-    public function matches($value)
+    public function matches(string $value): bool
     {
-        if (!is_string($value)) {
-            throw new \InvalidArgumentException(
-                    'Given value of type "' . typeOf($value)
-                . '" can not be matched against a regular expression.'
-            );
-        }
-
         $check = @preg_match($this->pattern, $value);
         if (false === $check) {
             throw new \RuntimeException(sprintf(
@@ -92,12 +79,8 @@ class Pattern
      * @param   int  $errorCode
      * @return  string
      */
-    private function messageFor($errorCode)
+    private function messageFor(int $errorCode): string
     {
-        if (isset(self::$errors[$errorCode])) {
-            return self::$errors[$errorCode];
-        }
-
-        return 'Unknown error with error code ' . $errorCode;
+        return self::$errors[$errorCode] ?? 'Unknown error with error code ' . $errorCode;
     }
 }

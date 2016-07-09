@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -74,7 +75,7 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function emptyValues()
+    public function emptyValues(): array
     {
         return [[null], ['']];
     }
@@ -275,7 +276,7 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
     public function switchToInvalidBackingTypeThrowsIllegalArgumentException()
     {
         expect(function() {
-                Secret::switchBacking(404);
+                Secret::switchBacking('nope');
         })
         ->throws(\InvalidArgumentException::class);
     }

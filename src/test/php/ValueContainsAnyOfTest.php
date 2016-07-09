@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -24,13 +25,13 @@ class ValueContainsAnyOfTest extends \PHPUnit_Framework_TestCase
      *
      * @return  array
      */
-    public function tuplesEvaluatingToTrue()
+    public function tuplesEvaluatingToTrue(): array
     {
         return [[[true], true],
                 [[false], false],
                 [[5], 5],
-                [[5], 55],
-                [[5], 25],
+                [[5], '55'],
+                [[5], '25'],
                 [[5], 'foo5'],
                 [[5], 'fo5o'],
                 [['foo', 'bar'], 'foobar'],
@@ -54,7 +55,7 @@ class ValueContainsAnyOfTest extends \PHPUnit_Framework_TestCase
      *
      * @return  array
      */
-    public function tuplesEvaluatingToFalse()
+    public function tuplesEvaluatingToFalse(): array
     {
         return [[[true], false],
                 [[false], true],
@@ -62,6 +63,8 @@ class ValueContainsAnyOfTest extends \PHPUnit_Framework_TestCase
                 [[false], null],
                 [[5], 'foo'],
                 [[5], 6],
+                [[5], 55],
+                [[5], 25],
                 [[true], 5],
                 [[false], 0],
                 [[true], 'foo'],

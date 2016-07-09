@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -67,7 +68,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function valueTypes()
+    public function valueTypes(): array
     {
         return [
                 [303, 'integer'],
@@ -86,7 +87,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      * @dataProvider  valueTypes
      * @since  7.0.0
      */
-    public function typeOfOtherValuesReturnsNativeType($value, $expectedType)
+    public function typeOfOtherValuesReturnsNativeType($value, string $expectedType)
     {
         assert(typeOf($value), equals($expectedType));
     }

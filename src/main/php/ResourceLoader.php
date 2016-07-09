@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -56,7 +57,7 @@ class ResourceLoader
      * @throws  \InvalidArgumentException  in case the given class does not exist
      * @since   4.0.0
      */
-    public function open($resource, $withClass = 'stubbles\streams\file\FileInputStream')
+    public function open(string $resource, string $withClass = 'stubbles\streams\file\FileInputStream')
     {
         if (!class_exists($withClass)) {
             throw new \InvalidArgumentException(
@@ -86,7 +87,7 @@ class ResourceLoader
      * @return  mixed     result of call to $loader, or file contents if no loader specified
      * @since   4.0.0
      */
-    public function load($resource, callable $loader = null)
+    public function load(string $resource, callable $loader = null)
     {
         $checkedPath = $this->checkedPathFor($resource);
         if (null == $loader) {
@@ -107,7 +108,7 @@ class ResourceLoader
      * @throws  \DomainException  in case the given resource does not exist
      * @throws  \OutOfBoundsException  in case the resource is not within rootpath
      */
-    private function checkedPathFor($resource)
+    private function checkedPathFor(string $resource): string
     {
         $completePath = $this->completePath($resource);
         if (!file_exists($completePath)) {
@@ -131,9 +132,9 @@ class ResourceLoader
      * @param   string  $resource
      * @return  string
      */
-    private function completePath($resource)
+    private function completePath(string $resource): string
     {
-        if (substr($resource, 0, strlen($this->rootpath)) == $this->rootpath) {
+        if (substr($resource, 0, strlen((string) $this->rootpath)) == $this->rootpath) {
             return $resource;
         }
 
@@ -156,23 +157,22 @@ class ResourceLoader
      * @return  string[]
      * @since   4.0.0
      */
-    public function availableResourceUris($resourceName)
+    public function availableResourceUris(string $resourceName): array
     {
-        $resourceUris = array_values(
-                array_filter(
-                        array_map(
-                              function($sourcePath) use($resourceName)
-                              {
-                                  return str_replace('/src/main/php', '/src/main/resources', $sourcePath) . DIRECTORY_SEPARATOR . $resourceName;
-                              },
-                              $this->rootpath->sourcePathes()
-                        ),
-                        function($resourcePath)
-                        {
-                            return file_exists($resourcePath);
-                        }
-                )
-        );
+        $resourceUris = array_values(array_filter(
+                array_map(
+                      function(string $sourcePath) use($resourceName): string
+                      {
+                          return str_replace('/src/main/php', '/src/main/resources', $sourcePath)
+                           . DIRECTORY_SEPARATOR . $resourceName;
+                      },
+                      $this->rootpath->sourcePathes()
+                ),
+                function(string $resourcePath): bool
+                {
+                    return file_exists($resourcePath);
+                }
+        ));
         sort($resourceUris);
         return $resourceUris;
     }

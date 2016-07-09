@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -94,7 +95,7 @@ class Secret
      * @throws  \InvalidArgumentException  when given backing is unknown
      * @throws  \LogicException  when trying to change the backing while there are still secure strings in the store
      */
-    public static function switchBacking($type)
+    public static function switchBacking(string $type)
     {
         if (count(self::$store) > 0) {
             throw new \LogicException('Can not switch backing while secured strings are stored');
@@ -195,7 +196,7 @@ class Secret
      * @return  \stubbles\values\Secret
      * @throws  \InvalidArgumentException
      */
-    public static function create($string)
+    public static function create($string): self
     {
         if ($string instanceof self) {
             return $string;
@@ -233,7 +234,7 @@ class Secret
      *
      * @return  \stubbles\values\Secret
      */
-    public static function forNull()
+    public static function forNull(): self
     {
         $self = new static();
         self::$store[$self->id] = ['payload' => true, 'length' => 0];
@@ -253,7 +254,7 @@ class Secret
      *
      * @return  bool
      */
-    public function isNull()
+    public function isNull(): bool
     {
         return true === self::$store[$this->id]['payload'];
     }
@@ -263,7 +264,7 @@ class Secret
      *
      * @return  bool
      */
-    public function isContained()
+    public function isContained(): bool
     {
         return isset(self::$store[$this->id]['payload']);
     }
@@ -300,13 +301,13 @@ class Secret
      * @throws  \InvalidArgumentException
      * @link    http://php.net/manual/en/function.substr.php
      */
-    public function substring($start, $length = null)
+    public function substring(int $start, int $length = null): self
     {
         if ($this->isNull()) {
             return $this;
         }
 
-        $substring = substr($this->unveil(), $start, $length);
+        $substring = null === $length ? substr($this->unveil(), $start) : substr($this->unveil(), $start, $length);
         if (false === $substring) {
             throw new \InvalidArgumentException('Given start offset is out of range');
         }
@@ -319,7 +320,7 @@ class Secret
      *
      * @return  int
      */
-    public function length()
+    public function length(): int
     {
         return self::$store[$this->id]['length'];
     }

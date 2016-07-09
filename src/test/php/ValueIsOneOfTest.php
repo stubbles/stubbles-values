@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -37,7 +38,7 @@ class ValueIsOneOfTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function validValues()
+    public function validValues(): array
     {
         return [['foo'],
                 ['bar'],
@@ -58,7 +59,7 @@ class ValueIsOneOfTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function invalidValues()
+    public function invalidValues(): array
     {
         return [['baz'],
                 [null],

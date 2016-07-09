@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -39,11 +40,11 @@ class ValueTest extends \PHPUnit_Framework_TestCase
     {
         assert(value(303)->value(), equals(303));
     }
-    
+
     /**
      * @return  array
      */
-    public function validValues()
+    public function validValues(): array
     {
         return [['/^([a-z]{3})$/', 'foo'],
                 ['/^([a-z]{3})$/i', 'foo'],
@@ -65,7 +66,7 @@ class ValueTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function invalidValues()
+    public function invalidValues(): array
     {
         return [['/^([a-z]{3})$/', 'Bar'],
                 ['/^([a-z]{3})$/', 'baz0123'],

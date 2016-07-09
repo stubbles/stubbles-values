@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -80,7 +81,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function sections()
+    public function sections(): array
     {
         return [
             ['scalar', [
@@ -125,7 +126,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  sections
      */
-    public function containSectionReturnsTrueForExistingSections($name)
+    public function containSectionReturnsTrueForExistingSections(string $name)
     {
         assertTrue($this->properties->containSection($name));
     }
@@ -142,7 +143,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  sections
      */
-    public function sectionWithoutDefaultValueReturnsSectionValues($name, $value)
+    public function sectionWithoutDefaultValueReturnsSectionValues(string $name, $value)
     {
         assert(
                 $this->properties->section($name),
@@ -162,7 +163,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  sections
      */
-    public function sectionWithDefaultValueReturnsSectionValues($name, $value)
+    public function sectionWithDefaultValueReturnsSectionValues(string $name, $value)
     {
         assert(
                 $this->properties->section($name, ['foo' => 'bar']),
@@ -185,7 +186,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  sections
      */
-    public function keysForSectionReturnsListOfKeysForGivenSection($name, $value)
+    public function keysForSectionReturnsListOfKeysForGivenSection(string $name, $value)
     {
         assert(
                 $this->properties->keysForSection($name, ['foo', 'bar']),
@@ -223,7 +224,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  existingSectionKeys
      */
-    public function containValueReturnsTrueIfValueExist($section, $key)
+    public function containValueReturnsTrueIfValueExist(string $section, $key)
     {
         assertTrue($this->properties->containValue($section, $key));
     }
@@ -247,7 +248,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function existingSectionValues()
+    public function existingSectionValues(): array
     {
         $data = [];
         foreach ($this->sections() as $section) {
@@ -263,7 +264,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  existingSectionValues
      */
-    public function valueWithoutDefaultValueReturnsValueIfExists($section, $key, $expectedValue)
+    public function valueWithoutDefaultValueReturnsValueIfExists(string $section, string $key, $expectedValue)
     {
         assert($this->properties->value($section, $key), equals($expectedValue));
     }
@@ -288,7 +289,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  existingSectionValues
      */
-    public function valueWithDefaultValueReturnsValueIfExists($section, $key, $expectedValue)
+    public function valueWithDefaultValueReturnsValueIfExists(string $section, string $key, $expectedValue)
     {
         assert(
                 $this->properties->value($section, $key, 'otherValue'),
@@ -526,7 +527,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function parseValueList()
+    public function parseValueList(): array
     {
         return [
             ['This is a string', 'scalar', 'stringValue'],
@@ -567,7 +568,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      * @dataProvider  parseValueList
      * @since  4.1.0
      */
-    public function parseValueReturnsValueCastedToRecognizedType($expected, $section, $key)
+    public function parseValueReturnsValueCastedToRecognizedType($expected, string $section, string $key)
     {
         assertTrue($expected === $this->properties->parseValue($section, $key));
     }
@@ -600,7 +601,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      * @return  array
      * @since  5.0.0
      */
-    public function parseList()
+    public function parseList(): array
     {
         return [
             ['This is a string', 'scalar', 'stringValue', 'asString'],
@@ -642,8 +643,12 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      * @dataProvider  parseList
      * @since  5.0.0
      */
-    public function parseReturnsValueCastedToRecognizedType($expected, $section, $key, $type)
-    {
+    public function parseReturnsValueCastedToRecognizedType(
+            $expected,
+            string $section,
+            string $key,
+            string $type
+    ) {
         assert(
                 $this->properties->parse($section, $key)->$type(),
                 equals($expected)

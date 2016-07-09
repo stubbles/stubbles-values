@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -40,7 +41,7 @@ class Rootpath
      * @param   string  $rootpath  optional  path to root
      * @throws  \InvalidArgumentException  in case a root path is given but does not exist
      */
-    public function __construct($rootpath = null)
+    public function __construct(string $rootpath = null)
     {
         if (null !== $rootpath && !file_exists($rootpath)) {
             throw new \InvalidArgumentException(
@@ -60,7 +61,7 @@ class Rootpath
      * @param   string  $path
      * @return  string
      */
-    private function realpath($path)
+    private function realpath(string $path): string
     {
         if (substr($path, 0, 6) === 'vfs://') {
             return $path;
@@ -75,7 +76,7 @@ class Rootpath
      * @param   string|\stubbles\lang\Rootpath  $rootpath
      * @return  \stubbles\lang\Rootpath
      */
-    public static function castFrom($rootpath)
+    public static function castFrom($rootpath): self
     {
         if ($rootpath instanceof self) {
             return $rootpath;
@@ -89,7 +90,7 @@ class Rootpath
      *
      * @return  string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->rootpath;
     }
@@ -104,7 +105,7 @@ class Rootpath
      * @param   string...  $pathParts
      * @return  string
      */
-    public function to(...$pathParts)
+    public function to(string ...$pathParts): string
     {
         return $this->rootpath . DIRECTORY_SEPARATOR . join(DIRECTORY_SEPARATOR, $pathParts);
     }
@@ -115,7 +116,7 @@ class Rootpath
      * @param   string  $path
      * @return  bool
      */
-    public function contains($path)
+    public function contains(string $path): bool
     {
         $realpath = realpath($path);
         if (false === $realpath) {
@@ -133,7 +134,7 @@ class Rootpath
      *
      * @return  string[]
      */
-    public function sourcePathes()
+    public function sourcePathes(): array
     {
         $vendorPathes = [];
         foreach (array_merge($this->loadPsr0Pathes(), $this->loadPsr4Pathes()) as $pathes) {
@@ -152,7 +153,7 @@ class Rootpath
      *
      * @return  string[]
      */
-    private function loadPsr0Pathes()
+    private function loadPsr0Pathes(): array
     {
         if (file_exists($this->rootpath . '/vendor/composer/autoload_namespaces.php')) {
             return require $this->rootpath . '/vendor/composer/autoload_namespaces.php';
@@ -166,7 +167,7 @@ class Rootpath
      *
      * @return  string[]
      */
-    private function loadPsr4Pathes()
+    private function loadPsr4Pathes(): array
     {
         if (file_exists($this->rootpath . '/vendor/composer/autoload_psr4.php')) {
             return require $this->rootpath . '/vendor/composer/autoload_psr4.php';
@@ -180,7 +181,7 @@ class Rootpath
      *
      * @return  string
      */
-    private function detectRootPath()
+    private function detectRootPath(): string
     {
         static $rootpath = null;
         if (null === $rootpath) {

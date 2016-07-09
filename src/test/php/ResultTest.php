@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -154,7 +155,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function emptyValues()
+    public function emptyValues(): array
     {
         return [[null], [''], [[]]];
     }
@@ -173,7 +174,7 @@ class ResultTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function nonEmptyValues()
+    public function nonEmptyValues(): array
     {
         return [[0], [303], ['foo'], [['foo']]];
     }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -22,7 +23,7 @@ class PatternTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function validValues()
+    public function validValues(): array
     {
         return [['/^([a-z]{3})$/', 'foo'],
                 ['/^([a-z]{3})$/i', 'foo'],
@@ -44,7 +45,7 @@ class PatternTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function invalidValues()
+    public function invalidValues(): array
     {
         return [['/^([a-z]{3})$/', 'Bar'],
                 ['/^([a-z]{3})$/', 'baz0123'],
@@ -61,30 +62,6 @@ class PatternTest extends \PHPUnit_Framework_TestCase
     public function invalidValueEvaluatesToFalse($pattern, $value)
     {
         assertFalse(pattern($pattern)->matches($value));
-    }
-
-    /**
-     * @test
-     */
-    public function nonStringsThrowInvalidArgumentException()
-    {
-        expect(function() {
-                pattern('/^([a-z]{3})$/')->matches(303);
-        })
-        ->throws(\InvalidArgumentException::class)
-        ->withMessage('Given value of type "integer" can not be matched against a regular expression.');
-    }
-
-    /**
-     * @test
-     */
-    public function nullThrowInvalidArgumentException()
-    {
-        expect(function() {
-                pattern('/^([a-z]{3})$/')->matches(null);
-        })
-        ->throws(\InvalidArgumentException::class)
-        ->withMessage('Given value of type "NULL" can not be matched against a regular expression.');
     }
 
     /**

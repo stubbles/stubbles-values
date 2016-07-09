@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -24,7 +25,7 @@ class ValueContainsTest extends \PHPUnit_Framework_TestCase
      *
      * @return  array
      */
-    public function tuplesEvaluatingToTrue()
+    public function tuplesEvaluatingToTrue(): array
     {
         return [
                 [null, null],
@@ -53,7 +54,7 @@ class ValueContainsTest extends \PHPUnit_Framework_TestCase
      *
      * @return  array
      */
-    public function tuplesEvaluatingToFalse()
+    public function tuplesEvaluatingToFalse(): array
     {
         return [
                 [5, 'foo'],

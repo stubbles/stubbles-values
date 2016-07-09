@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -53,9 +54,9 @@ class Value
      * static constructor
      *
      * @param   mixed   $value  actual result value
-     * @return  \stubbles\values\Result
+     * @return  \stubbles\values\Value
      */
-    public static function of($value)
+    public static function of($value): self
     {
         if (null === $value) {
             return self::$null;
@@ -81,7 +82,7 @@ class Value
      * @param   mixed  $needle
      * @return  bool
      */
-    public function contains($needle)
+    public function contains($needle): bool
     {
         if (null === $this->value) {
             return is_null($needle);
@@ -108,7 +109,7 @@ class Value
      * @param   array  $elements
      * @return  bool
      */
-    public function containsAnyOf(array $elements)
+    public function containsAnyOf(array $elements): bool
     {
         if (!is_scalar($this->value) || null === $this->value) {
             return false;
@@ -117,7 +118,7 @@ class Value
         foreach ($elements as $needle) {
             if (is_bool($needle) && $this->value === $needle) {
                 return true;
-            } elseif (!is_bool($needle) && ($this->value === $needle || false !== strpos($this->value, (string) $needle))) {
+            } elseif (!is_bool($needle) && ($this->value === $needle || (is_string($this->value) && false !== strpos($this->value, (string) $needle)))) {
                 return true;
             }
         }
@@ -132,7 +133,7 @@ class Value
      * @return  bool
      * @throws  \InvalidArgumentException
      */
-    public function equals($expected)
+    public function equals($expected): bool
     {
         if (!is_scalar($expected) && null != $expected) {
             throw new \InvalidArgumentException(
@@ -149,7 +150,7 @@ class Value
      * @param   array  $allowedValues
      * @return  bool
      */
-    public function isOneOf(array $allowedValues)
+    public function isOneOf(array $allowedValues): bool
     {
         if (!is_array($this->value)) {
             return in_array($this->value, $allowedValues);
@@ -170,7 +171,7 @@ class Value
      * @param   string  $regex  regular expression to apply
      * @return  bool
      */
-    public function isMatchedBy($regex)
+    public function isMatchedBy(string $regex): bool
     {
         return pattern($regex)->matches($this->value);
     }
@@ -184,7 +185,7 @@ class Value
      * @param   callable  $check
      * @return  bool
      */
-    public function satisfies(callable $check)
+    public function satisfies(callable $check): bool
     {
         return $check($this->value);
     }
@@ -215,7 +216,7 @@ class Value
      * @param   callable  $function
      * @throws  \InvalidArgumentException
      */
-    public static function defineCheck($method, callable $function)
+    public static function defineCheck(string $method, callable $function)
     {
         if (function_exists($method)) {
             throw new \InvalidArgumentException('Can not overwrite internal PHP function ' . $method . '().');
@@ -232,7 +233,7 @@ class Value
      * @return  bool
      * @throws  \BadMethodCallException  in case called method does not exist
      */
-    public function __call($method, $arguments)
+    public function __call(string $method, array $arguments): bool
     {
         if (!isset(self::$checks[$method]) && !function_exists($method)) {
             throw new \BadMethodCallException('Method ' . __CLASS__ . '::' . $method . '() does not exist.');

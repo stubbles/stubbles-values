@@ -4,6 +4,8 @@
 ### BC breaks
 
   * raised minimum required PHP version to 7.0.0
+  * introduced scalar type hints and strict type checking
+  * `stubbles\values\Value::containsAnyOf()` now evaluates to `false` if it is checked that a number is contained in another number, except the value is a string
 
 
 7.2.1 (2016-07-06)

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -15,7 +16,7 @@ namespace stubbles\values {
      * @return  \stubbles\values\Result
      * @since   3.4.2
      */
-    function lastErrorMessage()
+    function lastErrorMessage(): Result
     {
         return Result::of(error_get_last())
                 ->map(function(array $error) { return $error['message']; });
@@ -28,7 +29,7 @@ namespace stubbles\values {
      * @return  string
      * @since   3.1.0
      */
-    function typeOf(&$value)
+    function typeOf(&$value): string
     {
         if (is_object($value)) {
             return get_class($value);
@@ -49,7 +50,7 @@ namespace stubbles\values {
      * @return  \stubbles\values\Pattern
      * @since   7.1.0
      */
-    function pattern($regex)
+    function pattern(string $regex): Pattern
     {
         return new Pattern($regex);
     }
@@ -62,7 +63,7 @@ namespace stubbles\values {
      * @return  \stubbles\values\Value
      * @since   7.1.0
      */
-    function value($value)
+    function value($value): Value
     {
         return Value::of($value);
     }

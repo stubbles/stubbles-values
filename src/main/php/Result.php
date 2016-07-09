@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -51,7 +52,7 @@ class Result
      * @param   mixed   $value  actual result value
      * @return  \stubbles\values\Result
      */
-    public static function of($value)
+    public static function of($value): self
     {
         if (null === $value) {
             return self::$null;
@@ -67,7 +68,7 @@ class Result
      *
      * @return  bool
      */
-    public function isPresent()
+    public function isPresent(): bool
     {
         return null !== $this->value;
     }
@@ -78,7 +79,7 @@ class Result
      * @return  bool
      * @since   6.2.0
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         if (is_int($this->value)) {
             return false;
@@ -106,7 +107,7 @@ class Result
      * @param   callable  $predicate
      * @return  \stubbles\values\Result
      */
-    public function filter(callable $predicate)
+    public function filter(callable $predicate): self
     {
         if ($this->isPresent() && $predicate($this->value)) {
             return $this;
@@ -123,7 +124,7 @@ class Result
      * @param   callable  $mapper
      * @return  \stubbles\values\Result
      */
-    public function map(callable $mapper)
+    public function map(callable $mapper): self
     {
         if ($this->isPresent()) {
             return new self($mapper($this->value));
@@ -138,7 +139,7 @@ class Result
      * @param   mixed  $other
      * @return  \stubbles\values\Result
      */
-    public function whenNull($other)
+    public function whenNull($other): self
     {
         if ($this->isPresent()) {
             return $this;
@@ -153,7 +154,7 @@ class Result
      * @param   callable  $other
      * @return  \stubbles\values\Result
      */
-    public function applyWhenNull(callable $other)
+    public function applyWhenNull(callable $other): self
     {
         if ($this->isPresent()) {
             return $this;
@@ -169,7 +170,7 @@ class Result
      * @return  \stubbles\values\Result
      * @since   6.2.0
      */
-    public function whenEmpty($other)
+    public function whenEmpty($other): self
     {
         if (!$this->isEmpty($this->value)) {
             return $this;
@@ -185,7 +186,7 @@ class Result
      * @return  \stubbles\values\Result
      * @since   6.2.0
      */
-    public function applyWhenEmpty(callable $other)
+    public function applyWhenEmpty(callable $other): self
     {
         if (!$this->isEmpty($this->value)) {
             return $this;

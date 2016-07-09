@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -55,7 +56,7 @@ class Properties implements \Iterator
      * @throws  \InvalidArgumentException
      * @since   2.0.0
      */
-    public static function fromString($propertyString)
+    public static function fromString(string $propertyString): self
     {
         $propertyData = @parse_ini_string($propertyString, true);
         if (false === $propertyData) {
@@ -77,7 +78,7 @@ class Properties implements \Iterator
      * @throws  \InvalidArgumentException  if file can not be found or is not readable
      * @throws  \UnexpectedValueException  if file contains errors and can not be parsed
      */
-    public static function fromFile($propertiesFile)
+    public static function fromFile(string $propertiesFile): self
     {
         if (!file_exists($propertiesFile) || !is_readable($propertiesFile)) {
             throw new \InvalidArgumentException(
@@ -109,7 +110,7 @@ class Properties implements \Iterator
      * @return  \stubbles\values\Properties
      * @since   1.3.0
      */
-    public function merge(Properties $otherProperties)
+    public function merge(Properties $otherProperties): self
     {
         return new static(array_merge($this->propertyData, $otherProperties->propertyData));
     }
@@ -122,7 +123,7 @@ class Properties implements \Iterator
      * @return  bool
      * @since   4.0.0
      */
-    public function containSection($section)
+    public function containSection(string $section): bool
     {
         return isset($this->propertyData[$section]);
     }
@@ -136,7 +137,7 @@ class Properties implements \Iterator
      * @return  scalar[]
      * @since   4.0.0
      */
-    public function section($section, array $default = [])
+    public function section(string $section, array $default = []): array
     {
         if (isset($this->propertyData[$section])) {
             return $this->propertyData[$section];
@@ -154,7 +155,7 @@ class Properties implements \Iterator
      * @return  string[]
      * @since   4.0.0
      */
-    public function keysForSection($section, array $default = [])
+    public function keysForSection(string $section, array $default = []): array
     {
         if (isset($this->propertyData[$section])) {
             return array_keys($this->propertyData[$section]);
@@ -172,7 +173,7 @@ class Properties implements \Iterator
      * @return  bool
      * @since   4.0.0
      */
-    public function containValue($section, $key)
+    public function containValue(string $section, string $key): bool
     {
         if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
             return true;
@@ -191,7 +192,7 @@ class Properties implements \Iterator
      * @return  scalar
      * @since   4.0.0
      */
-    public function value($section, $key, $default = null)
+    public function value(string $section, string $key, $default = null)
     {
         if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
             return $this->propertyData[$section][$key];
@@ -210,7 +211,7 @@ class Properties implements \Iterator
      * @see     \stubbles\values\Parse::toType()
      * @since   4.1.0
      */
-    public function parseValue($section, $key, $default = null)
+    public function parseValue(string $section, string $key, $default = null)
     {
         if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
             if ($this->propertyData[$section][$key] instanceof Secret) {
@@ -236,7 +237,7 @@ class Properties implements \Iterator
      * @throws  \LogicException
      * @since   5.0.0
      */
-    public function parse($section, $key)
+    public function parse(string $section, string $key): Parse
     {
         if (!isset($this->propertyData[$section]) || !isset($this->propertyData[$section][$key])) {
             return new Parse(null);
@@ -255,7 +256,7 @@ class Properties implements \Iterator
      * @return  array
      * @see     http://php.net/manual/en/spl.iterators.php
      */
-    public function current()
+    public function current(): array
     {
         return current($this->propertyData);
     }
@@ -266,7 +267,7 @@ class Properties implements \Iterator
      * @return  string
      * @see     http://php.net/manual/en/spl.iterators.php
      */
-    public function key()
+    public function key(): string
     {
         return key($this->propertyData);
     }
@@ -297,8 +298,8 @@ class Properties implements \Iterator
      * @return  bool
      * @see     http://php.net/manual/en/spl.iterators.php
      */
-    public function valid()
+    public function valid(): bool
     {
-        return current($this->propertyData);
+        return current($this->propertyData) !== false;
     }
 }

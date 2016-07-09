@@ -1,4 +1,5 @@
 <?php
+#declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -74,7 +75,7 @@ class Parse
      * @param  callable  $recognition
      * @param  string    $name         name under which recognition should be stored
      */
-    public static function addRecognition(callable $recognition, $name)
+    public static function addRecognition(callable $recognition, string $name)
     {
         self::$recognitions[$name] = $recognition;
     }
@@ -85,7 +86,7 @@ class Parse
      * @param   string  $name  name under which recognition is stored
      * @return  bool  true if recognition was present and removed, false otherwise
      */
-    public static function removeRecognition($name)
+    public static function removeRecognition(string $name): bool
     {
         if (isset(self::$recognitions[$name])) {
             unset(self::$recognitions[$name]);
@@ -125,7 +126,7 @@ class Parse
             return $string;
         }
 
-        if ('null' === strtolower($string)) {
+        if (is_string($string) && 'null' === strtolower($string)) {
             return null;
         }
 
@@ -226,7 +227,7 @@ class Parse
      * @param   string  $string
      * @return  string
      */
-    private static function removeParenthesis($string)
+    private static function removeParenthesis(string $string): string
     {
         if (substr($string, 0, 1) === '[' && substr($string, -1) === ']') {
             return substr($string, 1, strlen($string) - 2);
@@ -382,7 +383,7 @@ class Parse
      * @param   mixed  $default
      * @return  \stubbles\values\Parse
      */
-    public function defaultingTo($default)
+    public function defaultingTo($default): self
     {
         $this->default = $default;
         return $this;
@@ -394,7 +395,7 @@ class Parse
      * @param   string  $method  static parse method to call
      * @return  mixed
      */
-    private function parse($method)
+    private function parse(string $method)
     {
         if (null === $this->value) {
             return $this->default;

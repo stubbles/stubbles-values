@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -25,7 +26,7 @@ class ModifiableProperties extends Properties
      * @param   array   $data
      * @return  \stubbles\values\ModifiableProperties
      */
-    public function setSection($section, array $data)
+    public function setSection(string $section, array $data): self
     {
         $this->propertyData[$section] = $data;
         return $this;
@@ -43,7 +44,7 @@ class ModifiableProperties extends Properties
      * @param   mixed   $value
      * @return  \stubbles\values\ModifiableProperties
      */
-    public function setValue($section, $name, $value)
+    public function setValue(string $section, string $name, $value): self
     {
         if (!isset($this->propertyData[$section])) {
             $this->propertyData[$section] = [];
@@ -65,7 +66,7 @@ class ModifiableProperties extends Properties
      * @param   bool    $value
      * @return  \stubbles\values\ModifiableProperties
      */
-    public function setBooleanValue($section, $name, $value)
+    public function setBooleanValue(string $section, string $name, $value): self
     {
         return $this->setValue($section, $name, ((true === $value) ? ('true') : ('false')));
     }
@@ -82,7 +83,7 @@ class ModifiableProperties extends Properties
      * @param   array   $value
      * @return  \stubbles\values\ModifiableProperties
      */
-    public function setArrayValue($section, $name, array $value)
+    public function setArrayValue(string $section, string $name, array $value): self
     {
         return $this->setValue($section, $name, join('|', $value));
     }
@@ -99,7 +100,7 @@ class ModifiableProperties extends Properties
      * @param   array   $hash
      * @return  \stubbles\values\ModifiableProperties
      */
-    public function setHashValue($section, $name, array $hash)
+    public function setHashValue(string $section, string $name, array $hash): self
     {
         $values = [];
         foreach($hash as $key => $val) {
@@ -121,7 +122,7 @@ class ModifiableProperties extends Properties
      * @param   array   $range
      * @return  \stubbles\values\ModifiableProperties
      */
-    public function setRangeValue($section, $name, array $range)
+    public function setRangeValue(string $section, string $name, array $range): self
     {
         return $this->setValue($section, $name, array_shift($range) . '..' . array_pop($range));
     }
@@ -132,7 +133,7 @@ class ModifiableProperties extends Properties
      * @return  \stubbles\values\Properties
      * @since   4.0.0
      */
-    public function unmodifiable()
+    public function unmodifiable(): Properties
     {
         return new Properties($this->propertyData);
     }

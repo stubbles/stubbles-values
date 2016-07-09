@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -47,7 +48,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function stringToIntConversions()
+    public function stringToIntConversions(): array
     {
         return [
             [0, '0'],
@@ -113,7 +114,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function stringToFloatConversions()
+    public function stringToFloatConversions(): array
     {
         return [
             [0.1, '0.1'],
@@ -179,7 +180,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function stringToBoolConversions()
+    public function stringToBoolConversions(): array
     {
         return [
             [true, 'yes'],
@@ -252,7 +253,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function stringToListConversions()
+    public function stringToListConversions(): array
     {
         return [
             [['foo', 'bar', 'baz'], 'foo|bar|baz'],
@@ -315,7 +316,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function stringToMapConversions()
+    public function stringToMapConversions(): array
     {
         return [
             [['foo', 'bar', 'baz'], 'foo|bar|baz'],
@@ -384,7 +385,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function stringToRangeConversions()
+    public function stringToRangeConversions(): array
     {
         return [
             [[1, 2, 3, 4, 5], '1..5'],
@@ -449,7 +450,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function stringToClassConversions()
+    public function stringToClassConversions(): array
     {
         return [
             [new \ReflectionClass(__CLASS__), __CLASS__ . '.class'],
@@ -621,7 +622,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function stringToTypeConversions()
+    public function stringToTypeConversions(): array
     {
         return [
             [null, null],
@@ -690,7 +691,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  array
      */
-    public function methods()
+    public function methods(): array
     {
         return [
             [null, 'asString'],
@@ -712,7 +713,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      * @dataProvider  methods
      * @since  5.0.0
      */
-    public function parseNullReturnsNull($expected, $method)
+    public function parseNullReturnsNull($expected, string $method)
     {
         $parse = new Parse(null);
         assert($parse->$method(), equals($expected));
@@ -726,7 +727,7 @@ class ParseTest extends \PHPUnit_Framework_TestCase
      * @dataProvider  methods
      * @since  5.0.0
      */
-    public function parseNullWithDefaultReturnsDefault($expected, $method)
+    public function parseNullWithDefaultReturnsDefault($expected, string $method)
     {
         $parse = new Parse(null);
         assert($parse->defaultingTo('foo')->$method(), equals('foo'));
