@@ -11,11 +11,13 @@ declare(strict_types=1);
 namespace stubbles\values;
 use org\bovigo\vfs\vfsStream;
 
-use function bovigo\assert\assert;
-use function bovigo\assert\assertTrue;
-use function bovigo\assert\expect;
-use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\{
+    assert,
+    assertTrue,
+    expect,
+    predicate\equals,
+    predicate\isInstanceOf
+};
 /**
  * Tests for stubbles\values\ModifiableProperties.
  *

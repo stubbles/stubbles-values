@@ -12,13 +12,15 @@ namespace stubbles\values;
 use bovigo\callmap\NewInstance;
 use stubbles\streams\file\FileInputStream;
 
-use function bovigo\assert\assert;
-use function bovigo\assert\assertEmptyArray;
-use function bovigo\assert\assertTrue;
-use function bovigo\assert\expect;
-use function bovigo\assert\predicate\contains;
-use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\{
+    assert,
+    assertEmptyArray,
+    assertTrue,
+    expect,
+    predicate\contains,
+    predicate\equals,
+    predicate\isInstanceOf
+};
 /**
  * Tests for stubbles\values\ResourceLoader.
  *

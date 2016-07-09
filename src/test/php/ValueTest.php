@@ -9,12 +9,14 @@ declare(strict_types=1);
  * @package  stubbles\values
  */
 namespace stubbles\values;
-use function bovigo\assert\assert;
-use function bovigo\assert\assertFalse;
-use function bovigo\assert\assertTrue;
-use function bovigo\assert\expect;
-use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isSameAs;
+use function bovigo\assert\{
+    assert,
+    assertFalse,
+    assertTrue,
+    expect,
+    predicate\equals,
+    predicate\isSameAs
+};
 /**
  * Tests for stubbles\values\Value.
  *

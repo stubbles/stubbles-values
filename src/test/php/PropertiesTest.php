@@ -11,16 +11,18 @@ declare(strict_types=1);
 namespace stubbles\values;
 use org\bovigo\vfs\vfsStream;
 
-use function bovigo\assert\assert;
-use function bovigo\assert\assertEmptyArray;
-use function bovigo\assert\assertFalse;
-use function bovigo\assert\assertNull;
-use function bovigo\assert\assertTrue;
-use function bovigo\assert\expect;
-use function bovigo\assert\predicate\contains;
-use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isInstanceOf;
-use function bovigo\assert\predicate\isNotSameAs;
+use function bovigo\assert\{
+    assert,
+    assertEmptyArray,
+    assertFalse,
+    assertNull,
+    assertTrue,
+    expect,
+    predicate\contains,
+    predicate\equals,
+    predicate\isInstanceOf,
+    predicate\isNotSameAs
+};
 /**
  * Tests for stubbles\values\Properties.
  *
