@@ -24,6 +24,7 @@ require_once __DIR__ . '/SecretTest.php';
  * @group  values
  * @group  secret
  * @requires extension  mcrypt
+ * @deprecated  since 8.0.0, will be removed with 9.0.0
  */
 class McryptSecretTest extends SecretTest
 {

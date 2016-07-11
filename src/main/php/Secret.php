@@ -39,6 +39,8 @@ class Secret
 {
     /**
      * backing: mcrypt
+     *
+     * @deprecated  since 8.0.0, use openssl backing instead, will be removed with 9.0.0, see https://wiki.php.net/rfc/mcrypt-viking-funeral
      */
     const BACKING_MCRYPT    = 'mcrypt';
     /**
@@ -79,10 +81,10 @@ class Secret
      */
     static function __static()
     {
-        if (extension_loaded(self::BACKING_MCRYPT)) {
-            self::useMcryptBacking();
-        } elseif (extension_loaded(self::BACKING_OPENSSL)) {
+        if (extension_loaded(self::BACKING_OPENSSL)) {
             self::useOpenSslBacking();
+        } elseif (extension_loaded(self::BACKING_MCRYPT)) {
+            self::useMcryptBacking();
         } else {
             self::usePlaintextBacking();
         }
@@ -102,12 +104,12 @@ class Secret
         }
 
         switch ($type) {
-            case self::BACKING_MCRYPT:
-                self::useMcryptBacking();
-                break;
-
             case self::BACKING_OPENSSL:
                 self::useOpenSslBacking();
+                break;
+
+            case self::BACKING_MCRYPT:
+                self::useMcryptBacking();
                 break;
 
             case self::BACKING_PLAINTEXT:
@@ -135,6 +137,7 @@ class Secret
      * switches backing to mcrypt
      *
      * @throws  \RuntimeException  when mcrypt extension not available
+     * @deprecated  since 8.0.0, use openssl backing instead, will be removed with 9.0.0, see https://wiki.php.net/rfc/mcrypt-viking-funeral
      */
     private static function useMcryptBacking()
     {
