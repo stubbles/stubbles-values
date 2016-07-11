@@ -79,9 +79,9 @@ class Secret
      */
     static function __static()
     {
-        if (extension_loaded('mcrypt')) {
+        if (extension_loaded(self::BACKING_MCRYPT)) {
             self::useMcryptBacking();
-        } elseif (extension_loaded('openssl')) {
+        } elseif (extension_loaded(self::BACKING_OPENSSL)) {
             self::useOpenSslBacking();
         } else {
             self::usePlaintextBacking();
@@ -138,7 +138,7 @@ class Secret
      */
     private static function useMcryptBacking()
     {
-        if (!extension_loaded('mcrypt')) {
+        if (!extension_loaded(self::BACKING_MCRYPT)) {
             throw new \RuntimeException(
                     'Can not use mcrypt backing, extension mcrypt not available'
             );
@@ -159,7 +159,7 @@ class Secret
      */
     private static function useOpenSslBacking()
     {
-        if (!extension_loaded('openssl')) {
+        if (!extension_loaded(self::BACKING_OPENSSL)) {
             throw new \RuntimeException(
                     'Can not use openssl backing, extension openssl not available'
             );
