@@ -35,9 +35,6 @@ class ValueIsOneOfTest extends \PHPUnit_Framework_TestCase
         $this->allowedValues = ['foo', 'bar'];
     }
 
-    /**
-     * @return  array
-     */
     public function validValues(): array
     {
         return [['foo'],
@@ -47,7 +44,6 @@ class ValueIsOneOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  string  $value
      * @test
      * @dataProvider  validValues
      */
@@ -56,9 +52,6 @@ class ValueIsOneOfTest extends \PHPUnit_Framework_TestCase
         assertTrue(value($value)->isOneOf($this->allowedValues));
     }
 
-    /**
-     * @return  array
-     */
     public function invalidValues(): array
     {
         return [['baz'],
@@ -68,12 +61,29 @@ class ValueIsOneOfTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param  string  $value
      * @test
      * @dataProvider  invalidValues
      */
     public function invalidValueEvaluatesToFalse($value)
     {
         assertFalse(value($value)->isOneOf($this->allowedValues));
+    }
+
+    /**
+     * @test
+     * @since  8.1.0
+     */
+    public function evaluatesToFalseForSimilarValueWhenStrictEnabled()
+    {
+        assertFalse(value(1)->isOneOf([true, '1', 'true'], true));
+    }
+
+    /**
+     * @test
+     * @since  8.1.0
+     */
+    public function evaluatesToTrueForSimilarValueWhenStrictNotEnabled()
+    {
+        assertTrue(value(1)->isOneOf([true, '1', 'true']));
     }
 }

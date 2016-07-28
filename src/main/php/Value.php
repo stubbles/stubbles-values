@@ -175,16 +175,17 @@ class Value
      * checks that value is one of the allowed values
      *
      * @param   array  $allowedValues
+     * @param   bool   $strict         optional  whether type must match as well
      * @return  bool
      */
-    public function isOneOf(array $allowedValues): bool
+    public function isOneOf(array $allowedValues, bool $strict = false): bool
     {
         if (!is_array($this->value)) {
-            return in_array($this->value, $allowedValues);
+            return in_array($this->value, $allowedValues, $strict);
         }
 
         foreach ($this->value as $value) {
-            if (!in_array($value, $allowedValues)) {
+            if (!in_array($value, $allowedValues, $strict)) {
                 return false;
             }
         }

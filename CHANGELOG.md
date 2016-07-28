@@ -3,6 +3,7 @@
 
   * added `stubbles\values\Value::isNull()`
   * added `stubbles\values\Value::isEmpty()`
+  * added possibility to enforce strict type check in `stubbles\values\Value::isOneOf()`
   * added possibility to use a different character as separator for list values in `stubbles\values\Parse::toList()` and `stubbles\values\Parse::asList()`
 
 
