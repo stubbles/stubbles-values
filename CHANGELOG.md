@@ -3,6 +3,7 @@
 
   * added `stubbles\values\Value::isNull()`
   * added `stubbles\values\Value::isEmpty()`
+  * added possibility to use a different character as separator for list values in `stubbles\values\Parse::toList()` and `stubbles\values\Parse::asList()`
 
 
 8.0.0 (2016-07-11)

@@ -17,6 +17,10 @@ namespace stubbles\values;
 class Parse
 {
     /**
+     * @type  string
+     */
+    const SEPARATOR_LIST = '|';
+    /**
      * list of values which are treated as boolean true
      *
      * @type  string[]
@@ -200,9 +204,10 @@ class Parse
      * The resulting array would be ['foo', 'bar', 'baz']
      *
      * @param   string  $string
+     * @param   string  $separator  optional  character which separates list values
      * @return  string[]
      */
-    public static function toList($string)
+    public static function toList($string, string $separator = self::SEPARATOR_LIST)
     {
         if (null === $string) {
             return null;
@@ -214,8 +219,8 @@ class Parse
         }
 
 
-        if (strstr($withoutParenthesis, '|') !== false) {
-            return explode('|', $withoutParenthesis);
+        if (strstr($withoutParenthesis, $separator) !== false) {
+            return explode($separator, $withoutParenthesis);
         }
 
         return [$withoutParenthesis];
@@ -392,16 +397,17 @@ class Parse
     /**
      * does the actual parsing
      *
-     * @param   string  $method  static parse method to call
+     * @param   string    $method     static parse method to call
+     * @param   mixed...  $arguments  optional arguments for method to call
      * @return  mixed
      */
-    private function parse(string $method)
+    private function parse(string $method, ...$arguments)
     {
         if (null === $this->value) {
             return $this->default;
         }
 
-        return self::$method($this->value);
+        return self::$method($this->value, ...$arguments);
     }
 
     /**
@@ -455,12 +461,13 @@ class Parse
     /**
      * parses initial value as list
      *
+     * @param   string    $separator  optional  character which separates list values
      * @return  string[]
      * @since   5.0.0
      */
-    public function asList()
+    public function asList(string $separator = self::SEPARATOR_LIST)
     {
-        return $this->parse('toList');
+        return $this->parse('toList', $separator);
     }
 
     /**

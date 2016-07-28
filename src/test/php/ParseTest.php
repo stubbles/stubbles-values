@@ -256,59 +256,70 @@ class ParseTest extends \PHPUnit_Framework_TestCase
     public function stringToListConversions(): array
     {
         return [
-            [['foo', 'bar', 'baz'], 'foo|bar|baz'],
-            [['foo', 'bar', 'baz'], '[foo|bar|baz]'],
-            [[], ''],
-            [[], '[]'],
-            [null, null],
-            [['', ''], '|'],
-            [['', ''], '[|]'],
-            [['foo'], 'foo'],
-            [['foo'], '[foo]']
+            [['foo', 'bar', 'baz'], 'foo|bar|baz', Parse::SEPARATOR_LIST],
+            [['foo|bar|baz'], 'foo|bar|baz', ','],
+            [['foo', 'bar', 'baz'], 'foo,bar,baz', ','],
+            [['foo', 'bar', 'baz'], '[foo|bar|baz]', Parse::SEPARATOR_LIST],
+            [[], '', Parse::SEPARATOR_LIST],
+            [[], '', ','],
+            [[], '[]', Parse::SEPARATOR_LIST],
+            [[], '[]', ','],
+            [null, null, Parse::SEPARATOR_LIST],
+            [['', ''], '|', Parse::SEPARATOR_LIST],
+            [['', ''], ',', ','],
+            [['', ''], '[|]', Parse::SEPARATOR_LIST],
+            [['', ''], '[,]', ','],
+            [['foo'], 'foo', Parse::SEPARATOR_LIST],
+            [['foo'], 'foo', ','],
+            [['foo'], '[foo]', Parse::SEPARATOR_LIST],
+            [['foo'], '[foo]', ',']
 
         ];
     }
 
     /**
-     * @param  string[]  $expectedResult
-     * @param  string    $stringToParse
      * @test
      * @dataProvider  stringToListConversions
      */
-    public function toListReturnsValueCastedToList($expectedResult, $stringToParse)
-    {
-        assert(Parse::toList($stringToParse), equals($expectedResult));
+    public function toListReturnsValueCastedToList(
+            $expectedResult,
+            $stringToParse,
+            string $separator
+    ) {
+        assert(Parse::toList($stringToParse, $separator), equals($expectedResult));
     }
 
     /**
-     * @param  string[]  $expectedResult
-     * @param  string    $stringToParse
      * @test
      * @dataProvider  stringToListConversions
      * @since  5.0.0
      */
-    public function asListReturnsValueCastedToList($expectedResult, $stringToParse)
-    {
+    public function asListReturnsValueCastedToList(
+            $expectedResult,
+            $stringToParse,
+            string $separator
+    ) {
         $parse = new Parse($stringToParse);
-        assert($parse->asList($stringToParse), equals($expectedResult));
+        assert($parse->asList($separator), equals($expectedResult));
     }
 
     /**
-     * @param  string[]  $expectedResult
-     * @param  string    $stringToParse
      * @test
      * @dataProvider  stringToListConversions
      * @since  5.0.0
      */
-    public function asListWithDefaultReturnsValueCastedToList($expectedResult, $stringToParse)
-    {
+    public function asListWithDefaultReturnsValueCastedToList(
+            $expectedResult,
+            $stringToParse,
+            string $separator
+    ) {
         if (null === $stringToParse) {
             $expectedResult = 'foo';
         }
 
         $parse = new Parse($stringToParse);
         assert(
-                $parse->defaultingTo('foo')->asList($stringToParse),
+                $parse->defaultingTo('foo')->asList($separator),
                 equals($expectedResult)
         );
     }
