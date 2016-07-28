@@ -2,6 +2,7 @@
 ------------------
 
   * added `stubbles\values\Value::isNull()`
+  * added `stubbles\values\Value::isEmpty()`
 
 
 8.0.0 (2016-07-11)

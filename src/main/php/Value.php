@@ -77,6 +77,22 @@ class Value
     }
 
     /**
+     * checks if value is empty
+     *
+     * Value is empty if its value is null, an empty string or an empty array.
+     *
+     * @return  bool
+     * @since   8.1.0
+     */
+    public function isEmpty()
+    {
+        return $this->isNull()
+            || (is_array($this->value) && count($this->value) === 0)
+            || (is_string($this->value) && strlen($this->value) === 0);
+    }
+
+
+    /**
      * returns actual value
      *
      * @return  mixed

@@ -48,9 +48,45 @@ class ValueTest extends \PHPUnit_Framework_TestCase
      * @test
      * @since  8.1.0
      */
+    public function valueOfNullIsEmpty()
+    {
+        assertTrue(value(null)->isEmpty());
+    }
+
+    /**
+     * @test
+     * @since  8.1.0
+     */
+    public function valueOfEmptyArrayIsEmpty()
+    {
+        assertTrue(value([])->isEmpty());
+    }
+
+    /**
+     * @test
+     * @since  8.1.0
+     */
+    public function valueOfEmptyStringIsEmpty()
+    {
+        assertTrue(value('')->isEmpty());
+    }
+
+    /**
+     * @test
+     * @since  8.1.0
+     */
     public function valueOfNonNullIsNotNull()
     {
         assertFalse(value(303)->isNull());
+    }
+
+    /**
+     * @test
+     * @since  8.1.0
+     */
+    public function valueOfNonNullIsNotEmpty()
+    {
+        assertFalse(value(303)->isEmpty());
     }
 
     /**
