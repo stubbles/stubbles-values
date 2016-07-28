@@ -66,6 +66,17 @@ class Value
     }
 
     /**
+     * checks if parameter is null
+     *
+     * @return  bool
+     * @since   8.1.0
+     */
+    public function isNull()
+    {
+        return null === $this->value;
+    }
+
+    /**
      * returns actual value
      *
      * @return  mixed

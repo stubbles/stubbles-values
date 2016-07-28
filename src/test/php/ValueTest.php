@@ -37,6 +37,24 @@ class ValueTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
+     * @since  8.1.0
+     */
+    public function valueOfNullIsNull()
+    {
+        assertTrue(value(null)->isNull());
+    }
+
+    /**
+     * @test
+     * @since  8.1.0
+     */
+    public function valueOfNonNullIsNotNull()
+    {
+        assertFalse(value(303)->isNull());
+    }
+
+    /**
+     * @test
      */
     public function valueReturnsValue()
     {
