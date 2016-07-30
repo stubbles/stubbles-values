@@ -227,4 +227,22 @@ class RootpathTest extends \PHPUnit_Framework_TestCase
                 ])
         );
     }
+
+    /**
+     * @test
+     * @since  8.1.0
+     */
+    public function defaultRootpathReturnsAutomaticallyCalculatedRootpath()
+    {
+        assert(Rootpath::default(), equals(realpath(__DIR__ . '/../../../')));
+    }
+
+    /**
+     * @test
+     * @since  8.1.0
+     */
+    public function defaultRootpathIsAlwaysTheSame()
+    {
+        assert(Rootpath::default(), equals(Rootpath::default()));
+    }
 }

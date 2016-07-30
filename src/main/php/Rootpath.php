@@ -22,6 +22,25 @@ namespace stubbles\values;
 class Rootpath
 {
     /**
+     * returns default rootpath
+     *
+     * Especially suited where rootpath is expected as string but a cast of a
+     * newly created instance looks ugly.
+     *
+     * @return  string
+     * @since   8.1.0
+     */
+    public static function default(): string
+    {
+        static $default;
+        if (null === $default) {
+            $default = new self();
+        }
+
+        return $default->__toString();
+    }
+
+    /**
      * root path of application
      *
      * @type  string
