@@ -33,6 +33,12 @@ class McryptSecretTest extends SecretTest
      */
     public function setUp()
     {
+        if (PHP_MAJOR_VERSION === 7 && PHP_MINOR_VERSION >= 1) {
+            $this->markTestSkipped(
+                    'Will fail from PHP 7.1 on anyway because of deprecation notice.'
+            );
+        }
+
         Secret::switchBacking(Secret::BACKING_MCRYPT);
     }
 }
