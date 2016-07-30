@@ -153,24 +153,30 @@ Please note that you can not use this function to create a secret with value
 `null`. If you explicitly want to do that use `Secret::forNull()`.
 
 
-#### `isNull()`
+#### `isContained(): bool`
+
+Checks whether encryption on creation was successful. In case it failed no errors
+or exception is thrown, so this is the only way to check.
+
+
+#### `isNull(): bool`
 
 Checks if actual secret is `null`.
 
 
-#### `unveil()`
+#### `unveil(): string`
 
 Unveils the secret and returns it as a string. This should be called at the
 latest possible moment to avoid unneccessary revealing of the value to be
 intended stored secure.
 
 
-#### `substring($start, $length = null)`
+#### `substring(int $start, int $length = null): Secret`
 
 Creates a substring of the secret value as new `Secret` instance.
 
 
-#### `length()`
+#### `length(): int`
 
 Returns length of the secret. Allows to check if it would fit a certain place
 without the need to unveil it first.
@@ -198,12 +204,12 @@ value is either "1", "yes", "true" or "on". In any other case the return value
 will be false.
 
 
-#### `Parse::toList($string)`
+#### `Parse::toList($string, string $separator = '|')`
 
 Parses string to a list of strings.
 
 If the value is empty the return value will be an empty array. If the value is
-not empty it will be splitted at "|".
+not empty it will be splitted at "|" (or any other separator provided).
 
 ```php
 Parse::toList("foo|bar|baz"); // results in ['foo', 'bar', 'baz']
@@ -340,7 +346,7 @@ the hash using a numeric value. So _key = foo:bar|baz_ results in
 `['foo' => 'bar', 'baz']`.
 
 
-#### `parseRange($section, $key, array $default = [])`
+#### `parseRange(string $section, string $key, array $default = [])`
 
 Tries to read the value and convert it to a range. If the section or key is not
 set, return value is `$default`.
@@ -373,36 +379,36 @@ the `stubbles\values\ModifiableProperties` class. It provides means to set
 property values:
 
 
-#### `setSection($section, array $data)`
+#### `setSection(string $section, array $data)`
 
 Sets a complete section with given section name. In case this section already
 exists it will be replaced.
 
 
-#### `setValue($section, $name, $value)`
+#### `setValue(string $section, string $name, $value)`
 
 Sets a single property value.
 
 
-#### `setBooleanValue($section, $name, $value)`
+#### `setBooleanValue(string $section, string $name, $value)`
 
 Sets a single property to a boolean value in a way that it can be read properly
 by `parseBool()`.
 
 
-#### `setArrayValue($section, $name, array $value)`
+#### `setArrayValue(string $section, string $name, array $value)`
 
 Sets an array property to a value in a way that it can be read properly by
 `parseArray()`.
 
 
-#### `setHashValue($section, $name, array $hash)`
+#### `setHashValue(string $section, string $name, array $hash)`
 
 Sets a map property to a value in a way that it can be read properly by
 `parseHash()`.
 
 
-#### `setRangeValue($section, $name, array $range)`
+#### `setRangeValue(string $section, string $name, array $range)`
 
 Sets a range property to a value in a way that it can be read properly by
 `parseRange()`.
@@ -429,7 +435,7 @@ in the path `src/main/resources` of the current project, or in `src/main/resourc
 of any other Composer package located in `vendor`.
 
 
-#### `open($resource, $withClass = 'stubbles\streams\file\FileInputStream')`
+#### `open(string $resource, string $withClass = 'stubbles\streams\file\FileInputStream')`
 
 Opens the given resource to read its contents using the given `$withClass`. This
 class must accept the resource path as constructor argument. By default the
@@ -446,7 +452,7 @@ complete path, a complete path must always lead to a resource located within the
 root path.
 
 
-#### `load($resource, callable $loader = null)`
+#### `load(string $resource, callable $loader = null)`
 
 Loads resource contents. Resource can either be a complete path to a resource or
 a local path. In case it is a local path it is searched within the
@@ -468,7 +474,7 @@ $props = $resourceLoader->load(
 ```
 
 
-#### `availableResourceUris($resourceName)`
+#### `availableResourceUris(string $resourceName): array`
 
 Returns a list of all available URIs for a resource. The returned list is sorted
 alphabetically, meaning that local resources of the current project are always
@@ -496,23 +502,31 @@ For unit tests it can be useful to supply the actual root path to be used for
 the test directly when constructing the class.
 
 
-#### `to(...$path)`
+#### `to(string ...$path): string`
 
 Returns absolute path to given local path. Supports arbitrary lists of arguments,
 e.g. `$rootpath->to('src', 'main', 'php', 'Example.php')` will return
 `/absolute/path/to/root/src/main/php/Example.php`.
 
 
-#### `contains($path)`
+#### `contains(string $path): bool`
 
 Checks if given path is located within root path.
 
 
-#### `sourcePathes()`
+#### `sourcePathes(): array`
 
 Returns a list of all source pathes defined for the autoloader. It relies on
 autoloader files generated by Composer. If no such autoloader is present the
 list of source pathes will be empty.
+
+
+### `Rootpath::default(): string`
+
+_Available since release 8.1.0_
+
+A static method which returns the rootpath directly as string when not instance
+is required.
 
 
 ### `stubbles\values\Value`
@@ -531,7 +545,7 @@ of `Value::of(null)` - each creation with `null` will return the same instance.
 To access the stored value call `$actualValue = $value->value()`.
 
 
-#### `contains($needle)`
+#### `contains($needle): bool`
 
 Checks if the value contains the needle. In case the value is a string it is
 checked whether `$needle` is a substring within the value. In case the value is
@@ -539,33 +553,51 @@ an array or an instance of `\Traversable` the given `$needle` must be an element
 within the array or traversable.
 
 
-#### `containsAnyOf(array $elements)`
+#### `containsAnyOf(array $elements): bool`
 
 Checks if the value contains any of the given elements.
 
 
-#### `equals($expected)`
+#### `equals($expected): bool`
 
 Checks if the value equals the expected value. Expected value must be a non-null
 scalar value. Comparison is done using `===`.
 
 
-#### `isOneOf(array $allowedValues)`
+#### `isOneOf(array $allowedValues, bool $strict = false): bool`
 
 Checks if the value equals one of the allowed values. In case the value itself
 is an array this method returns `false` if it contains a value which is not in
 the list of allowed values.
 
+Sometimes it is necessary that the value type must also be equal. In such cases
+the flag `$strict` should be set to `true`.
 
-#### `isMatchedBy($regex)`
+
+#### `isMatchedBy(string $regex): bool`
 
 Checks if the value can be matched by the given regular expression.
 
 
-#### `satisfies(callable $check)`
+#### `satisfies(callable $check): bool`
 
 Checks if the value satisfies the given callable. The given callable must accept
 a single value, its return value is returned.
+
+
+#### `isNull(): bool`
+
+_Available since release 8.1.0_
+
+Checks if the value is `null`.
+
+
+#### `isEmpty(): bool`
+
+_Available since release 8.1.0_
+
+Checks if the value is empty. A value is empty if it is `null`, an empty string
+or an empty array.
 
 
 #### Define additional checks
@@ -582,13 +614,13 @@ Existing PHP functions must not be defined, they are available automatically:
 Available functions
 -------------------
 
-### `stubbles\values\lastErrorMessage()`
+### `stubbles\values\lastErrorMessage(): Result`
 
 Returns the message of the native PHP function `error_get_last()['message']` as
 instance of `stubbles\values\Result`.
 
 
-### `stubbles\values\typeOf(&$value)`
+### `stubbles\values\typeOf(&$value): string`
 
 Returns the correct type of given value.
 
@@ -597,7 +629,7 @@ return value will be _resource[type_of_resource]_, e.g. _resource[stream]_. For
 all other types the result is call to PHP's native `gettype()` function.
 
 
-### `stubbles\values\pattern($pattern)`
+### `stubbles\values\pattern($pattern): Pattern`
 
 _Available since release 7.1.0._
 
