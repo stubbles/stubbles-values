@@ -71,7 +71,7 @@ class Value
      * @return  bool
      * @since   8.1.0
      */
-    public function isNull()
+    public function isNull(): bool
     {
         return null === $this->value;
     }
@@ -84,7 +84,7 @@ class Value
      * @return  bool
      * @since   8.1.0
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return $this->isNull()
             || (is_array($this->value) && count($this->value) === 0)
