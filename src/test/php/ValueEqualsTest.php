@@ -19,7 +19,7 @@ use function bovigo\assert\expect;
  * @group  value_checks
  * @since  7.2.0
  */
-class EqualsTest extends \PHPUnit_Framework_TestCase
+class ValueEqualsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @test
