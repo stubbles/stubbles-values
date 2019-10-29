@@ -200,7 +200,7 @@ class ParseTest extends TestCase
     public function asBoolReturnsValueCastedToBool($expectedResult, $stringToParse)
     {
         $parse = new Parse($stringToParse);
-        assertThat($parse->asBool($stringToParse), equals($expectedResult));
+        assertThat($parse->asBool(), equals($expectedResult));
     }
 
     /**
@@ -218,7 +218,7 @@ class ParseTest extends TestCase
 
         $parse = new Parse($stringToParse);
         assertThat(
-                $parse->defaultingTo('foo')->asBool($stringToParse),
+                $parse->defaultingTo('foo')->asBool(),
                 equals($expectedResult)
         );
     }
@@ -352,7 +352,7 @@ class ParseTest extends TestCase
     public function asMapReturnsValueCastedToMap($expectedResult, $stringToParse)
     {
         $parse = new Parse($stringToParse);
-        assertThat($parse->asMap($stringToParse), equals($expectedResult));
+        assertThat($parse->asMap(), equals($expectedResult));
     }
 
     /**
@@ -370,7 +370,7 @@ class ParseTest extends TestCase
 
         $parse = new Parse($stringToParse);
         assertThat(
-                $parse->defaultingTo('foo')->asMap($stringToParse),
+                $parse->defaultingTo('foo')->asMap(),
                 equals($expectedResult)
         );
     }
@@ -417,7 +417,7 @@ class ParseTest extends TestCase
     public function asRangeReturnsValueCastedToRange($expectedResult, $stringToParse)
     {
         $parse = new Parse($stringToParse);
-        assertThat($parse->asRange($stringToParse), equals($expectedResult));
+        assertThat($parse->asRange(), equals($expectedResult));
     }
 
     /**
@@ -435,7 +435,7 @@ class ParseTest extends TestCase
 
         $parse = new Parse($stringToParse);
         assertThat(
-                $parse->defaultingTo('foo')->asRange($stringToParse),
+                $parse->defaultingTo('foo')->asRange(),
                 equals($expectedResult)
         );
     }
@@ -476,7 +476,7 @@ class ParseTest extends TestCase
     public function asClassReturnsValueCastedToClassInstance($expectedResult, $stringToParse)
     {
         $parse = new Parse($stringToParse);
-        assertThat($parse->asClass($stringToParse), equals($expectedResult));
+        assertThat($parse->asClass(), equals($expectedResult));
     }
 
     /**
@@ -493,7 +493,7 @@ class ParseTest extends TestCase
         }
 
         $parse = new Parse($stringToParse);
-        assertThat($parse->defaultingTo('foo')->asClass($stringToParse), equals($expectedResult));
+        assertThat($parse->defaultingTo('foo')->asClass(), equals($expectedResult));
     }
 
     /**
