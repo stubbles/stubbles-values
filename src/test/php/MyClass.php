@@ -1,17 +1,16 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace stubbles\streams\file;
-
-class FileInputStream
+namespace stubbles\values;
+/**
+ * Helper class for the test.
+ */
+class MyClass
 {
-    public function __construct()
-    {
-        // intentionally empty
-    }
+    const TEST_CONSTANT = 'baz';
 }
-

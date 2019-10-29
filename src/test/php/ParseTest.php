@@ -14,20 +14,6 @@ use function bovigo\assert\assertTrue;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 /**
- * Helper class for the test.
- */
-class MyClass
-{
-    const TEST_CONSTANT = 'baz';
-}
-/**
- * Helper interface for the test.
- */
-interface SomeInterface
-{
-    // intentionally empty
-}
-/**
  * Tests for stubbles\values\Parse.
  *
  * @group  values
@@ -658,12 +644,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @param type $expectedResult
-     * @param type $stringToParse
      * @test
      * @dataProvider  stringToTypeConversions
      */
-    public function toTypeReturnsValueCastedToRecognizedType($expectedResult, $stringToParse)
+    public function toTypeReturnsValueCastedToRecognizedType($expectedResult, string $stringToParse)
     {
         assertThat(Parse::toType($stringToParse), equals($expectedResult));
     }

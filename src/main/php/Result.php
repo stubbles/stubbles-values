@@ -170,7 +170,7 @@ class Result
      */
     public function whenEmpty($other): self
     {
-        if (!$this->isEmpty($this->value)) {
+        if (!$this->isEmpty()) {
             return $this;
         }
 
@@ -186,7 +186,7 @@ class Result
      */
     public function applyWhenEmpty(callable $other): self
     {
-        if (!$this->isEmpty($this->value)) {
+        if (!$this->isEmpty()) {
             return $this;
         }
 

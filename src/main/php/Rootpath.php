@@ -90,8 +90,8 @@ class Rootpath
     /**
      * casts given value to an instance of Rootpath
      *
-     * @param   string|\stubbles\lang\Rootpath  $rootpath
-     * @return  \stubbles\lang\Rootpath
+     * @param   string|\stubbles\values\Rootpath  $rootpath
+     * @return  \stubbles\values\Rootpath
      */
     public static function castFrom($rootpath): self
     {
