@@ -36,12 +36,6 @@ namespace stubbles\values;
 class Secret
 {
     /**
-     * backing: mcrypt
-     *
-     * @deprecated  since 8.0.0, use openssl backing instead, will be removed with 9.0.0, see https://wiki.php.net/rfc/mcrypt-viking-funeral
-     */
-    const BACKING_MCRYPT    = 'mcrypt';
-    /**
      * backing: openssl
      */
     const BACKING_OPENSSL   = 'openssl';
@@ -81,8 +75,6 @@ class Secret
     {
         if (extension_loaded(self::BACKING_OPENSSL)) {
             self::useOpenSslBacking();
-        } elseif (extension_loaded(self::BACKING_MCRYPT)) {
-            self::useMcryptBacking();
         } else {
             self::usePlaintextBacking();
         }
@@ -106,10 +98,6 @@ class Secret
                 self::useOpenSslBacking();
                 break;
 
-            case self::BACKING_MCRYPT:
-                self::useMcryptBacking();
-                break;
-
             case self::BACKING_PLAINTEXT:
                 self::usePlaintextBacking();
                 break;
@@ -129,28 +117,6 @@ class Secret
         }
 
         return true;
-    }
-
-    /**
-     * switches backing to mcrypt
-     *
-     * @throws  \RuntimeException  when mcrypt extension not available
-     * @deprecated  since 8.0.0, use openssl backing instead, will be removed with 9.0.0, see https://wiki.php.net/rfc/mcrypt-viking-funeral
-     */
-    private static function useMcryptBacking()
-    {
-        if (!extension_loaded(self::BACKING_MCRYPT)) {
-            throw new \RuntimeException(
-                    'Can not use mcrypt backing, extension mcrypt not available'
-            );
-        }
-
-        $engine   = mcrypt_module_open(MCRYPT_DES, '', 'ecb', '');
-        $engineiv = mcrypt_create_iv(mcrypt_enc_get_iv_size($engine), MCRYPT_RAND);
-        $key      = substr(md5(uniqid()), 0, mcrypt_enc_get_key_size($engine));
-        mcrypt_generic_init($engine, $key, $engineiv);
-        self::$encrypt = function($value) use($engine) { return mcrypt_generic($engine, $value); };
-        self::$decrypt = function($value) use($engine) { return rtrim(mdecrypt_generic($engine, $value), "\0"); };
     }
 
     /**
