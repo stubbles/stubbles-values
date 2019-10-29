@@ -51,7 +51,7 @@ class ResourceLoader
      *
      * @param   string  $resource   name of resource to open
      * @param   string  $withClass  optional  name of class to open resource with
-     * @return  $withClass
+     * @return  object
      * @throws  \InvalidArgumentException  in case the given class does not exist
      * @since   4.0.0
      */

@@ -23,7 +23,7 @@ namespace stubbles\values {
     /**
      * determines the correct type of a value
      *
-     * @param   mixed   &$value
+     * @param   mixed   $value
      * @return  string
      * @since   3.1.0
      */

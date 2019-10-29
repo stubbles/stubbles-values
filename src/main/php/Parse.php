@@ -148,7 +148,7 @@ class Parse
      * @param   string  $string
      * @return  int
      */
-    public static function toInt($string)
+    public static function toInt(?string $string): ?int
     {
         if (null === $string) {
             return null;
@@ -163,7 +163,7 @@ class Parse
      * @param   string  $string
      * @return  float
      */
-    public static function toFloat($string)
+    public static function toFloat(?string $string): ?float
     {
         if (null === $string) {
             return null;
@@ -181,7 +181,7 @@ class Parse
      * @param   string  $string
      * @return  bool
      */
-    public static function toBool($string)
+    public static function toBool(?string $string): ?bool
     {
         if (null === $string) {
             return null;
@@ -205,7 +205,7 @@ class Parse
      * @param   string  $separator  optional  character which separates list values
      * @return  string[]
      */
-    public static function toList($string, string $separator = self::SEPARATOR_LIST)
+    public static function toList(?string $string, string $separator = self::SEPARATOR_LIST): ?array
     {
         if (null === $string) {
             return null;
@@ -256,7 +256,7 @@ class Parse
      * @param   string  $string
      * @return  array
      */
-    public static function toMap($string)
+    public static function toMap(?string $string): ?array
     {
         if (null === $string) {
             return null;
@@ -286,7 +286,7 @@ class Parse
      * @param   string  $string
      * @return  mixed[]
      */
-    public static function toRange($string)
+    public static function toRange(?string $string): ?array
     {
         if (null === $string) {
             return null;
@@ -315,7 +315,7 @@ class Parse
      * @param   string  $string
      * @return  \ReflectionClass
      */
-    public static function toClass($string)
+    public static function toClass(?string $string): ?\ReflectionClass
     {
         if (empty($string)) {
             return null;
@@ -340,7 +340,7 @@ class Parse
      * @return  string
      * @since   5.3.0
      */
-    public static function toClassname($string)
+    public static function toClassname(?string $string): ?string
     {
         if (empty($string)) {
             return null;

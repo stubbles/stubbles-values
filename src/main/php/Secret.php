@@ -247,7 +247,7 @@ class Secret
      * @return  string
      * @throws  \LogicException  in case the secure string can not be found
      */
-    public function unveil()
+    public function unveil(): ?string
     {
         if (!$this->isContained()) {
            throw new \LogicException('An error occurred during string encryption.');
