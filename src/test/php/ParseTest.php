@@ -647,7 +647,7 @@ class ParseTest extends TestCase
      * @test
      * @dataProvider  stringToTypeConversions
      */
-    public function toTypeReturnsValueCastedToRecognizedType($expectedResult, string $stringToParse)
+    public function toTypeReturnsValueCastedToRecognizedType($expectedResult, ?string $stringToParse)
     {
         assertThat(Parse::toType($stringToParse), equals($expectedResult));
     }
