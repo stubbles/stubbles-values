@@ -1,0 +1,13 @@
+parameters:
+  level: 2
+  paths:
+    - ./src
+  ignoreErrors:
+    # Class has dynamicly added methods which are called using __call()
+    - '#Call to an undefined method stubbles\\values\\Value#'
+    # Iteration may yield string or array as value
+    - '#Call to function is_array\(\) with string will always evaluate to false.#'
+    # PHP's substr() may return FALSE
+    - '#Strict comparison using === between false and string will always evaluate to false.#'
+    # Test is explicit test that this will fail and throw an exception
+    - '#method stubbles\\values\\Value::equals\(\) expects bool\|float\|int\|string\|null, stdClass given.#'

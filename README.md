@@ -19,14 +19,13 @@ _stubbles/values_ is distributed as [Composer](https://getcomposer.org/)
 package. To install it as a dependency of your package use the following
 command:
 
-    composer require "stubbles/values": "^8.0"
+    composer require "stubbles/values": "^9.0"
 
 
 Requirements
 ------------
 
-_stubbles/values_ requires at least PHP 7.0. For use with PHP 5.6 use the 7.x
-releases.
+_stubbles/values_ requires at least PHP 7.3.
 
 
 Available classes
