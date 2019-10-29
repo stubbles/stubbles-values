@@ -5,10 +5,9 @@ declare(strict_types=1);
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  stubbles\values
  */
 namespace stubbles\values;
+use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 /**
@@ -18,7 +17,7 @@ use function bovigo\assert\assertTrue;
  * @group  value_checks
  * @since  7.2.0
  */
-class ValueIsOneOfTest extends \PHPUnit_Framework_TestCase
+class ValueIsOneOfTest extends TestCase
 {
     /**
      * instance to test
@@ -27,10 +26,7 @@ class ValueIsOneOfTest extends \PHPUnit_Framework_TestCase
      */
     private $allowedValues;
 
-    /**
-     * set up test environment
-     */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->allowedValues = ['foo', 'bar'];
     }

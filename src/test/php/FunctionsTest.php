@@ -5,11 +5,10 @@ declare(strict_types=1);
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  stubbles\values
  */
 namespace stubbles\values;
-use function bovigo\assert\assert;
+use PHPUnit\Framework\TestCase;
+use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
 /**
  * Tests for stubbles\*().
@@ -17,7 +16,7 @@ use function bovigo\assert\predicate\equals;
  * @since  3.1.0
  * @group  lang
  */
-class FunctionsTest extends \PHPUnit_Framework_TestCase
+class FunctionsTest extends TestCase
 {
 
     /**
@@ -26,7 +25,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function lastErrorMessageShouldBeNullByDefault()
     {
-        assert(lastErrorMessage(), equals(Result::of(null)));
+        assertThat(lastErrorMessage(), equals(Result::of(null)));
     }
 
     /**
@@ -42,7 +41,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
             $expected = 'file_get_contents(' . __DIR__ . '/doesNotExist.txt): failed to open stream: No such file or directory';
         }
 
-        assert(lastErrorMessage()->value(), equals($expected));
+        assertThat(lastErrorMessage()->value(), equals($expected));
     }
 
     /**
@@ -51,7 +50,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function typeOfOjectReturnsNameOfClass()
     {
-        assert(typeOf($this), equals(__CLASS__));
+        assertThat(typeOf($this), equals(__CLASS__));
     }
 
     /**
@@ -61,7 +60,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function typeOfResourceReturnsResourceWithResourceType()
     {
         $fp = fopen(__FILE__, 'r');
-        assert(typeOf($fp), equals('resource[stream]'));
+        assertThat(typeOf($fp), equals('resource[stream]'));
         fclose($fp);
     }
 
@@ -89,6 +88,6 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function typeOfOtherValuesReturnsNativeType($value, string $expectedType)
     {
-        assert(typeOf($value), equals($expectedType));
+        assertThat(typeOf($value), equals($expectedType));
     }
 }

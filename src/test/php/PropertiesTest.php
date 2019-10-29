@@ -5,14 +5,13 @@ declare(strict_types=1);
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  stubbles\values
  */
 namespace stubbles\values;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
-    assert,
+    assertThat,
     assertEmptyArray,
     assertFalse,
     assertNull,
@@ -29,7 +28,7 @@ use function bovigo\assert\{
  * @group  values
  * @group  properties
  */
-class PropertiesTest extends \PHPUnit_Framework_TestCase
+class PropertiesTest extends TestCase
 {
     /**
      * instance to test
@@ -38,10 +37,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     protected $properties;
 
-    /**
-     * set up test environment
-     */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->properties = new Properties(
                 ['scalar' => ['stringValue' => 'This is a string',
@@ -147,7 +143,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function sectionWithoutDefaultValueReturnsSectionValues(string $name, $value)
     {
-        assert(
+        assertThat(
                 $this->properties->section($name),
                 equals($value)
         );
@@ -167,7 +163,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function sectionWithDefaultValueReturnsSectionValues(string $name, $value)
     {
-        assert(
+        assertThat(
                 $this->properties->section($name, ['foo' => 'bar']),
                 equals($value)
         );
@@ -178,7 +174,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function sectionWithDefaultValueReturnsDefaultValueIfSectionDoesNotExist()
     {
-        assert(
+        assertThat(
                 $this->properties->section('doesNotExist', ['foo' => 'bar']),
                 equals(['foo' => 'bar'])
         );
@@ -190,7 +186,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function keysForSectionReturnsListOfKeysForGivenSection(string $name, $value)
     {
-        assert(
+        assertThat(
                 $this->properties->keysForSection($name, ['foo', 'bar']),
                 equals(array_keys($value))
         );
@@ -201,7 +197,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function keysForSectionReturnsDefaultListOfSectionDoesNotExist()
     {
-        assert(
+        assertThat(
                 $this->properties->keysForSection('doesNotExist', ['foo', 'bar']),
                 equals(['foo', 'bar'])
         );
@@ -268,7 +264,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function valueWithoutDefaultValueReturnsValueIfExists(string $section, string $key, $expectedValue)
     {
-        assert($this->properties->value($section, $key), equals($expectedValue));
+        assertThat($this->properties->value($section, $key), equals($expectedValue));
     }
 
     /**
@@ -293,7 +289,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function valueWithDefaultValueReturnsValueIfExists(string $section, string $key, $expectedValue)
     {
-        assert(
+        assertThat(
                 $this->properties->value($section, $key, 'otherValue'),
                 equals($expectedValue)
         );
@@ -304,7 +300,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function valueWithDefaultValueReturnsDefaultValueIfValueDoesNotExist()
     {
-        assert(
+        assertThat(
                 $this->properties->value('empty', 'any', 'otherValue'),
                 equals('otherValue')
         );
@@ -315,7 +311,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function valueWithDefaultValueReturnsDefaultValueIfSectionDoesNotExist()
     {
-        assert(
+        assertThat(
                 $this->properties->value('doesNotExist', 'any', 'otherValue'),
                 equals('otherValue')
         );
@@ -329,7 +325,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     {
         foreach ($this->properties as $section => $sectionData) {
             assertTrue($this->properties->containSection($section));
-            assert($this->properties->section($section), equals($sectionData));
+            assertThat($this->properties->section($section), equals($sectionData));
         }
     }
 
@@ -342,17 +338,17 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     {
         $firstIterationEntries = 0;
         foreach ($this->properties as $section => $sectionData) {
-            assert($this->properties->section($section), equals($sectionData));
+            assertThat($this->properties->section($section), equals($sectionData));
             $firstIterationEntries++;
         }
 
         $secondIterationEntries = 0;
         foreach ($this->properties as $section => $sectionData) {
-            assert($this->properties->section($section), equals($sectionData));
+            assertThat($this->properties->section($section), equals($sectionData));
             $secondIterationEntries++;
         }
 
-        assert($secondIterationEntries, equals($firstIterationEntries));
+        assertThat($secondIterationEntries, equals($firstIterationEntries));
     }
 
     /**
@@ -391,7 +387,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                  ->at($root)
                  ->withContent("[foo]\nbar=baz");
         $properties = Properties::fromFile(vfsStream::url('config/test.ini'));
-        assert($properties->section('foo'), equals(['bar' => 'baz']));
+        assertThat($properties->section('foo'), equals(['bar' => 'baz']));
     }
 
     /**
@@ -422,7 +418,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
     public function validIniStringReturnsInstance()
     {
         $properties = Properties::fromString("[foo]\nbar=baz");
-        assert($properties->section('foo'), equals(['bar' => 'baz']));
+        assertThat($properties->section('foo'), equals(['bar' => 'baz']));
     }
 
     /**
@@ -434,7 +430,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $properties1 = new Properties(['foo' => ['bar' => 'baz']]);
         $properties2 = new Properties(['bar' => ['bar' => 'baz']]);
         $resultProperties = $properties1->merge($properties2);
-        assert(
+        assertThat(
                 $resultProperties,
                 isNotSameAs($properties1)->and(isNotSameAs($properties2))
         );
@@ -449,8 +445,8 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
         $properties1 = new Properties(['foo' => ['bar' => 'baz']]);
         $properties2 = new Properties(['bar' => ['bar' => 'baz']]);
         $resultProperties = $properties1->merge($properties2);
-        assert($resultProperties->section('foo'), equals(['bar' => 'baz']));
-        assert($resultProperties->section('bar'), equals(['bar' => 'baz']));
+        assertThat($resultProperties->section('foo'), equals(['bar' => 'baz']));
+        assertThat($resultProperties->section('bar'), equals(['bar' => 'baz']));
     }
 
     /**
@@ -465,8 +461,8 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
                        );
         $properties2 = new Properties(['bar' => ['bar' => 'baz']]);
         $resultProperties = $properties1->merge($properties2);
-        assert($resultProperties->section('foo'), equals(['bar' => 'baz']));
-        assert($resultProperties->section('bar'), equals(['bar' => 'baz']));
+        assertThat($resultProperties->section('foo'), equals(['bar' => 'baz']));
+        assertThat($resultProperties->section('bar'), equals(['bar' => 'baz']));
     }
 
     /**
@@ -476,7 +472,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function propertiesWithKeyPasswordBecomeInstancesOfSecret()
     {
-        assert(
+        assertThat(
                 (new Properties(['foo' => ['password' => 'baz']]))
                         ->value('foo', 'password'),
                 isInstanceOf(Secret::class)
@@ -490,7 +486,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function propertiesWhereKeyEndsWithPasswordBecomeInstancesOfSecret()
     {
-        assert(
+        assertThat(
                 (new Properties(['foo' => ['example.another.password' => 'baz']]))
                         ->value('foo', 'example.another.password'),
                 isInstanceOf(Secret::class)
@@ -504,7 +500,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function parseSecretValueReturnsSecretInstance()
     {
-        assert(
+        assertThat(
                 (new Properties(['foo' => ['password' => 'baz']]))
                         ->parseValue('foo', 'password'),
                 isInstanceOf(Secret::class)
@@ -581,7 +577,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function parseValueWithNonExistingKeyReturnsDefault()
     {
-        assert(
+        assertThat(
                 $this->properties->parseValue('empty', 'doesNotExist', 6100),
                 equals(6100)
         );
@@ -593,7 +589,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function parseValueFromNonExistingSectionReturnsDefault()
     {
-        assert(
+        assertThat(
                 $this->properties->parseValue('doesNotExist', 'rangeValue8', 6100),
                 equals(6100)
         );
@@ -651,7 +647,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
             string $key,
             string $type
     ) {
-        assert(
+        assertThat(
                 $this->properties->parse($section, $key)->$type(),
                 equals($expected)
         );
@@ -663,7 +659,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function parseNonExistingReturnsNullInstance()
     {
-        assert(
+        assertThat(
                 $this->properties->parse('empty', 'doesNotExist'),
                 equals(new Parse(null))
         );
@@ -675,7 +671,7 @@ class PropertiesTest extends \PHPUnit_Framework_TestCase
      */
     public function parseFromNonExistingSectionReturnsDefault()
     {
-        assert(
+        assertThat(
                 $this->properties->parse('doesNotExist', 'rangeValue8'),
                 equals(new Parse(null))
         );

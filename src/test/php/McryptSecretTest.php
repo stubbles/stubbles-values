@@ -12,8 +12,6 @@ declare(strict_types=1);
  * Copyright (c) 2001-2014, XP-Framework Team
  * All rights reserved.
  * https://github.com/xp-framework/xp-framework/blob/master/core/src/main/php/LICENCE
- *
- * @package  stubbles\values
  */
 namespace stubbles\values;
 require_once __DIR__ . '/SecretTest.php';
@@ -28,10 +26,7 @@ require_once __DIR__ . '/SecretTest.php';
  */
 class McryptSecretTest extends SecretTest
 {
-    /**
-     * set up test environment
-     */
-    public function setUp()
+    protected function setUp(): void
     {
         if (PHP_MAJOR_VERSION === 7 && PHP_MINOR_VERSION >= 1) {
             $this->markTestSkipped(

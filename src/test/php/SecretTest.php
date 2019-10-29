@@ -12,12 +12,11 @@ declare(strict_types=1);
  * Copyright (c) 2001-2014, XP-Framework Team
  * All rights reserved.
  * https://github.com/xp-framework/xp-framework/blob/master/core/src/main/php/LICENCE
- *
- * @package  stubbles\values
  */
 namespace stubbles\values;
+use PHPUnit\Framework\TestCase;
 use function bovigo\assert\{
-    assert,
+    assertThat,
     assertFalse,
     assertNull,
     assertTrue,
@@ -31,7 +30,7 @@ use function bovigo\assert\{
  *
  * @since  4.0.0
  */
-abstract class SecretTest extends \PHPUnit_Framework_TestCase
+abstract class SecretTest extends TestCase
 {
     /**
      * @test
@@ -62,7 +61,7 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
      */
     public function lengthOfNullStringIsZero()
     {
-        assert(Secret::forNull()->length(), equals(0));
+        assertThat(Secret::forNull()->length(), equals(0));
     }
 
     /**
@@ -110,7 +109,7 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
      */
     public function varExportNotRevealingPayload()
     {
-        assert(
+        assertThat(
                 var_export(Secret::create('payload'), true),
                 doesNotContain('payload')
         );
@@ -126,7 +125,7 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
         $output = ob_get_contents();
         ob_end_clean();
 
-        assert($output, doesNotContain('payload'));
+        assertThat($output, doesNotContain('payload'));
     }
 
     /**
@@ -140,14 +139,14 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
         $output = ob_get_contents();
         ob_end_clean();
 
-        assert($output, doesNotContain('length'));
+        assertThat($output, doesNotContain('length'));
     }
 
     /**
      * @test
      */
     public function stringCastNotRevealingPayload() {
-        assert(
+        assertThat(
                 (string) Secret::create('payload'),
                 doesNotContain('payload')
         );
@@ -158,7 +157,7 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
      */
     public function arrayCastNotRevealingPayload()
     {
-        assert(
+        assertThat(
                 var_export((array)Secret::create('payload'), true),
                 doesNotContain('payload')
         );
@@ -177,7 +176,7 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
      */
     public function unveilRevealsOriginalData()
     {
-        assert(Secret::create('payload')->unveil(), equals('payload'));
+        assertThat(Secret::create('payload')->unveil(), equals('payload'));
     }
 
     /**
@@ -185,7 +184,7 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
      */
     public function lengthReturnsStringLengthOfOriginalData()
     {
-        assert(Secret::create('payload')->length(), equals(7));
+        assertThat(Secret::create('payload')->length(), equals(7));
     }
 
     /**
@@ -201,7 +200,7 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
      */
     public function substringWithValidStartReturnsNewInstance()
     {
-        assert(
+        assertThat(
                 Secret::create('payload')->substring(3, 2)->unveil(),
                 equals('lo')
         );
@@ -224,7 +223,7 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
     public function bigData()
     {
         $data = str_repeat('*', 1024000);
-        assert(Secret::create($data)->unveil(), equals($data));
+        assertThat(Secret::create($data)->unveil(), equals($data));
     }
 
     /**
@@ -233,7 +232,7 @@ abstract class SecretTest extends \PHPUnit_Framework_TestCase
     public function createFromSecretReturnsInstance()
     {
         $secret = Secret::create('payload');
-        assert(Secret::create($secret), isSameAs($secret));
+        assertThat(Secret::create($secret), isSameAs($secret));
     }
 
     /**

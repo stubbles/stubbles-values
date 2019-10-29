@@ -5,12 +5,11 @@ declare(strict_types=1);
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  stubbles\values
  */
 namespace stubbles\values;
+use PHPUnit\Framework\TestCase;
 use function bovigo\assert\{
-    assert,
+    assertThat,
     assertFalse,
     assertTrue,
     expect,
@@ -25,14 +24,14 @@ use function bovigo\assert\{
  * @group  values
  * @group  value_checks
  */
-class ValueTest extends \PHPUnit_Framework_TestCase
+class ValueTest extends TestCase
 {
     /**
      * @test
      */
     public function valueOfNullIsAlwaysSame()
     {
-        assert(value(null), isSameAs(value(null)));
+        assertThat(value(null), isSameAs(value(null)));
     }
 
     /**
@@ -94,7 +93,7 @@ class ValueTest extends \PHPUnit_Framework_TestCase
      */
     public function valueReturnsValue()
     {
-        assert(value(303)->value(), equals(303));
+        assertThat(value(303)->value(), equals(303));
     }
 
     /**
