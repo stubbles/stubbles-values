@@ -127,13 +127,16 @@ class Secret
     private static function useOpenSslBacking()
     {
         if (!extension_loaded(self::BACKING_OPENSSL)) {
-            throw new \RuntimeException(
-                    'Can not use openssl backing, extension openssl not available'
-            );
+            throw new \RuntimeException('Can not use openssl backing, extension openssl not available');
         }
 
         $key = md5(uniqid());
-        $iv  = substr(md5(uniqid()), 0, openssl_cipher_iv_length('des'));
+        $cypherIvLength = openssl_cipher_iv_length('des');
+        if (false === $cypherIvLength) {
+          throw new \RuntimeException('Can not calculate cypher iv length using method "des"');
+        }
+
+        $iv  = substr(md5(uniqid()), 0, $cypherIvLength);
         self::$encrypt = function($value) use ($key, $iv) { return openssl_encrypt($value, 'DES', $key,  0, $iv); };
         self::$decrypt = function($value) use ($key, $iv) { return openssl_decrypt($value, 'DES', $key,  0, $iv); };
     }
@@ -278,9 +281,14 @@ class Secret
             return $this;
         }
 
+        $unveiled = $this->unveil();
+        if ($unveiled === null) {
+          return self::forNull();
+        }
+
         $substring = null === $length ?
-                substr($this->unveil(), $start)
-              : substr($this->unveil(), $start, $length);
+                substr($unveiled, $start)
+              : substr($unveiled, $start, $length);
         if (false === $substring) {
             throw new \InvalidArgumentException(
                     'Given start offset is out of range'

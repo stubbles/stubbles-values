@@ -66,31 +66,18 @@ class Rootpath
             );
         }
 
-        $this->rootpath = (null === $rootpath) ? ($this->detectRootPath()) : ($this->realpath($rootpath));
-    }
-
-    /**
-     * creates realpath from given path
-     *
-     * The native function is not directly used as it doesn't work with
-     * vfsStream URIs and would prevent mocking the root path in tests.
-     *
-     * @param   string  $path
-     * @return  string
-     */
-    private function realpath(string $path): string
-    {
-        if (substr($path, 0, 6) === 'vfs://') {
-            return $path;
+        // prevent errors when using vfsStream URIs in unit tests.
+        if (null !== $rootpath && substr($rootpath, 0, 6) === 'vfs://') {
+           $this->rootpath = $rootpath;
+        } else {
+          $this->rootpath = (null === $rootpath) ? ($this->detectRootPath()) : (realpath($rootpath));
         }
-
-        return realpath($path);
     }
 
     /**
      * casts given value to an instance of Rootpath
      *
-     * @param   string|\stubbles\values\Rootpath  $rootpath
+     * @param   string|\stubbles\values\Rootpath|null  $rootpath
      * @return  \stubbles\values\Rootpath
      */
     public static function castFrom($rootpath): self

@@ -263,7 +263,7 @@ class Value
     {
         if (!isset(self::$checks[$method]) && !function_exists($method)) {
             throw new \BadMethodCallException('Method ' . __CLASS__ . '::' . $method . '() does not exist.');
-        } elseif (!isset(self::$checks[$method]) && function_exists($method)) {
+        } elseif (!isset(self::$checks[$method]) && is_callable($method)) {
             return $method($this->value, ...$arguments);
         }
 

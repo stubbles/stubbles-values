@@ -36,7 +36,7 @@ class Properties implements \Iterator
     {
         foreach ($propertyData as $section => $values) {
             foreach (array_keys($values) as $key) {
-                if (substr($key, -8) === 'password') {
+                if (is_string($key) && substr($key, -8) === 'password') {
                     $propertyData[$section][$key] = Secret::create($values[$key]);
                 }
             }
@@ -150,7 +150,7 @@ class Properties implements \Iterator
      * @api
      * @param   string    $section  name of the section
      * @param   string[]  $default  value to return if section does not exist
-     * @return  string[]
+     * @return  array
      * @since   4.0.0
      */
     public function keysForSection(string $section, array $default = []): array

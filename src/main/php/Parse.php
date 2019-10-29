@@ -119,7 +119,7 @@ class Parse
      * recognition added via Parse::addRecognition()        => return type of the callable
      * all other                                            => string value as is
      *
-     * @param   string   $string     the value to convert
+     * @param   ?mixed   $string  the value to convert
      * @return  mixed
      */
     public static function toType($string)
@@ -218,7 +218,9 @@ class Parse
 
 
         if (strstr($withoutParenthesis, $separator) !== false) {
-            return explode($separator, $withoutParenthesis);
+            // explode() may return false when $separator is empty
+            $res = explode($separator, $withoutParenthesis);
+            return false === $res ? null : $res;
         }
 
         return [$withoutParenthesis];
@@ -265,12 +267,15 @@ class Parse
         }
 
         $map = [];
-        foreach (self::toList($string) as $keyValue) {
-            if (strstr($keyValue, ':') !== false) {
-                list($key, $value) = explode(':', $keyValue, 2);
-                $map[$key]         = $value;
-            } else {
-                $map[] = $keyValue;
+        $list = self::toList($string);
+        if (null !== $list) {
+            foreach ($list as $keyValue) {
+                if (strstr($keyValue, ':') !== false) {
+                    list($key, $value) = explode(':', $keyValue, 2);
+                    $map[$key]         = $value;
+                } else {
+                    $map[] = $keyValue;
+                }
             }
         }
 
@@ -372,7 +377,7 @@ class Parse
     /**
      * constructor
      *
-     * @param  string  $value
+     * @param  ?scalar  $value
      * @since  5.0.0
      */
     public function __construct($value)

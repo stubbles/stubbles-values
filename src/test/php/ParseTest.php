@@ -49,7 +49,7 @@ class ParseTest extends TestCase
      * @test
      * @dataProvider  stringToIntConversions
      */
-    public function toIntReturnsValueCastedToInteger($expectedResult, $stringToParse)
+    public function toIntReturnsValueCastedToInteger($expectedResult, ?string $stringToParse)
     {
         assertThat(Parse::toInt($stringToParse), equals($expectedResult));
     }
@@ -61,7 +61,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToIntConversions
      * @since  5.0.0
      */
-    public function asIntReturnsValueCastedToInteger($expectedResult, $stringToParse)
+    public function asIntReturnsValueCastedToInteger($expectedResult, ?string $stringToParse)
     {
         $parse = new Parse($stringToParse);
         assertThat($parse->asInt(), equals($expectedResult));
@@ -74,7 +74,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToIntConversions
      * @since  5.0.0
      */
-    public function asIntWithDefaultReturnsValueCastedToInteger($expectedResult, $stringToParse)
+    public function asIntWithDefaultReturnsValueCastedToInteger($expectedResult, ?string $stringToParse)
     {
         if (null === $stringToParse) {
             $expectedResult = 'foo';
@@ -115,7 +115,7 @@ class ParseTest extends TestCase
      * @test
      * @dataProvider  stringToFloatConversions
      */
-    public function toFloatReturnsValueCastedToFloat($expectedResult, $stringToParse)
+    public function toFloatReturnsValueCastedToFloat($expectedResult, ?string $stringToParse)
     {
         assertThat(Parse::toFloat($stringToParse), equals($expectedResult));
     }
@@ -127,7 +127,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToFloatConversions
      * @since  5.0.0
      */
-    public function asFloatReturnsValueCastedToFloat($expectedResult, $stringToParse)
+    public function asFloatReturnsValueCastedToFloat($expectedResult, ?string $stringToParse)
     {
         $parse = new Parse($stringToParse);
         assertThat($parse->asFloat(), equals($expectedResult));
@@ -140,7 +140,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToFloatConversions
      * @since  5.0.0
      */
-    public function asFloatWithDefaultReturnsValueCastedToFloat($expectedResult, $stringToParse)
+    public function asFloatWithDefaultReturnsValueCastedToFloat($expectedResult, ?string $stringToParse)
     {
         if (null === $stringToParse) {
             $expectedResult = 'foo';
@@ -185,7 +185,7 @@ class ParseTest extends TestCase
      * @test
      * @dataProvider  stringToBoolConversions
      */
-    public function toBoolReturnsValueCastedToBool($expectedResult, $stringToParse)
+    public function toBoolReturnsValueCastedToBool($expectedResult, ?string $stringToParse)
     {
         assertThat(Parse::toBool($stringToParse), equals($expectedResult));
     }
@@ -197,7 +197,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToBoolConversions
      * @since  5.0.0
      */
-    public function asBoolReturnsValueCastedToBool($expectedResult, $stringToParse)
+    public function asBoolReturnsValueCastedToBool($expectedResult, ?string $stringToParse)
     {
         $parse = new Parse($stringToParse);
         assertThat($parse->asBool(), equals($expectedResult));
@@ -210,7 +210,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToBoolConversions
      * @since  5.0.0
      */
-    public function asBoolWithDefaultReturnsValueCastedToBool($expectedResult, $stringToParse)
+    public function asBoolWithDefaultReturnsValueCastedToBool($expectedResult, ?string $stringToParse)
     {
         if (null === $stringToParse) {
             $expectedResult = 'foo';
@@ -337,7 +337,7 @@ class ParseTest extends TestCase
      * @test
      * @dataProvider  stringToMapConversions
      */
-    public function toMapReturnsValueCastedToMap($expectedResult, $stringToParse)
+    public function toMapReturnsValueCastedToMap($expectedResult, ?string $stringToParse)
     {
         assertThat(Parse::toMap($stringToParse), equals($expectedResult));
     }
@@ -349,7 +349,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToMapConversions
      * @since  5.0.0
      */
-    public function asMapReturnsValueCastedToMap($expectedResult, $stringToParse)
+    public function asMapReturnsValueCastedToMap($expectedResult, ?string $stringToParse)
     {
         $parse = new Parse($stringToParse);
         assertThat($parse->asMap(), equals($expectedResult));
@@ -362,7 +362,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToMapConversions
      * @since  5.0.0
      */
-    public function asMapWithDefaultReturnsValueCastedToMap($expectedResult, $stringToParse)
+    public function asMapWithDefaultReturnsValueCastedToMap($expectedResult, ?string $stringToParse)
     {
         if (null === $stringToParse) {
             $expectedResult = 'foo';
@@ -402,7 +402,7 @@ class ParseTest extends TestCase
      * @test
      * @dataProvider  stringToRangeConversions
      */
-    public function toRangeReturnsValueCastedToRange($expectedResult, $stringToParse)
+    public function toRangeReturnsValueCastedToRange($expectedResult, ?string $stringToParse)
     {
         assertThat(Parse::toRange($stringToParse), equals($expectedResult));
     }
@@ -414,7 +414,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToRangeConversions
      * @since  5.0.0
      */
-    public function asRangeReturnsValueCastedToRange($expectedResult, $stringToParse)
+    public function asRangeReturnsValueCastedToRange($expectedResult, ?string $stringToParse)
     {
         $parse = new Parse($stringToParse);
         assertThat($parse->asRange(), equals($expectedResult));
@@ -427,7 +427,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToRangeConversions
      * @since  5.0.0
      */
-    public function asRangeWithDefaultReturnsValueCastedToRange($expectedResult, $stringToParse)
+    public function asRangeWithDefaultReturnsValueCastedToRange($expectedResult, ?string $stringToParse)
     {
         if (null === $stringToParse) {
             $expectedResult = 'foo';
@@ -461,7 +461,7 @@ class ParseTest extends TestCase
      * @test
      * @dataProvider  stringToClassConversions
      */
-    public function toClassReturnsValueCastedToClassInstance($expectedResult, $stringToParse)
+    public function toClassReturnsValueCastedToClassInstance($expectedResult, ?string $stringToParse)
     {
         assertThat(Parse::toClass($stringToParse), equals($expectedResult));
     }
@@ -473,7 +473,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToClassConversions
      * @since  5.0.0
      */
-    public function asClassReturnsValueCastedToClassInstance($expectedResult, $stringToParse)
+    public function asClassReturnsValueCastedToClassInstance($expectedResult, ?string $stringToParse)
     {
         $parse = new Parse($stringToParse);
         assertThat($parse->asClass(), equals($expectedResult));
@@ -486,7 +486,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToClassConversions
      * @since  5.0.0
      */
-    public function asClassWithDefaultReturnsValueCastedToClassInstance($expectedResult, $stringToParse)
+    public function asClassWithDefaultReturnsValueCastedToClassInstance($expectedResult, ?string $stringToParse)
     {
         if (null === $stringToParse) {
             $expectedResult = 'foo';
