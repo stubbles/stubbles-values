@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.0.1 (2019-10-29)
+
+* fixed `stubbles\values\Parse::toBool()`  now returns `false` when given value is `null` according to description
+
 ## 9.0.0 (2019-10-29)
 
 * removed `stubbles\values\Secret::BACKING_MCRYPT`, deprecated since 8.0.0

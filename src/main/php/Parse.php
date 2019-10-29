@@ -181,10 +181,10 @@ class Parse
      * @param   string  $string
      * @return  bool
      */
-    public static function toBool(?string $string): ?bool
+    public static function toBool(?string $string): bool
     {
         if (null === $string) {
-            return null;
+            return false;
         }
 
         return in_array(strtolower($string), self::$booleanTrue);

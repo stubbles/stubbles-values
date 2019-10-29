@@ -174,7 +174,7 @@ class ParseTest extends TestCase
             [false, 'off'],
             [false, 'other'],
             [false, ''],
-            [null, null],
+            [false, null],
 
         ];
     }
@@ -221,15 +221,6 @@ class ParseTest extends TestCase
                 $parse->defaultingTo('foo')->asBool(),
                 equals($expectedResult)
         );
-    }
-
-    /**
-     * @test
-     * @since  5.0.0
-     */
-    public function toBoolOnNullReturnsNull()
-    {
-        assertNull(Parse::toBool(null));
     }
 
     /**
