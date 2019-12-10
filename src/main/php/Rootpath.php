@@ -149,6 +149,7 @@ class Rootpath
     {
         $vendorPathes = [];
         foreach (array_merge($this->loadPsr0Pathes(), $this->loadPsr4Pathes()) as $pathes) {
+            /** @var  string|string[]  $pathes */
             if (is_array($pathes)) {
                 $vendorPathes = array_merge($vendorPathes, $pathes);
             } else {
