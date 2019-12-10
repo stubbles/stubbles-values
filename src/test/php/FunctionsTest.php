@@ -18,12 +18,11 @@ use function bovigo\assert\predicate\equals;
  */
 class FunctionsTest extends TestCase
 {
-
     /**
      * @test
      * @since  3.4.2
      */
-    public function lastErrorMessageShouldBeNullByDefault()
+    public function lastErrorMessageShouldBeNullByDefault(): void
     {
         assertThat(lastErrorMessage(), equals(Result::of(null)));
     }
@@ -32,7 +31,7 @@ class FunctionsTest extends TestCase
      * @test
      * @since  3.4.2
      */
-    public function lastErrorMessageShouldContainLastError()
+    public function lastErrorMessageShouldContainLastError(): void
     {
         @file_get_contents(__DIR__ . '/doesNotExist.txt');
         if (defined('HHVM_VERSION')) {
@@ -48,7 +47,7 @@ class FunctionsTest extends TestCase
      * @test
      * @since  7.0.0
      */
-    public function typeOfOjectReturnsNameOfClass()
+    public function typeOfOjectReturnsNameOfClass(): void
     {
         assertThat(typeOf($this), equals(__CLASS__));
     }
@@ -57,7 +56,7 @@ class FunctionsTest extends TestCase
      * @test
      * @since  7.0.0
      */
-    public function typeOfResourceReturnsResourceWithResourceType()
+    public function typeOfResourceReturnsResourceWithResourceType(): void
     {
         $fp = fopen(__FILE__, 'r');
         assertThat(typeOf($fp), equals('resource[stream]'));
@@ -65,7 +64,7 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function valueTypes(): array
     {
@@ -86,7 +85,7 @@ class FunctionsTest extends TestCase
      * @dataProvider  valueTypes
      * @since  7.0.0
      */
-    public function typeOfOtherValuesReturnsNativeType($value, string $expectedType)
+    public function typeOfOtherValuesReturnsNativeType($value, string $expectedType): void
     {
         assertThat(typeOf($value), equals($expectedType));
     }

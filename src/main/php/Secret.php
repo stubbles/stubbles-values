@@ -46,32 +46,32 @@ class Secret
     /**
      * actual storage of encrypted strings
      *
-     * @type  array
+     * @var  array<string,array<string,mixed>>
      */
     private static $store   = [];
     /**
      * callable to encrypt data with before storing it
      *
-     * @type  \Closure
+     * @var  \Closure
      */
     private static $encrypt;
     /**
      * callable to decrypt data with before returning it from store
      *
-     * @type  \Closure
+     * @var  \Closure
      */
     private static $decrypt;
     /**
      * id of instance
      *
-     * @type  string
+     * @var  string
      */
     private $id;
 
     /**
      * static initializer
      */
-    static function __static()
+    static function __static(): void
     {
         if (extension_loaded(self::BACKING_OPENSSL)) {
             self::useOpenSslBacking();
@@ -87,7 +87,7 @@ class Secret
      * @throws  \InvalidArgumentException  when given backing is unknown
      * @throws  \LogicException  when trying to change the backing while there are still secure strings in the store
      */
-    public static function switchBacking(string $type)
+    public static function switchBacking(string $type): void
     {
         if (count(self::$store) > 0) {
             throw new \LogicException('Can not switch backing while secured strings are stored');
@@ -115,8 +115,6 @@ class Secret
             default:
                 throw new \InvalidArgumentException('Unknown backing ' . $type);
         }
-
-        return true;
     }
 
     /**
@@ -124,7 +122,7 @@ class Secret
      *
      * @throws  \RuntimeException  when openssl extension not available
      */
-    private static function useOpenSslBacking()
+    private static function useOpenSslBacking(): void
     {
         if (!extension_loaded(self::BACKING_OPENSSL)) {
             throw new \RuntimeException('Can not use openssl backing, extension openssl not available');
@@ -147,7 +145,7 @@ class Secret
      * Of course this still allows to reveal the secured string, but at least
      * it allows to use Secret transparantly.
      */
-    private static function usePlaintextBacking()
+    private static function usePlaintextBacking(): void
     {
         self::$encrypt = function($value) { return base64_encode($value); };
         self::$decrypt = function($value) { return base64_decode($value); };
@@ -156,7 +154,7 @@ class Secret
     /**
      * constructor
      */
-    private function __construct()
+    private final function __construct()
     {
         $this->id = uniqid('', true);
     }

@@ -28,7 +28,7 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function stringToIntConversions(): array
     {
@@ -49,7 +49,7 @@ class ParseTest extends TestCase
      * @test
      * @dataProvider  stringToIntConversions
      */
-    public function toIntReturnsValueCastedToInteger($expectedResult, ?string $stringToParse)
+    public function toIntReturnsValueCastedToInteger($expectedResult, ?string $stringToParse): void
     {
         assertThat(Parse::toInt($stringToParse), equals($expectedResult));
     }
@@ -61,7 +61,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToIntConversions
      * @since  5.0.0
      */
-    public function asIntReturnsValueCastedToInteger($expectedResult, ?string $stringToParse)
+    public function asIntReturnsValueCastedToInteger($expectedResult, ?string $stringToParse): void
     {
         $parse = new Parse($stringToParse);
         assertThat($parse->asInt(), equals($expectedResult));
@@ -74,7 +74,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToIntConversions
      * @since  5.0.0
      */
-    public function asIntWithDefaultReturnsValueCastedToInteger($expectedResult, ?string $stringToParse)
+    public function asIntWithDefaultReturnsValueCastedToInteger($expectedResult, ?string $stringToParse): void
     {
         if (null === $stringToParse) {
             $expectedResult = 'foo';
@@ -88,13 +88,13 @@ class ParseTest extends TestCase
      * @test
      * @since  5.0.0
      */
-    public function toIntOnNullReturnsNull()
+    public function toIntOnNullReturnsNull(): void
     {
         assertNull(Parse::toInt(null));
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function stringToFloatConversions(): array
     {
@@ -115,7 +115,7 @@ class ParseTest extends TestCase
      * @test
      * @dataProvider  stringToFloatConversions
      */
-    public function toFloatReturnsValueCastedToFloat($expectedResult, ?string $stringToParse)
+    public function toFloatReturnsValueCastedToFloat($expectedResult, ?string $stringToParse): void
     {
         assertThat(Parse::toFloat($stringToParse), equals($expectedResult));
     }
@@ -127,7 +127,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToFloatConversions
      * @since  5.0.0
      */
-    public function asFloatReturnsValueCastedToFloat($expectedResult, ?string $stringToParse)
+    public function asFloatReturnsValueCastedToFloat($expectedResult, ?string $stringToParse): void
     {
         $parse = new Parse($stringToParse);
         assertThat($parse->asFloat(), equals($expectedResult));
@@ -140,7 +140,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToFloatConversions
      * @since  5.0.0
      */
-    public function asFloatWithDefaultReturnsValueCastedToFloat($expectedResult, ?string $stringToParse)
+    public function asFloatWithDefaultReturnsValueCastedToFloat($expectedResult, ?string $stringToParse): void
     {
         if (null === $stringToParse) {
             $expectedResult = 'foo';
@@ -154,13 +154,13 @@ class ParseTest extends TestCase
      * @test
      * @since  5.0.0
      */
-    public function toFloatOnNullReturnsNull()
+    public function toFloatOnNullReturnsNull(): void
     {
         assertNull(Parse::toFloat(null));
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function stringToBoolConversions(): array
     {
@@ -185,7 +185,7 @@ class ParseTest extends TestCase
      * @test
      * @dataProvider  stringToBoolConversions
      */
-    public function toBoolReturnsValueCastedToBool($expectedResult, ?string $stringToParse)
+    public function toBoolReturnsValueCastedToBool($expectedResult, ?string $stringToParse): void
     {
         assertThat(Parse::toBool($stringToParse), equals($expectedResult));
     }
@@ -197,7 +197,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToBoolConversions
      * @since  5.0.0
      */
-    public function asBoolReturnsValueCastedToBool($expectedResult, ?string $stringToParse)
+    public function asBoolReturnsValueCastedToBool($expectedResult, ?string $stringToParse): void
     {
         $parse = new Parse($stringToParse);
         assertThat($parse->asBool(), equals($expectedResult));
@@ -210,7 +210,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToBoolConversions
      * @since  5.0.0
      */
-    public function asBoolWithDefaultReturnsValueCastedToBool($expectedResult, ?string $stringToParse)
+    public function asBoolWithDefaultReturnsValueCastedToBool($expectedResult, ?string $stringToParse): void
     {
         if (null === $stringToParse) {
             $expectedResult = 'foo';
@@ -224,7 +224,7 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function stringToListConversions(): array
     {
@@ -251,41 +251,50 @@ class ParseTest extends TestCase
     }
 
     /**
+     * @param  mixed   $expectedResult
+     * @param  string  $stringToParse
+     * @param  string  $separator
      * @test
      * @dataProvider  stringToListConversions
      */
     public function toListReturnsValueCastedToList(
             $expectedResult,
-            $stringToParse,
+            ?string $stringToParse,
             string $separator
-    ) {
+    ): void {
         assertThat(Parse::toList($stringToParse, $separator), equals($expectedResult));
     }
 
     /**
+     * @param  mixed   $expectedResult
+     * @param  string  $stringToParse
+     * @param  string  $separator
      * @test
      * @dataProvider  stringToListConversions
      * @since  5.0.0
      */
     public function asListReturnsValueCastedToList(
             $expectedResult,
-            $stringToParse,
+            ?string $stringToParse,
             string $separator
-    ) {
+    ): void {
         $parse = new Parse($stringToParse);
         assertThat($parse->asList($separator), equals($expectedResult));
     }
 
     /**
+     * @param  mixed   $expectedResult
+     * @param  string  $stringToParse
+     * @param  string  $separator
      * @test
      * @dataProvider  stringToListConversions
      * @since  5.0.0
      */
     public function asListWithDefaultReturnsValueCastedToList(
             $expectedResult,
-            $stringToParse,
+            ?string $stringToParse,
             string $separator
-    ) {
+    ): void {
         if (null === $stringToParse) {
             $expectedResult = 'foo';
         }
@@ -298,7 +307,7 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function stringToMapConversions(): array
     {
@@ -323,37 +332,37 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @param  array   $expectedResult
-     * @param  string   $stringToParse
+     * @param  array<mixed>  $expectedResult
+     * @param  string        $stringToParse
      * @test
      * @dataProvider  stringToMapConversions
      */
-    public function toMapReturnsValueCastedToMap($expectedResult, ?string $stringToParse)
+    public function toMapReturnsValueCastedToMap($expectedResult, ?string $stringToParse): void
     {
         assertThat(Parse::toMap($stringToParse), equals($expectedResult));
     }
 
     /**
-     * @param  array   $expectedResult
-     * @param  string   $stringToParse
+     * @param  array<mixed>  $expectedResult
+     * @param  string        $stringToParse
      * @test
      * @dataProvider  stringToMapConversions
      * @since  5.0.0
      */
-    public function asMapReturnsValueCastedToMap($expectedResult, ?string $stringToParse)
+    public function asMapReturnsValueCastedToMap($expectedResult, ?string $stringToParse): void
     {
         $parse = new Parse($stringToParse);
         assertThat($parse->asMap(), equals($expectedResult));
     }
 
     /**
-     * @param  array   $expectedResult
-     * @param  string   $stringToParse
+     * @param  array<mixed>  $expectedResult
+     * @param  string        $stringToParse
      * @test
      * @dataProvider  stringToMapConversions
      * @since  5.0.0
      */
-    public function asMapWithDefaultReturnsValueCastedToMap($expectedResult, ?string $stringToParse)
+    public function asMapWithDefaultReturnsValueCastedToMap($expectedResult, ?string $stringToParse): void
     {
         if (null === $stringToParse) {
             $expectedResult = 'foo';
@@ -367,7 +376,7 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function stringToRangeConversions(): array
     {
@@ -393,7 +402,7 @@ class ParseTest extends TestCase
      * @test
      * @dataProvider  stringToRangeConversions
      */
-    public function toRangeReturnsValueCastedToRange($expectedResult, ?string $stringToParse)
+    public function toRangeReturnsValueCastedToRange($expectedResult, ?string $stringToParse): void
     {
         assertThat(Parse::toRange($stringToParse), equals($expectedResult));
     }
@@ -405,7 +414,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToRangeConversions
      * @since  5.0.0
      */
-    public function asRangeReturnsValueCastedToRange($expectedResult, ?string $stringToParse)
+    public function asRangeReturnsValueCastedToRange($expectedResult, ?string $stringToParse): void
     {
         $parse = new Parse($stringToParse);
         assertThat($parse->asRange(), equals($expectedResult));
@@ -418,7 +427,7 @@ class ParseTest extends TestCase
      * @dataProvider  stringToRangeConversions
      * @since  5.0.0
      */
-    public function asRangeWithDefaultReturnsValueCastedToRange($expectedResult, ?string $stringToParse)
+    public function asRangeWithDefaultReturnsValueCastedToRange($expectedResult, ?string $stringToParse): void
     {
         if (null === $stringToParse) {
             $expectedResult = 'foo';
@@ -432,7 +441,7 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function stringToClassConversions(): array
     {
@@ -447,37 +456,37 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @param  \ReflectionClass  $expectedResult
+     * @param  \ReflectionClass<object>  $expectedResult
      * @param  string            $stringToParse
      * @test
      * @dataProvider  stringToClassConversions
      */
-    public function toClassReturnsValueCastedToClassInstance($expectedResult, ?string $stringToParse)
+    public function toClassReturnsValueCastedToClassInstance(?\ReflectionClass $expectedResult, ?string $stringToParse): void
     {
         assertThat(Parse::toClass($stringToParse), equals($expectedResult));
     }
 
     /**
-     * @param  \ReflectionClass  $expectedResult
+     * @param  \ReflectionClass<object>  $expectedResult
      * @param  string            $stringToParse
      * @test
      * @dataProvider  stringToClassConversions
      * @since  5.0.0
      */
-    public function asClassReturnsValueCastedToClassInstance($expectedResult, ?string $stringToParse)
+    public function asClassReturnsValueCastedToClassInstance(?\ReflectionClass $expectedResult, ?string $stringToParse): void
     {
         $parse = new Parse($stringToParse);
         assertThat($parse->asClass(), equals($expectedResult));
     }
 
     /**
-     * @param  \ReflectionClass  $expectedResult
+     * @param  \ReflectionClass<object>  $expectedResult
      * @param  string            $stringToParse
      * @test
      * @dataProvider  stringToClassConversions
      * @since  5.0.0
      */
-    public function asClassWithDefaultReturnsValueCastedToClassInstance($expectedResult, ?string $stringToParse)
+    public function asClassWithDefaultReturnsValueCastedToClassInstance(?\ReflectionClass $expectedResult, ?string $stringToParse): void
     {
         if (null === $stringToParse) {
             $expectedResult = 'foo';
@@ -490,45 +499,43 @@ class ParseTest extends TestCase
     /**
      * @test
      */
-    public function toClassWithNonExistingClassThrowsReflectionException()
+    public function toClassWithNonExistingClassThrowsReflectionException(): void
     {
         expect(function() {
-                Parse::toClass('does\not\Exist.class');
+            Parse::toClass('does\not\Exist.class');
         })
-        ->throws(\ReflectionException::class);
+            ->throws(\ReflectionException::class);
     }
 
     /**
      * @test
      * @since  5.0.0
      */
-    public function asClassWithNonExistingClassThrowsReflectionException()
+    public function asClassWithNonExistingClassThrowsReflectionException(): void
     {
         $parse = new Parse('does\not\Exist.class');
-        expect(function() use ($parse) {
-                $parse->asClass();
-        })
-        ->throws(\ReflectionException::class);
+        expect(function() use ($parse) { $parse->asClass(); })
+            ->throws(\ReflectionException::class);
     }
 
     /**
      * @test
      * @since  5.0.0
      */
-    public function asClassWithNonExistingClassAndDefaultThrowsReflectionException()
+    public function asClassWithNonExistingClassAndDefaultThrowsReflectionException(): void
     {
         $parse = new Parse('does\not\Exist.class');
         expect(function() use ($parse) {
-                $parse->defaultingTo(__CLASS__ . '.class')->asClass();
+            $parse->defaultingTo(__CLASS__ . '.class')->asClass();
         })
-        ->throws(\ReflectionException::class);
+            ->throws(\ReflectionException::class);
     }
 
     /**
      * @test
      * @since  5.3.0
      */
-    public function toClassnameReturnsNullForNull()
+    public function toClassnameReturnsNullForNull(): void
     {
         assertNull(Parse::toClassname(null));
     }
@@ -537,7 +544,7 @@ class ParseTest extends TestCase
      * @test
      * @since  5.3.0
      */
-    public function toClassnameReturnsNullForEmptyString()
+    public function toClassnameReturnsNullForEmptyString(): void
     {
         assertNull(Parse::toClassname(''));
     }
@@ -546,7 +553,7 @@ class ParseTest extends TestCase
      * @test
      * @since  5.3.0
      */
-    public function toClassnameReturnsNullForNonExistingClass()
+    public function toClassnameReturnsNullForNonExistingClass(): void
     {
         assertNull(Parse::toClassname('does\not\Exist::class'));
     }
@@ -555,7 +562,7 @@ class ParseTest extends TestCase
      * @test
      * @since  5.3.0
      */
-    public function toClassnameReturnsClassnameOfExistingClass()
+    public function toClassnameReturnsClassnameOfExistingClass(): void
     {
         assertThat(
                 Parse::toClassname(__CLASS__ . '::class'),
@@ -567,7 +574,7 @@ class ParseTest extends TestCase
      * @test
      * @since  5.3.0
      */
-    public function asClassnameReturnsNullForNull()
+    public function asClassnameReturnsNullForNull(): void
     {
         $parse = new Parse(null);
         assertNull($parse->asClassname());
@@ -577,7 +584,7 @@ class ParseTest extends TestCase
      * @test
      * @since  5.3.0
      */
-    public function asClassnameReturnsNullForEmptyString()
+    public function asClassnameReturnsNullForEmptyString(): void
     {
         $parse = new Parse('');
         assertNull($parse->asClassname());
@@ -587,7 +594,7 @@ class ParseTest extends TestCase
      * @test
      * @since  5.3.0
      */
-    public function asClassnameReturnsNullForNonExistingClass()
+    public function asClassnameReturnsNullForNonExistingClass(): void
     {
         $parse = new Parse('does\not\Exist::class');
         assertNull($parse->asClassname());
@@ -597,14 +604,14 @@ class ParseTest extends TestCase
      * @test
      * @since  5.3.0
      */
-    public function asClassnameReturnsClassnameOfExistingClass()
+    public function asClassnameReturnsClassnameOfExistingClass(): void
     {
         $parse = new Parse(__CLASS__ . '::class');
         assertThat($parse->asClassname(), equals(__CLASS__));
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function stringToTypeConversions(): array
     {
@@ -635,10 +642,12 @@ class ParseTest extends TestCase
     }
 
     /**
+     * @param  mixed   $expectedResult
+     * @param  string  $stringToParse
      * @test
      * @dataProvider  stringToTypeConversions
      */
-    public function toTypeReturnsValueCastedToRecognizedType($expectedResult, ?string $stringToParse)
+    public function toTypeReturnsValueCastedToRecognizedType($expectedResult, ?string $stringToParse): void
     {
         assertThat(Parse::toType($stringToParse), equals($expectedResult));
     }
@@ -646,7 +655,7 @@ class ParseTest extends TestCase
     /**
      * @test
      */
-    public function userDefinedRecognitionWithSuccessReturnsValueFromUserDefinedConversion()
+    public function userDefinedRecognitionWithSuccessReturnsValueFromUserDefinedConversion(): void
     {
         Parse::addRecognition(function($string) { if ('Binford 6100' === $string) { return 'More power!'; } }, 'binford');
         assertThat(Parse::toType('Binford 6100'), equals('More power!'));
@@ -655,7 +664,7 @@ class ParseTest extends TestCase
     /**
      * @test
      */
-    public function userDefinedRecognitionWithoutSuccessReturnsValueAsString()
+    public function userDefinedRecognitionWithoutSuccessReturnsValueAsString(): void
     {
         Parse::addRecognition(function($string) { if ('Binford 6100' === $string) { return 'More power!'; } }, 'binford');
         assertThat(Parse::toType('Binford 610'), equals('Binford 610'));
@@ -664,14 +673,14 @@ class ParseTest extends TestCase
     /**
      * @test
      */
-    public function canReplaceExistingRecognition()
+    public function canReplaceExistingRecognition(): void
     {
         Parse::addRecognition(function($string) { if ('Binford 6100' === $string) { return true; } }, 'booleanTrue');
         assertTrue(Parse::toType('Binford 6100'));
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function methods(): array
     {
@@ -695,7 +704,7 @@ class ParseTest extends TestCase
      * @dataProvider  methods
      * @since  5.0.0
      */
-    public function parseNullReturnsNull($expected, string $method)
+    public function parseNullReturnsNull($expected, string $method): void
     {
         $parse = new Parse(null);
         assertThat($parse->$method(), equals($expected));
@@ -709,7 +718,7 @@ class ParseTest extends TestCase
      * @dataProvider  methods
      * @since  5.0.0
      */
-    public function parseNullWithDefaultReturnsDefault($expected, string $method)
+    public function parseNullWithDefaultReturnsDefault($expected, string $method): void
     {
         $parse = new Parse(null);
         assertThat($parse->defaultingTo('foo')->$method(), equals('foo'));

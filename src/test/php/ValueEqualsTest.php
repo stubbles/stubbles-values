@@ -23,7 +23,7 @@ class ValueEqualsTest extends TestCase
     /**
      * @test
      */
-    public function constructionWithObjectThrowsIllegalArgumentException()
+    public function constructionWithObjectThrowsIllegalArgumentException(): void
     {
         $value = value('foo');
         expect(function() use ($value) {
@@ -32,7 +32,7 @@ class ValueEqualsTest extends TestCase
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function tuplesEvaluatingToTrue(): array
     {
@@ -50,13 +50,13 @@ class ValueEqualsTest extends TestCase
      * @test
      * @dataProvider  tuplesEvaluatingToTrue
      */
-    public function evaluatesToTrue($expected, $value)
+    public function evaluatesToTrue($expected, $value): void
     {
         assertTrue(value($value)->equals($expected));
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function tuplesEvaluatingToFalse(): array
     {
@@ -81,7 +81,7 @@ class ValueEqualsTest extends TestCase
      * @test
      * @dataProvider  tuplesEvaluatingToFalse
      */
-    public function evaluatesToFalse($expected, $value)
+    public function evaluatesToFalse($expected, $value): void
     {
         assertFalse(value($value)->equals($expected));
     }

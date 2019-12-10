@@ -30,7 +30,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function constructWithoutArgumentCalculatesRootpathAutomatically()
+    public function constructWithoutArgumentCalculatesRootpathAutomatically(): void
     {
         assertThat(
                 (string) new Rootpath(),
@@ -41,7 +41,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function constructWithNonExistingPathThrowsIllegalArgumentException()
+    public function constructWithNonExistingPathThrowsIllegalArgumentException(): void
     {
         expect(function() {
                 new Rootpath(__DIR__ . '/doesNotExist');
@@ -52,7 +52,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function constructWithExistingPath()
+    public function constructWithExistingPath(): void
     {
         assertThat((string) new Rootpath(__DIR__), equals(__DIR__));
     }
@@ -60,7 +60,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function constructWithExistingPathTurnsDotsIntoRealpath()
+    public function constructWithExistingPathTurnsDotsIntoRealpath(): void
     {
         assertThat(
                 (string) new Rootpath(__DIR__ . '/..'),
@@ -71,7 +71,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function constructWithVfsStreamUriDoesNotApplyRealpath()
+    public function constructWithVfsStreamUriDoesNotApplyRealpath(): void
     {
         $root = vfsStream::setup()->url();
         assertThat((string) new Rootpath($root), equals($root));
@@ -80,7 +80,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function castFromInstanceReturnsInstance()
+    public function castFromInstanceReturnsInstance(): void
     {
         $rootpath = new Rootpath();
         assertThat(Rootpath::castFrom($rootpath), isSameAs($rootpath));
@@ -89,7 +89,7 @@ class RootpathTest extends TestCase
      /**
      * @test
      */
-    public function castFromWithoutArgumentCalculatesRootpathAutomatically()
+    public function castFromWithoutArgumentCalculatesRootpathAutomatically(): void
     {
         assertThat(
                 (string) Rootpath::castFrom(null),
@@ -100,7 +100,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function castFromWithNonExistingPathThrowsIllegalArgumentException()
+    public function castFromWithNonExistingPathThrowsIllegalArgumentException(): void
     {
         expect(function() {
                 Rootpath::castFrom(__DIR__ . '/doesNotExist');
@@ -111,7 +111,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function castFromWithExistingPath()
+    public function castFromWithExistingPath(): void
     {
         assertThat((string) Rootpath::castFrom(__DIR__), equals(__DIR__));
     }
@@ -119,7 +119,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function toCreatesPath()
+    public function toCreatesPath(): void
     {
         assertThat(
                 (string) Rootpath::castFrom(null)
@@ -131,7 +131,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function doesNotContainNonExistingPath()
+    public function doesNotContainNonExistingPath(): void
     {
         assertFalse(
                 Rootpath::castFrom(null)->contains(__DIR__ . '/doesNotExist')
@@ -141,7 +141,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function doesNotContainPathOutsideRoot()
+    public function doesNotContainPathOutsideRoot(): void
     {
         assertFalse(
                 Rootpath::castFrom(__DIR__)->contains(dirname(__DIR__))
@@ -151,7 +151,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function containsPathInsideRoot()
+    public function containsPathInsideRoot(): void
     {
         assertTrue(
                 Rootpath::castFrom(__DIR__)->contains(__FILE__)
@@ -161,7 +161,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function listOfSourcePathesIsEmptyIfNoAutoloaderPresent()
+    public function listOfSourcePathesIsEmptyIfNoAutoloaderPresent(): void
     {
         assertEmptyArray(Rootpath::castFrom(__DIR__)->sourcePathes());
     }
@@ -172,7 +172,7 @@ class RootpathTest extends TestCase
      * @param   string  $last
      * @return  \stubbles\values\Rootpath
      */
-    private function rootpathToTestResources($last)
+    private function rootpathToTestResources($last): Rootpath
     {
         return Rootpath::castFrom(
                 (new Rootpath())
@@ -183,7 +183,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function listOfSourcePathesWorksWithPsr0Only()
+    public function listOfSourcePathesWorksWithPsr0Only(): void
     {
         $rootpath = $this->rootpathToTestResources('psr0');
         assertThat(
@@ -198,7 +198,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function listOfSourcePathesWorksWithPsr4Only()
+    public function listOfSourcePathesWorksWithPsr4Only(): void
     {
         $rootpath = $this->rootpathToTestResources('psr4');
         assertThat(
@@ -213,7 +213,7 @@ class RootpathTest extends TestCase
     /**
      * @test
      */
-    public function listOfSourcePathesContainsPsr0AndPsr4()
+    public function listOfSourcePathesContainsPsr0AndPsr4(): void
     {
         $rootpath = $this->rootpathToTestResources('all');
         assertThat(
@@ -231,7 +231,7 @@ class RootpathTest extends TestCase
      * @test
      * @since  8.1.0
      */
-    public function defaultRootpathReturnsAutomaticallyCalculatedRootpath()
+    public function defaultRootpathReturnsAutomaticallyCalculatedRootpath(): void
     {
         assertThat(Rootpath::default(), equals(realpath(__DIR__ . '/../../../')));
     }
@@ -240,7 +240,7 @@ class RootpathTest extends TestCase
      * @test
      * @since  8.1.0
      */
-    public function defaultRootpathIsAlwaysTheSame()
+    public function defaultRootpathIsAlwaysTheSame(): void
     {
         assertThat(Rootpath::default(), equals(Rootpath::default()));
     }

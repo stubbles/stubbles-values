@@ -22,7 +22,7 @@ class ValueContainsTest extends TestCase
 /**
      * returns tuples which evaluate to true
      *
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function tuplesEvaluatingToTrue(): array
     {
@@ -39,11 +39,11 @@ class ValueContainsTest extends TestCase
 
     /**
      * @param  mixed                      $needle
-     * @param  string|array|\Traversable  $haystack
+     * @param  string|array<mixed>|\Traversable<mixed>  $haystack
      * @test
      * @dataProvider  tuplesEvaluatingToTrue
      */
-    public function evaluatesToTrue($needle, $haystack)
+    public function evaluatesToTrue($needle, $haystack): void
     {
         assertTrue(value($haystack)->contains($needle));
     }
@@ -51,7 +51,7 @@ class ValueContainsTest extends TestCase
     /**
      * returns tuples which evaluate to false
      *
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function tuplesEvaluatingToFalse(): array
     {
@@ -65,11 +65,11 @@ class ValueContainsTest extends TestCase
 
     /**
      * @param  mixed                      $needle
-     * @param  string|array|\Traversable  $haystack
+     * @param  string|array<mixed>|\Traversable<mixed>  $haystack
      * @test
      * @dataProvider  tuplesEvaluatingToFalse
      */
-    public function evaluatesToFalse($needle, $haystack)
+    public function evaluatesToFalse($needle, $haystack): void
     {
         assertFalse(value($haystack)->contains($needle));
     }

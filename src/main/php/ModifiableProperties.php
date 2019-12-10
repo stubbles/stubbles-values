@@ -20,8 +20,8 @@ class ModifiableProperties extends Properties
      * If a section with this name already exists it will be replaced.
      *
      * @api
-     * @param   string  $section
-     * @param   array   $data
+     * @param   string               $section
+     * @param   array<string,mixed>  $data
      * @return  \stubbles\values\ModifiableProperties
      */
     public function setSection(string $section, array $data): self
@@ -76,9 +76,9 @@ class ModifiableProperties extends Properties
      * be replaced.
      *
      * @api
-     * @param   string  $section
-     * @param   string  $name
-     * @param   array   $value
+     * @param   string        $section
+     * @param   string        $name
+     * @param   array<mixed>  $value
      * @return  \stubbles\values\ModifiableProperties
      */
     public function setArrayValue(string $section, string $name, array $value): self
@@ -93,9 +93,9 @@ class ModifiableProperties extends Properties
      * be replaced.
      *
      * @api
-     * @param   string  $section
-     * @param   string  $name
-     * @param   array   $hash
+     * @param   string        $section
+     * @param   string        $name
+     * @param   array<mixed>  $hash
      * @return  \stubbles\values\ModifiableProperties
      */
     public function setHashValue(string $section, string $name, array $hash): self
@@ -115,9 +115,9 @@ class ModifiableProperties extends Properties
      * be replaced.
      *
      * @api
-     * @param   string  $section
-     * @param   string  $name
-     * @param   array   $range
+     * @param   string          $section
+     * @param   string          $name
+     * @param   int[]|string[]  $range
      * @return  \stubbles\values\ModifiableProperties
      */
     public function setRangeValue(string $section, string $name, array $range): self

@@ -29,7 +29,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * instance to test
      *
-     * @type  \stubbles\values\ModifiableProperties
+     * @var  \stubbles\values\ModifiableProperties
      */
     protected $modifiableProperties;
 
@@ -55,7 +55,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function setNonExistingSectionEnsuresSectionIsContained()
+    public function setNonExistingSectionEnsuresSectionIsContained(): void
     {
         assertTrue(
                 $this->modifiableProperties->setSection('doesNotExist', ['foo' => 'bar'])
@@ -66,7 +66,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function setNonExistingSectionAddsSection()
+    public function setNonExistingSectionAddsSection(): void
     {
         assertThat(
                 $this->modifiableProperties->setSection('doesNotExist', ['foo' => 'bar'])
@@ -78,7 +78,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function setExistingSectionReplacesSection()
+    public function setExistingSectionReplacesSection(): void
     {
         assertThat(
                 $this->modifiableProperties->setSection('empty', ['foo' => 'bar'])
@@ -90,7 +90,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function setNonExistingValueForNonExistingSectionEnsuresSectionIsContained()
+    public function setNonExistingValueForNonExistingSectionEnsuresSectionIsContained(): void
     {
         assertTrue(
                 $this->modifiableProperties->setValue('doesNotExist', 'foo', 'bar')
@@ -101,7 +101,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function setNonExistingValueForNonExistingSectionAddsSectionAndValue()
+    public function setNonExistingValueForNonExistingSectionAddsSectionAndValue(): void
     {
         assertThat(
                 $this->modifiableProperties->setValue('doesNotExist', 'foo', 'bar')
@@ -113,7 +113,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function setNonExistingValueForExistingSectionAddsValueToSection()
+    public function setNonExistingValueForExistingSectionAddsValueToSection(): void
     {
         assertThat(
                 $this->modifiableProperties->setValue('scalar', 'stringValue', 'bar')
@@ -130,7 +130,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function setExistingValueForExistingSectionReplacesValueInSection()
+    public function setExistingValueForExistingSectionReplacesValueInSection(): void
     {
         assertThat(
                 $this->modifiableProperties->setValue('empty', 'foo', 'bar')
@@ -142,7 +142,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function setBooleanTrueTransformsToPropertyStorage()
+    public function setBooleanTrueTransformsToPropertyStorage(): void
     {
         assertThat(
                 $this->modifiableProperties->setBooleanValue('empty', 'foo', true)
@@ -154,7 +154,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function setBooleanFalseTransformsToPropertyStorage()
+    public function setBooleanFalseTransformsToPropertyStorage(): void
     {
         assertThat(
                 $this->modifiableProperties->setBooleanValue('empty', 'foo', false)
@@ -166,7 +166,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function setArrayValueTransformsToPropertyStorage()
+    public function setArrayValueTransformsToPropertyStorage(): void
     {
         assertThat(
                 $this->modifiableProperties->setArrayValue('empty', 'foo', [1, 2, 3])
@@ -178,7 +178,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function setHashValueTransformsToPropertyStorage()
+    public function setHashValueTransformsToPropertyStorage(): void
     {
         assertThat(
                 $this->modifiableProperties->setHashValue(
@@ -193,7 +193,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function setIntegerRangeValueTransformsToPropertyStorage()
+    public function setIntegerRangeValueTransformsToPropertyStorage(): void
     {
         assertThat(
                 $this->modifiableProperties->setRangeValue(
@@ -208,7 +208,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function setReverseIntegerRangeValueTransformsToPropertyStorage()
+    public function setReverseIntegerRangeValueTransformsToPropertyStorage(): void
     {
         assertThat(
                 $this->modifiableProperties->setRangeValue(
@@ -223,7 +223,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function setCharacterRangeValueTransformsToPropertyStorage()
+    public function setCharacterRangeValueTransformsToPropertyStorage(): void
     {
         assertThat(
                 $this->modifiableProperties->setRangeValue(
@@ -238,7 +238,7 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function setReverseCharacterRangeValueTransformsToPropertyStorage()
+    public function setReverseCharacterRangeValueTransformsToPropertyStorage(): void
     {
         assertThat(
                 $this->modifiableProperties->setRangeValue(
@@ -253,33 +253,33 @@ class ModifiablePropertiesTest extends TestCase
     /**
      * @test
      */
-    public function fromNonExistantFileThrowsInvalidArgumentException()
+    public function fromNonExistantFileThrowsInvalidArgumentException(): void
     {
         expect(function() {
-                ModifiableProperties::fromFile(__DIR__ . '/doesNotExist.ini');
+            ModifiableProperties::fromFile(__DIR__ . '/doesNotExist.ini');
         })
-        ->throws(\InvalidArgumentException::class);
+            ->throws(\InvalidArgumentException::class);
     }
 
     /**
      * @test
      */
-    public function invalidIniFileThrowsException()
+    public function invalidIniFileThrowsException(): void
     {
         $root = vfsStream::setup('config');
         vfsStream::newFile('invalid.ini')
                  ->at($root)
                  ->withContent("[invalid{");
         expect(function() {
-                ModifiableProperties::fromFile(vfsStream::url('config/invalid.ini'));
+            ModifiableProperties::fromFile(vfsStream::url('config/invalid.ini'));
         })
-        ->throws(\UnexpectedValueException::class);
+            ->throws(\UnexpectedValueException::class);
     }
 
     /**
      * @test
      */
-    public function validIniFileReturnsInstance()
+    public function validIniFileReturnsInstance(): void
     {
         $root = vfsStream::setup('config');
         vfsStream::newFile('test.ini')
@@ -294,7 +294,7 @@ class ModifiablePropertiesTest extends TestCase
      * @since  2.0.0
      * @group  bug213
      */
-    public function invalidIniStringThrowsException()
+    public function invalidIniStringThrowsException(): void
     {
         expect(function() {
                 ModifiableProperties::fromString("[invalid{");
@@ -307,7 +307,7 @@ class ModifiablePropertiesTest extends TestCase
      * @since  2.0.0
      * @group  bug213
      */
-    public function validIniStringReturnsInstance()
+    public function validIniStringReturnsInstance(): void
     {
         $properties = ModifiableProperties::fromString("[foo]\nbar=baz");
         assertThat($properties->section('foo'), equals(['bar' => 'baz']));
@@ -317,7 +317,7 @@ class ModifiablePropertiesTest extends TestCase
      * @test
      * @since  4.0.0
      */
-    public function mergeReturnsModifiableProperties()
+    public function mergeReturnsModifiableProperties(): void
     {
         assertThat(
                 $this->modifiableProperties->merge(new Properties([])),
@@ -329,7 +329,7 @@ class ModifiablePropertiesTest extends TestCase
      * @test
      * @since  4.0.0
      */
-    public function unmodifiableTurnsModifiableIntoNonModifiableProperties()
+    public function unmodifiableTurnsModifiableIntoNonModifiableProperties(): void
     {
         assertThat(
                 $this->modifiableProperties->unmodifiable(),

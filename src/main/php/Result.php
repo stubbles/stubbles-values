@@ -18,18 +18,18 @@ namespace stubbles\values;
 class Result
 {
     /**
-     * @type  \stubbles\values\Result
+     * @var  \stubbles\values\Result
      */
     private static $null;
     /**
-     * @type  mixed
+     * @var  mixed
      */
     private $value;
 
     /**
      * static initializer
      */
-    public static function __static()
+    public static function __static(): void
     {
         self::$null = new self(null);
     }

@@ -24,7 +24,7 @@ class ResultTest extends TestCase
     /**
      * @test
      */
-    public function resultOfNullIsAlwaysSame()
+    public function resultOfNullIsAlwaysSame(): void
     {
         assertThat(Result::of(null), isSameAs(Result::of(null)));
     }
@@ -32,7 +32,7 @@ class ResultTest extends TestCase
     /**
      * @test
      */
-    public function resultOfNullMeansResultNotPresent()
+    public function resultOfNullMeansResultNotPresent(): void
     {
         assertFalse(Result::of(null)->isPresent());
     }
@@ -40,7 +40,7 @@ class ResultTest extends TestCase
     /**
      * @test
      */
-    public function resultOfNonNullMeansResultPresent()
+    public function resultOfNonNullMeansResultPresent(): void
     {
         assertTrue(Result::of(303)->isPresent());
     }
@@ -48,7 +48,7 @@ class ResultTest extends TestCase
     /**
      * @test
      */
-    public function valueReturnsResultValue()
+    public function valueReturnsResultValue(): void
     {
         assertThat(Result::of(303)->value(), equals(303));
     }
@@ -56,7 +56,7 @@ class ResultTest extends TestCase
     /**
      * @test
      */
-    public function filterOnResultOfNullReturnsResultOfNull()
+    public function filterOnResultOfNullReturnsResultOfNull(): void
     {
         assertThat(
                 Result::of(null)->filter(function($value) { return true; }),
@@ -67,7 +67,7 @@ class ResultTest extends TestCase
     /**
      * @test
      */
-    public function filterOnResultOfNonNullReturnsResultOfNullWhenPredicateDenies()
+    public function filterOnResultOfNonNullReturnsResultOfNullWhenPredicateDenies(): void
     {
         assertThat(
                 Result::of(303)->filter(function($value) { return false; }),
@@ -78,7 +78,7 @@ class ResultTest extends TestCase
     /**
      * @test
      */
-    public function filterOnResultOfNonNullReturnsResultWhenPredicateApproves()
+    public function filterOnResultOfNonNullReturnsResultWhenPredicateApproves(): void
     {
         $result = Result::of(303);
         assertThat(
@@ -90,7 +90,7 @@ class ResultTest extends TestCase
     /**
      * @test
      */
-    public function mapResultOfNullReturnsResultOfNull()
+    public function mapResultOfNullReturnsResultOfNull(): void
     {
         assertThat(
                 Result::of(null)->map(function($value) { return 909; }),
@@ -101,7 +101,7 @@ class ResultTest extends TestCase
     /**
      * @test
      */
-    public function mapResultOfNonNullReturnsMappedResult()
+    public function mapResultOfNonNullReturnsMappedResult(): void
     {
         assertThat(
                 Result::of(303)->map(function($value) { return 909; }),
@@ -112,7 +112,7 @@ class ResultTest extends TestCase
     /**
      * @test
      */
-    public function whenNullOnResultOfNullReturnsOther()
+    public function whenNullOnResultOfNullReturnsOther(): void
     {
         assertThat(Result::of(null)->whenNull(909)->value(), equals(909));
     }
@@ -120,7 +120,7 @@ class ResultTest extends TestCase
     /**
      * @test
      */
-    public function whenNullOnResultOfNonNullReturnsValue()
+    public function whenNullOnResultOfNonNullReturnsValue(): void
     {
         assertThat(Result::of(303)->whenNull(909)->value(), equals(303));
     }
@@ -128,7 +128,7 @@ class ResultTest extends TestCase
     /**
      * @test
      */
-    public function applyhenNullOnResultOfNullReturnsOther()
+    public function applyhenNullOnResultOfNullReturnsOther(): void
     {
         assertThat(
                 Result::of(null)
@@ -141,7 +141,7 @@ class ResultTest extends TestCase
     /**
      * @test
      */
-    public function applyWhenNullOnResultOfNonNullReturnsValue()
+    public function applyWhenNullOnResultOfNonNullReturnsValue(): void
     {
         assertThat(
                 Result::of(303)
@@ -152,7 +152,7 @@ class ResultTest extends TestCase
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function emptyValues(): array
     {
@@ -165,13 +165,13 @@ class ResultTest extends TestCase
      * @dataProvider  emptyValues
      * @since  6.2.0
      */
-    public function isEmptyForEmptyValues($value)
+    public function isEmptyForEmptyValues($value): void
     {
         assertTrue(Result::of($value)->isEmpty());
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function nonEmptyValues(): array
     {
@@ -184,7 +184,7 @@ class ResultTest extends TestCase
      * @dataProvider  nonEmptyValues
      * @since  6.2.0
      */
-    public function isNotEmptyForNomEmptyValues($value)
+    public function isNotEmptyForNomEmptyValues($value): void
     {
         assertFalse(Result::of($value)->isEmpty());
     }
@@ -195,7 +195,7 @@ class ResultTest extends TestCase
      * @dataProvider  emptyValues
      * @since  6.2.0
      */
-    public function whenEmptyOnResultOfEmptyReturnsOther($value)
+    public function whenEmptyOnResultOfEmptyReturnsOther($value): void
     {
         assertThat(Result::of($value)->whenEmpty(909)->value(), equals(909));
     }
@@ -206,7 +206,7 @@ class ResultTest extends TestCase
      * @dataProvider  nonEmptyValues
      * @since  6.2.0
      */
-    public function whenEmptyOnResultOfNonEmptyReturnsValue($value)
+    public function whenEmptyOnResultOfNonEmptyReturnsValue($value): void
     {
         assertThat(Result::of($value)->whenEmpty(909)->value(), equals($value));
     }
@@ -217,7 +217,7 @@ class ResultTest extends TestCase
      * @dataProvider  emptyValues
      * @since  6.2.0
      */
-    public function applyhenEmptyOnResultOfEmptyReturnsOther($value)
+    public function applyhenEmptyOnResultOfEmptyReturnsOther($value): void
     {
         assertThat(
                 Result::of($value)
@@ -233,7 +233,7 @@ class ResultTest extends TestCase
      * @dataProvider  nonEmptyValues
      * @since  6.2.0
      */
-    public function applyWhenEmptyOnResultOfNonEmptyReturnsValue($value)
+    public function applyWhenEmptyOnResultOfNonEmptyReturnsValue($value): void
     {
         assertThat(
                 Result::of($value)

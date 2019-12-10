@@ -22,7 +22,7 @@ class ValueContainsAnyOfTest extends TestCase
     /**
      * returns tuples which evaluate to true
      *
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function tuplesEvaluatingToTrue(): array
     {
@@ -39,12 +39,12 @@ class ValueContainsAnyOfTest extends TestCase
     }
 
     /**
-     * @param  array  $contained
-     * @param  mixed   $value
+     * @param  array<mixed>  $contained
+     * @param  mixed         $value
      * @test
      * @dataProvider  tuplesEvaluatingToTrue
      */
-    public function evaluatesToTrue(array $contained, $value)
+    public function evaluatesToTrue(array $contained, $value): void
     {
         assertTrue(value($value)->containsAnyOf($contained));
     }
@@ -52,7 +52,7 @@ class ValueContainsAnyOfTest extends TestCase
     /**
      * returns tuples which evaluate to false
      *
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function tuplesEvaluatingToFalse(): array
     {
@@ -72,12 +72,12 @@ class ValueContainsAnyOfTest extends TestCase
     }
 
     /**
-     * @param  array  $contained
-     * @param  mixed   $value
+     * @param  array<mixed>  $contained
+     * @param  mixed         $value
      * @test
      * @dataProvider  tuplesEvaluatingToFalse
      */
-    public function evaluatesToFalse(array $contained, $value)
+    public function evaluatesToFalse(array $contained, $value): void
     {
         assertFalse(value($value)->containsAnyOf($contained));
     }

@@ -16,6 +16,7 @@ use function bovigo\assert\{
     assertEmptyArray,
     assertTrue,
     expect,
+    fail,
     predicate\contains,
     predicate\equals,
     predicate\isInstanceOf
@@ -31,7 +32,7 @@ class ResourceLoaderTest extends TestCase
     /**
      * instance to test
      *
-     * @type  \stubbles\values\ResourceLoader
+     * @var  \stubbles\values\ResourceLoader
      */
     private $resourceLoader;
 
@@ -44,7 +45,7 @@ class ResourceLoaderTest extends TestCase
      * @test
      * @since  4.0.0
      */
-    public function openNonExistingResourceThrowsDomainException()
+    public function openNonExistingResourceThrowsDomainException(): void
     {
         expect(function() {
                 $this->resourceLoader->open('lang/doesNotExist.ini');
@@ -56,7 +57,7 @@ class ResourceLoaderTest extends TestCase
      * @test
      * @since  4.0.0
      */
-    public function loadNonExistingResourceThrowsDomainException()
+    public function loadNonExistingResourceThrowsDomainException(): void
     {
         expect(function() {
                 $this->resourceLoader->load('lang/doesNotExist.ini');
@@ -68,7 +69,7 @@ class ResourceLoaderTest extends TestCase
      * @test
      * @since  4.0.0
      */
-    public function openLocalResourceReturnsInputStream()
+    public function openLocalResourceReturnsInputStream(): void
     {
         assertThat(
                 $this->resourceLoader->open('lang/stubbles.ini'),
@@ -80,7 +81,7 @@ class ResourceLoaderTest extends TestCase
      * @test
      * @since  7.0.0
      */
-    public function openLocalResourceWithOtherUsesOther()
+    public function openLocalResourceWithOtherUsesOther(): void
     {
         $myClass = NewInstance::classname(FileInputStream::class);
         assertThat(
@@ -93,7 +94,7 @@ class ResourceLoaderTest extends TestCase
      * @test
      * @since  7.0.0
      */
-    public function openLocalResourceWithNonExistingClassThrowsInvalidArgumentException()
+    public function openLocalResourceWithNonExistingClassThrowsInvalidArgumentException(): void
     {
         expect(function() {
                 $this->resourceLoader->open('lang/stubbles.ini', 'DoesNotExist');
@@ -105,7 +106,7 @@ class ResourceLoaderTest extends TestCase
      * @test
      * @since  4.0.0
      */
-    public function loadLocalResourceWithoutLoaderReturnsContent()
+    public function loadLocalResourceWithoutLoaderReturnsContent(): void
     {
         assertThat(
                 $this->resourceLoader->load('lang/stubbles.ini'),
@@ -117,7 +118,7 @@ class ResourceLoaderTest extends TestCase
      * @test
      * @since  4.0.0
      */
-    public function loadLocalResourceWithLoaderReturnsLoaderResult()
+    public function loadLocalResourceWithLoaderReturnsLoaderResult(): void
     {
         assertThat(
                 $this->resourceLoader->load(
@@ -140,7 +141,7 @@ class ResourceLoaderTest extends TestCase
      * @test
      * @since  4.0.0
      */
-    public function openResourceWithCompletePathInRootReturnsInputStream()
+    public function openResourceWithCompletePathInRootReturnsInputStream(): void
     {
         assertThat(
                 $this->resourceLoader->open(__FILE__),
@@ -152,7 +153,7 @@ class ResourceLoaderTest extends TestCase
      * @test
      * @since  4.0.0
      */
-    public function loadResourceWithCompletePathInRootWithoutLoaderReturnsContent()
+    public function loadResourceWithCompletePathInRootWithoutLoaderReturnsContent(): void
     {
         assertThat(
                 $this->resourceLoader->load(__FILE__),
@@ -164,7 +165,7 @@ class ResourceLoaderTest extends TestCase
      * @test
      * @since  4.0.0
      */
-    public function loadLocalWithCompletePathWithLoaderReturnsLoaderResult()
+    public function loadLocalWithCompletePathWithLoaderReturnsLoaderResult(): void
     {
         $rootpath = new Rootpath();
         assertThat(
@@ -187,31 +188,37 @@ class ResourceLoaderTest extends TestCase
      * @test
      * @since  4.0.0
      */
-    public function openResourceWithCompletePathOutsideRootThrowsDomainException()
+    public function openResourceWithCompletePathOutsideRootThrowsDomainException(): void
     {
-        expect(function() {
-                $this->resourceLoader->open(tempnam(sys_get_temp_dir(), 'test.txt'));
-        })
-        ->throws(\DomainException::class);
+        $tmpName = tempnam(sys_get_temp_dir(), 'test.txt');
+        if (false === $tmpName) {
+            fail('Could not create temporary filename');
+        }
+
+        expect(function() use ($tmpName) { $this->resourceLoader->open($tmpName); })
+            ->throws(\DomainException::class);
     }
 
     /**
      * @test
      * @since  4.0.0
      */
-    public function loadResourceWithCompletePathOutsideRootThrowsDomainException()
+    public function loadResourceWithCompletePathOutsideRootThrowsDomainException(): void
     {
-        expect(function() {
-                $this->resourceLoader->load(tempnam(sys_get_temp_dir(), 'test.txt'));
-        })
-        ->throws(\DomainException::class);
+        $tmpName = tempnam(sys_get_temp_dir(), 'test.txt');
+        if (false === $tmpName) {
+            fail('Could not create temporary filename');
+        }
+
+        expect(function() use ($tmpName) { $this->resourceLoader->load($tmpName); })
+            ->throws(\DomainException::class);
     }
 
     /**
      * @test
      * @since  4.0.0
      */
-    public function openResourceWithCompleteRealpathOutsideRootThrowsOutOfBoundsException()
+    public function openResourceWithCompleteRealpathOutsideRootThrowsOutOfBoundsException(): void
     {
         expect(function() {
                 $resourceLoader = new ResourceLoader(__DIR__);
@@ -224,7 +231,7 @@ class ResourceLoaderTest extends TestCase
      * @test
      * @since  4.0.0
      */
-    public function loadResourceWithCompleteRealpathOutsideRootThrowsOutOfBoundsException()
+    public function loadResourceWithCompleteRealpathOutsideRootThrowsOutOfBoundsException(): void
     {
         expect(function() {
                 $resourceLoader = new ResourceLoader(__DIR__);
@@ -236,7 +243,7 @@ class ResourceLoaderTest extends TestCase
     /**
      * @test
      */
-    public function returnsListOfAllResourceUrisForExistingFile()
+    public function returnsListOfAllResourceUrisForExistingFile(): void
     {
         assertThat(
                 $this->resourceLoader->availableResourceUris('lang/stubbles.ini'),
@@ -253,7 +260,7 @@ class ResourceLoaderTest extends TestCase
     /**
      * @test
      */
-    public function returnsEmptyListOfAllResourceUrisForNonExistingFile()
+    public function returnsEmptyListOfAllResourceUrisForNonExistingFile(): void
     {
         assertEmptyArray(
                 $this->resourceLoader->availableResourceUris('doesnot.exist')

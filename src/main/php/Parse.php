@@ -21,20 +21,20 @@ class Parse
     /**
      * list of values which are treated as boolean true
      *
-     * @type  string[]
+     * @var  string[]
      */
     private static $booleanTrue  = ['yes', 'true', 'on'];
     /**
      * list of known type recognitions
      *
-     * @type  callable[]
+     * @var  callable[]
      */
     private static $recognitions = [];
 
     /**
      * static initializer
      */
-    public static function __static()
+    public static function __static(): void
     {
         self::addRecognition(function($string) { if (self::toBool($string)) { return true; } }, 'booleanTrue');
         self::addRecognition(function($string) { if (in_array(strtolower($string), ['no', 'false', 'off'])) { return false; } }, 'booleanFalse');
@@ -77,7 +77,7 @@ class Parse
      * @param  callable  $recognition
      * @param  string    $name         name under which recognition should be stored
      */
-    public static function addRecognition(callable $recognition, string $name)
+    public static function addRecognition(callable $recognition, string $name): void
     {
         self::$recognitions[$name] = $recognition;
     }
@@ -256,7 +256,7 @@ class Parse
      * The resulting map would be ['foo' => 'bar', 'baz']
      *
      * @param   string  $string
-     * @return  array
+     * @return  array<string>
      */
     public static function toMap(?string $string): ?array
     {
@@ -318,7 +318,7 @@ class Parse
      * the string can not be parsed the return value is null.
      *
      * @param   string  $string
-     * @return  \ReflectionClass
+     * @return  \ReflectionClass<object>
      */
     public static function toClass(?string $string): ?\ReflectionClass
     {
@@ -364,13 +364,13 @@ class Parse
     /**
      * a value to parse
      *
-     * @type  string
+     * @var  scalar|null
      */
     private $value;
     /**
      * default to be returned in case value is null
      *
-     * @type  mixed
+     * @var  mixed
      */
     private $default = null;
 
@@ -422,10 +422,10 @@ class Parse
     public function asString()
     {
         if (null === $this->value) {
-            return $this->default;
+            return (string) $this->default;
         }
 
-        return $this->value;
+        return (string) $this->value;
     }
 
     /**
@@ -476,7 +476,7 @@ class Parse
     /**
      * parses initial value as list
      *
-     * @return  array
+     * @return  array<string,mixed>
      * @since   5.0.0
      */
     public function asMap()
@@ -498,7 +498,7 @@ class Parse
     /**
      * parses initial value as reflection class
      *
-     * @return  \ReflectionClass
+     * @return  \ReflectionClass<object>
      * @since   5.0.0
      */
     public function asClass()

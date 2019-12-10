@@ -41,7 +41,7 @@ class Rootpath
     /**
      * root path of application
      *
-     * @type  string
+     * @var  string
      */
     private $rootpath;
 
@@ -68,9 +68,16 @@ class Rootpath
 
         // prevent errors when using vfsStream URIs in unit tests.
         if (null !== $rootpath && substr($rootpath, 0, 6) === 'vfs://') {
-           $this->rootpath = $rootpath;
+            $this->rootpath = $rootpath;
+        } elseif (null !== $rootpath) {
+            $r = realpath($rootpath);
+            if (false === $r) {
+                throw new \InvalidArgumentException('Can not resolve given rootpath');
+            }
+
+            $this->rootpath = $r;
         } else {
-          $this->rootpath = (null === $rootpath) ? ($this->detectRootPath()) : (realpath($rootpath));
+          $this->rootpath = $this->detectRootPath();
         }
     }
 

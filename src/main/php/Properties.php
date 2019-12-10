@@ -16,13 +16,15 @@ namespace stubbles\values;
  *     // $section is an array containing all section values as key-value pairs
  * }
  * </code>
+ *
+ * @implements \Iterator<string,array<string,mixed>>
  */
 class Properties implements \Iterator
 {
     /**
      * property data
      *
-     * @type  array
+     * @var  array<string,array<string,mixed>>
      */
     protected $propertyData;
 
@@ -30,9 +32,9 @@ class Properties implements \Iterator
      * constructor
      *
      * @api
-     * @param  array  $propertyData  the property data
+     * @param  array<string,array<string,mixed>>  $propertyData  the property data
      */
-    public function __construct(array $propertyData = [])
+    final public function __construct(array $propertyData = [])
     {
         foreach ($propertyData as $section => $values) {
             foreach (array_keys($values) as $key) {
@@ -130,8 +132,8 @@ class Properties implements \Iterator
      * returns a whole section if it exists or the default if the section does not exist
      *
      * @api
-     * @param   string  $section  name of the section
-     * @param   array   $default  value to return if section does not exist
+     * @param   string                 $section  name of the section
+     * @param   array<string,string>   $default  value to return if section does not exist
      * @return  scalar[]
      * @since   4.0.0
      */
@@ -150,7 +152,7 @@ class Properties implements \Iterator
      * @api
      * @param   string    $section  name of the section
      * @param   string[]  $default  value to return if section does not exist
-     * @return  array
+     * @return  string[]
      * @since   4.0.0
      */
     public function keysForSection(string $section, array $default = []): array
@@ -251,7 +253,7 @@ class Properties implements \Iterator
     /**
      * returns current section
      *
-     * @return  array
+     * @return  array<string,string>
      * @see     http://php.net/manual/en/spl.iterators.php
      */
     public function current(): array
@@ -267,7 +269,7 @@ class Properties implements \Iterator
      */
     public function key(): string
     {
-        return key($this->propertyData);
+        return (string) key($this->propertyData);
     }
 
     /**
@@ -275,7 +277,7 @@ class Properties implements \Iterator
      *
      * @see  http://php.net/manual/en/spl.iterators.php
      */
-    public function next()
+    public function next(): void
     {
         next($this->propertyData);
     }
@@ -285,7 +287,7 @@ class Properties implements \Iterator
      *
      * @see  http://php.net/manual/en/spl.iterators.php
      */
-    public function rewind()
+    public function rewind(): void
     {
         reset($this->propertyData);
     }

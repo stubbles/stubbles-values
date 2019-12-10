@@ -35,7 +35,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function forNullReturnsNullOnUnveil()
+    public function forNullReturnsNullOnUnveil(): void
     {
         assertNull(Secret::forNull()->unveil());
     }
@@ -43,7 +43,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function canContainNull()
+    public function canContainNull(): void
     {
         assertTrue(Secret::forNull()->isContained());
     }
@@ -51,7 +51,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function forNullIdentifiesAsNull()
+    public function forNullIdentifiesAsNull(): void
     {
         assertTrue(Secret::forNull()->isNull());
     }
@@ -59,7 +59,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function lengthOfNullStringIsZero()
+    public function lengthOfNullStringIsZero(): void
     {
         assertThat(Secret::forNull()->length(), equals(0));
     }
@@ -67,13 +67,13 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function substringNullStringIsNullString()
+    public function substringNullStringIsNullString(): void
     {
         assertTrue(Secret::forNull()->substring(2, 33)->isNull());
     }
 
     /**
-     * @return  array
+     * @return  array<array<mixed>>
      */
     public function emptyValues(): array
     {
@@ -81,22 +81,21 @@ abstract class SecretTest extends TestCase
     }
 
     /**
+     * @param  mixed  $value
      * @test
      * @dataProvider  emptyValues
      */
-    public function createWithEmptyValueThrowsIllegalArgumentException($value)
+    public function createWithEmptyValueThrowsIllegalArgumentException($value): void
     {
-        expect(function() use ($value) {
-                Secret::create($value);
-        })
-        ->throws(\InvalidArgumentException::class)
-        ->withMessage('Given string was null or empty, if you explicitly want to create a Secret with value null use Secret::forNull()');
+        expect(function() use ($value) { Secret::create($value); })
+            ->throws(\InvalidArgumentException::class)
+            ->withMessage('Given string was null or empty, if you explicitly want to create a Secret with value null use Secret::forNull()');
     }
 
     /**
      * @test
      */
-    public function notSerializable()
+    public function notSerializable(): void
     {
         expect(function() {
                 serialize(Secret::create('payload'));
@@ -107,7 +106,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function varExportNotRevealingPayload()
+    public function varExportNotRevealingPayload(): void
     {
         assertThat(
                 var_export(Secret::create('payload'), true),
@@ -118,7 +117,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function varDumpNotRevealingPayload()
+    public function varDumpNotRevealingPayload(): void
     {
         ob_start();
         var_dump(Secret::create('payload'));
@@ -132,7 +131,7 @@ abstract class SecretTest extends TestCase
      * @test
      * @since  4.1.2
      */
-    public function varDumpNotRevealingLength()
+    public function varDumpNotRevealingLength(): void
     {
         ob_start();
         var_dump(Secret::create('payload'));
@@ -145,7 +144,8 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function stringCastNotRevealingPayload() {
+    public function stringCastNotRevealingPayload(): void
+    {
         assertThat(
                 (string) Secret::create('payload'),
                 doesNotContain('payload')
@@ -155,7 +155,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function arrayCastNotRevealingPayload()
+    public function arrayCastNotRevealingPayload(): void
     {
         assertThat(
                 var_export((array)Secret::create('payload'), true),
@@ -166,7 +166,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function isContainedReturnsTrueWhenEncryptionDoesNotFail()
+    public function isContainedReturnsTrueWhenEncryptionDoesNotFail(): void
     {
         assertTrue(Secret::create('payload')->isContained());
     }
@@ -174,7 +174,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function unveilRevealsOriginalData()
+    public function unveilRevealsOriginalData(): void
     {
         assertThat(Secret::create('payload')->unveil(), equals('payload'));
     }
@@ -182,7 +182,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function lengthReturnsStringLengthOfOriginalData()
+    public function lengthReturnsStringLengthOfOriginalData(): void
     {
         assertThat(Secret::create('payload')->length(), equals(7));
     }
@@ -190,7 +190,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function nonNullSecretDoesNotIdentifyAsNull()
+    public function nonNullSecretDoesNotIdentifyAsNull(): void
     {
         assertFalse(Secret::create('payload')->isNull());
     }
@@ -198,7 +198,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function substringWithValidStartReturnsNewInstance()
+    public function substringWithValidStartReturnsNewInstance(): void
     {
         assertThat(
                 Secret::create('payload')->substring(3, 2)->unveil(),
@@ -209,7 +209,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function substringWithStartOutOfRangeThrowsIllegalArgumentException()
+    public function substringWithStartOutOfRangeThrowsIllegalArgumentException(): void
     {
         expect(function() {
                 Secret::create('payload')->substring(50);
@@ -220,7 +220,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function bigData()
+    public function bigData(): void
     {
         $data = str_repeat('*', 1024000);
         assertThat(Secret::create($data)->unveil(), equals($data));
@@ -229,7 +229,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function createFromSecretReturnsInstance()
+    public function createFromSecretReturnsInstance(): void
     {
         $secret = Secret::create('payload');
         assertThat(Secret::create($secret), isSameAs($secret));
@@ -238,7 +238,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function creationNeverThrowsException()
+    public function creationNeverThrowsException(): void
     {
         Secret::switchBacking('__none');
         expect(function() {
@@ -251,7 +251,7 @@ abstract class SecretTest extends TestCase
      * @test
      * @since  8.0.0
      */
-    public function creationNeverThrowsError()
+    public function creationNeverThrowsError(): void
     {
         Secret::switchBacking('__none_error');
         expect(function() {
@@ -263,7 +263,7 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function secretDoesNotContainAnythingWithoutBacking()
+    public function secretDoesNotContainAnythingWithoutBacking(): void
     {
         Secret::switchBacking('__none');
         $secret = Secret::create('payload');
@@ -273,49 +273,41 @@ abstract class SecretTest extends TestCase
     /**
      * @test
      */
-    public function unveilThrowsLogicExceptionWhenCreationHasFailed()
+    public function unveilThrowsLogicExceptionWhenCreationHasFailed(): void
     {
         Secret::switchBacking('__none');
         $secret = Secret::create('payload');
-        expect(function() use ($secret) {
-                $secret->unveil();
-        })
-        ->throws(\LogicException::class);
+        expect(function() use ($secret) { $secret->unveil(); })
+            ->throws(\LogicException::class);
     }
 
     /**
      * @test
      */
-    public function switchToInvalidBackingTypeThrowsIllegalArgumentException()
+    public function switchToInvalidBackingTypeThrowsIllegalArgumentException(): void
     {
-        expect(function() {
-                Secret::switchBacking('nope');
-        })
-        ->throws(\InvalidArgumentException::class);
+        expect(function() { Secret::switchBacking('nope'); })
+            ->throws(\InvalidArgumentException::class);
     }
 
     /**
      * @test
      */
-    public function switchBackingWhenSecretInstancesExistThrowsIllegalStateException()
+    public function switchBackingWhenSecretInstancesExistThrowsIllegalStateException(): void
     {
         $secret = Secret::create('payload');
-        expect(function() {
-                Secret::switchBacking(Secret::BACKING_PLAINTEXT);
-        })
-        ->throws(\LogicException::class);
+        expect(function() { Secret::switchBacking(Secret::BACKING_PLAINTEXT); })
+            ->throws(\LogicException::class);
     }
 
     /**
      * @test
      */
-    public function canSwitchBackingWhenAllSecretInstancesDestroyed()
+    public function canSwitchBackingWhenAllSecretInstancesDestroyed(): void
     {
         $secret = Secret::create('payload');
         $secret = null;
-        expect(function() {
-                assertTrue(Secret::switchBacking(Secret::BACKING_PLAINTEXT));
-        })
-        ->doesNotThrow();
+        expect(function() { Secret::switchBacking(Secret::BACKING_PLAINTEXT); })
+            ->doesNotThrow();
     }
 }

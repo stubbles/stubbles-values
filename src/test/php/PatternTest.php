@@ -21,7 +21,7 @@ use function bovigo\assert\expect;
 class PatternTest extends TestCase
 {
     /**
-     * @return  array
+     * @return  array<array<string>>
      */
     public function validValues(): array
     {
@@ -37,13 +37,13 @@ class PatternTest extends TestCase
      * @test
      * @dataProvider  validValues
      */
-    public function validValueEvaluatesToTrue($pattern, $value)
+    public function validValueEvaluatesToTrue($pattern, $value): void
     {
         assertTrue(pattern($pattern)->matches($value));
     }
 
     /**
-     * @return  array
+     * @return  array<array<string>>
      */
     public function invalidValues(): array
     {
@@ -59,7 +59,7 @@ class PatternTest extends TestCase
      * @test
      * @dataProvider  invalidValues
      */
-    public function invalidValueEvaluatesToFalse($pattern, $value)
+    public function invalidValueEvaluatesToFalse($pattern, $value): void
     {
         assertFalse(pattern($pattern)->matches($value));
     }
@@ -67,12 +67,10 @@ class PatternTest extends TestCase
     /**
      * @test
      */
-    public function invalidRegexThrowsRuntimeExceptionOnEvaluation()
+    public function invalidRegexThrowsRuntimeExceptionOnEvaluation(): void
     {
-        expect(function() {
-                pattern('^([a-z]{3})$')->matches('foo');
-        })
-        ->throws(\RuntimeException::class)
-        ->withMessage('Failure while matching "^([a-z]{3})$", reason: internal PCRE error.');
+        expect(function() { pattern('^([a-z]{3})$')->matches('foo'); })
+            ->throws(\RuntimeException::class)
+            ->withMessage('Failure while matching "^([a-z]{3})$", reason: internal PCRE error.');
     }
 }

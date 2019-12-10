@@ -18,22 +18,22 @@ class Value
     /**
      * map of additional checks added at runtime
      *
-     * @type  array
+     * @var  array<string,callable>
      */
     private static $checks = [];
     /**
-     * @type  \stubbles\values\Value
+     * @var  \stubbles\values\Value
      */
     private static $null;
     /**
-     * @type  mixed
+     * @var  mixed
      */
     private $value;
 
     /**
      * static initializer
      */
-    public static function __static()
+    public static function __static(): void
     {
         self::$null = new self(null);
     }
@@ -43,7 +43,7 @@ class Value
      *
      * @param  mixed  $value  actual result value
      */
-    private function __construct($value)
+    private final function __construct($value)
     {
         $this->value = $value;
     }
@@ -131,7 +131,7 @@ class Value
     /**
      * checks that value contains any of the given elements
      *
-     * @param   array  $elements
+     * @param   array<mixed>  $elements
      * @return  bool
      */
     public function containsAnyOf(array $elements): bool
@@ -172,8 +172,8 @@ class Value
     /**
      * checks that value is one of the allowed values
      *
-     * @param   array  $allowedValues
-     * @param   bool   $strict         optional  whether type must match as well
+     * @param   array<mixed>  $allowedValues
+     * @param   bool          $strict         optional  whether type must match as well
      * @return  bool
      */
     public function isOneOf(array $allowedValues, bool $strict = false): bool
@@ -242,7 +242,7 @@ class Value
      * @param   callable  $function
      * @throws  \InvalidArgumentException
      */
-    public static function defineCheck(string $method, callable $function)
+    public static function defineCheck(string $method, callable $function): void
     {
         if (function_exists($method)) {
             throw new \InvalidArgumentException('Can not overwrite internal PHP function ' . $method . '().');
@@ -254,8 +254,8 @@ class Value
     /**
      * intercept calls to dynamicly added methods
      *
-     * @param   string  $method     name of method
-     * @param   array   $arguments  list of additional arguments for method
+     * @param   string   $method     name of method
+     * @param   mixed[]  $arguments  list of additional arguments for method
      * @return  bool
      * @throws  \BadMethodCallException  in case called method does not exist
      */

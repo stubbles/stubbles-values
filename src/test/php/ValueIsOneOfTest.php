@@ -22,7 +22,7 @@ class ValueIsOneOfTest extends TestCase
     /**
      * instance to test
      *
-     * @type  string[]
+     * @var  string[]
      */
     private $allowedValues;
 
@@ -31,6 +31,9 @@ class ValueIsOneOfTest extends TestCase
         $this->allowedValues = ['foo', 'bar'];
     }
 
+    /**
+     * @return  array<array<mixed>>
+     */
     public function validValues(): array
     {
         return [['foo'],
@@ -40,14 +43,18 @@ class ValueIsOneOfTest extends TestCase
     }
 
     /**
+     * @param  mixed  $value
      * @test
      * @dataProvider  validValues
      */
-    public function validValueEvaluatesToTrue($value)
+    public function validValueEvaluatesToTrue($value): void
     {
         assertTrue(value($value)->isOneOf($this->allowedValues));
     }
 
+    /**
+     * @return  array<array<mixed>>
+     */
     public function invalidValues(): array
     {
         return [['baz'],
@@ -57,10 +64,11 @@ class ValueIsOneOfTest extends TestCase
     }
 
     /**
+     * @param  mixed  $value
      * @test
      * @dataProvider  invalidValues
      */
-    public function invalidValueEvaluatesToFalse($value)
+    public function invalidValueEvaluatesToFalse($value): void
     {
         assertFalse(value($value)->isOneOf($this->allowedValues));
     }
@@ -69,7 +77,7 @@ class ValueIsOneOfTest extends TestCase
      * @test
      * @since  8.1.0
      */
-    public function evaluatesToFalseForSimilarValueWhenStrictEnabled()
+    public function evaluatesToFalseForSimilarValueWhenStrictEnabled(): void
     {
         assertFalse(value(1)->isOneOf([true, '1', 'true'], true));
     }
@@ -78,7 +86,7 @@ class ValueIsOneOfTest extends TestCase
      * @test
      * @since  8.1.0
      */
-    public function evaluatesToTrueForSimilarValueWhenStrictNotEnabled()
+    public function evaluatesToTrueForSimilarValueWhenStrictNotEnabled(): void
     {
         assertTrue(value(1)->isOneOf([true, '1', 'true']));
     }
