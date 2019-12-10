@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.1.0 (2019-12-10)
+
+* added more phpstan related type hints
+
 ## 9.0.1 (2019-10-29)
 
 * fixed `stubbles\values\Parse::toBool()`  now returns `false` when given value is `null` according to description
