@@ -134,7 +134,7 @@ class Properties implements \Iterator
      * @api
      * @param   string                 $section  name of the section
      * @param   array<string,string>   $default  value to return if section does not exist
-     * @return  scalar[]
+     * @return  array<string,string>
      * @since   4.0.0
      */
     public function section(string $section, array $default = []): array

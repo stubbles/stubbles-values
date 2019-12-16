@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.1.1 (2019-12-16)
+
+* fixed too wide return type hint of `stubbles\values\Properties::section()`, returns `array<string,string>` only
+
 ## 9.1.0 (2019-12-10)
 
 * added more phpstan related type hints
