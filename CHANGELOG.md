@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.1.2 (2020-02-28)
+
+* fixed path issues under Windows with `stubbles\values\Rootpath` and `stubbles\values\ResourceLoader`
+
 ## 9.1.1 (2019-12-16)
 
 * fixed too wide return type hint of `stubbles\values\Properties::section()`, returns `array<string,string>` only
