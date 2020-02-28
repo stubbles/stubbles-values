@@ -189,8 +189,8 @@ class RootpathTest extends TestCase
         assertThat(
                 $rootpath->sourcePathes(),
                 equals([
-                        $rootpath->to('vendor/mikey179/vfsStream/src/main/php'),
-                        $rootpath->to('vendor/symfony/yaml')
+                        $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'mikey179' . DIRECTORY_SEPARATOR . 'vfsStream' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
+                        $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'symfony' . DIRECTORY_SEPARATOR . 'yaml')
                 ])
         );
     }
@@ -204,7 +204,7 @@ class RootpathTest extends TestCase
         assertThat(
                 $rootpath->sourcePathes(),
                 equals([
-                        $rootpath->to('vendor/stubbles/core-dev/src/main/php'),
+                        $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'stubbles' . DIRECTORY_SEPARATOR . 'core-dev' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
                         $rootpath->to('src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php')
                 ])
         );
