@@ -6,6 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'stubbles\\test\\' => array($vendorDir . '/stubbles/core-dev/src/main/php'),
-    'stubbles\\' => array($baseDir . '/src/main/php'),
+    'stubbles\\test\\' => array($vendorDir . DIRECTORY_SEPARATOR . 'stubbles' . DIRECTORY_SEPARATOR . 'core-dev' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
+    'stubbles\\' => array($baseDir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
 );

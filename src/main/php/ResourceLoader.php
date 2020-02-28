@@ -161,7 +161,11 @@ class ResourceLoader
                 array_map(
                       function(string $sourcePath) use($resourceName): string
                       {
-                          return str_replace('/src/main/php', '/src/main/resources', $sourcePath)
+                          return str_replace(
+                              DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php',
+                              DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'resources',
+                              $sourcePath
+                            )
                            . DIRECTORY_SEPARATOR . $resourceName;
                       },
                       $this->rootpath->sourcePathes()
