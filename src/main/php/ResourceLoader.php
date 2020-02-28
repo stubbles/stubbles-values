@@ -162,7 +162,7 @@ class ResourceLoader
                       function(string $sourcePath) use($resourceName): string
                       {
                           return str_replace(
-                              DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php',
+                              ['/src/main/php', '\src\main\php'],
                               DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'resources',
                               $sourcePath
                             )
@@ -172,7 +172,6 @@ class ResourceLoader
                 ),
                 function(string $resourcePath): bool
                 {
-                    var_dump($resourcePath . ': ' . (file_exists($resourcePath) ? 'exists' : 'does not exist'));
                     return file_exists($resourcePath);
                 }
         ));
