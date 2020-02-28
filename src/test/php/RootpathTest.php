@@ -205,7 +205,7 @@ class RootpathTest extends TestCase
                 $rootpath->sourcePathes(),
                 equals([
                         $rootpath->to('vendor/stubbles/core-dev/src/main/php'),
-                        $rootpath->to('src/main/php')
+                        $rootpath->to('src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php')
                 ])
         );
     }
@@ -222,7 +222,7 @@ class RootpathTest extends TestCase
                         $rootpath->to('vendor/mikey179/vfsStream/src/main/php'),
                         $rootpath->to('vendor/symfony/yaml'),
                         $rootpath->to('vendor/stubbles/core-dev/src/main/php'),
-                        $rootpath->to('src/main/php')
+                        $rootpath->to('src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php')
                 ])
         );
     }

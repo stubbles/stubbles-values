@@ -122,7 +122,7 @@ class ResourceLoaderTest extends TestCase
     {
         assertThat(
                 $this->resourceLoader->load(
-                        'lang/stubbles.ini',
+                        'lang' . DIRECTORY_SEPARATOR . 'stubbles.ini',
                         function($resource)
                         {
                             $rootpath = new Rootpath();
@@ -246,7 +246,7 @@ class ResourceLoaderTest extends TestCase
     public function returnsListOfAllResourceUrisForExistingFile(): void
     {
         assertThat(
-                $this->resourceLoader->availableResourceUris('lang/stubbles.ini'),
+                $this->resourceLoader->availableResourceUris('lang' . DIRECTORY_SEPARATOR . 'stubbles.ini'),
                 equals([
                         (new Rootpath()) . DIRECTORY_SEPARATOR
                         . 'src' . DIRECTORY_SEPARATOR
