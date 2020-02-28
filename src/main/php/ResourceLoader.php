@@ -172,6 +172,7 @@ class ResourceLoader
                 ),
                 function(string $resourcePath): bool
                 {
+                    var_dump($resourcePath . ': ' . (file_exists($resourcePath) ? 'exists' : 'does not exist'));
                     return file_exists($resourcePath);
                 }
         ));
