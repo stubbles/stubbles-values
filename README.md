@@ -7,7 +7,7 @@ Useful classes to ease the work with values.
 Build status
 ------------
 
-[![Build Status](https://secure.travis-ci.org/stubbles/stubbles-values.png)](http://travis-ci.org/stubbles/stubbles-values) [![Coverage Status](https://coveralls.io/repos/github/stubbles/stubbles-values/badge.svg?branch=master)](https://coveralls.io/github/stubbles/stubbles-values?branch=master)
+![Tests](https://github.com/stubbles/stubbles-values/workflows/Tests/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/stubbles/stubbles-values/badge.svg?branch=master)](https://coveralls.io/github/stubbles/stubbles-values?branch=master)
 
 [![Latest Stable Version](https://poser.pugx.org/stubbles/values/version.png)](https://packagist.org/packages/stubbles/values) [![Latest Unstable Version](https://poser.pugx.org/stubbles/values/v/unstable.png)](//packagist.org/packages/stubbles/values)
 
