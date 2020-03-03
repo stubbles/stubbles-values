@@ -36,23 +36,23 @@ class Parse
      */
     public static function __static(): void
     {
-        self::addRecognition(function($string) { if (self::toBool($string)) { return true; } }, 'booleanTrue');
-        self::addRecognition(function($string) { if (in_array(strtolower($string), ['no', 'false', 'off'])) { return false; } }, 'booleanFalse');
-        self::addRecognition(function($string) { if (preg_match('/^[+-]?[0-9]+$/', $string) != false) { return self::toInt($string);} }, 'int');
-        self::addRecognition(function($string) { if (preg_match('/^[+-]?[0-9]+\.[0-9]+$/', $string) != false) { return self::toFloat($string); } }, 'float');
+        self::addRecognition(function(?string $string) { if (self::toBool($string)) { return true; } }, 'booleanTrue');
+        self::addRecognition(function(?string $string) { if (null !== $string && in_array(strtolower($string), ['no', 'false', 'off'])) { return false; } }, 'booleanFalse');
+        self::addRecognition(function(?string $string) { if (null !== $string && preg_match('/^[+-]?[0-9]+$/', $string) != false) { return self::toInt($string);} }, 'int');
+        self::addRecognition(function(?string $string) { if (null !== $string && preg_match('/^[+-]?[0-9]+\.[0-9]+$/', $string) != false) { return self::toFloat($string); } }, 'float');
         self::addRecognition(
-                function($string)
+                function(?string $string)
                 {
-                    if (substr($string, 0, 1) === '[' && substr($string, -1) === ']') {
+                    if (null !== $string && substr($string, 0, 1) === '[' && substr($string, -1) === ']') {
                         return (strstr($string, ':') !== false) ? self::toMap($string) : self::toList($string);
                     }
                 },
                 'array'
         );
-        self::addRecognition(function($string) { if (strstr($string, '..') !== false) { return self::toRange($string); } }, 'range');
-        self::addRecognition(function($string) { $classname = self::toClassname($string); if (null !== $classname) { return $classname; } }, 'string');
-        self::addRecognition(function($string) { $class = self::toClass($string); if (null !== $class) { return $class; } }, 'ReflectionClass');
-        self::addRecognition(function($string) { if (defined($string)) { return constant($string); } }, 'constant');
+        self::addRecognition(function(?string $string) { if (null !== $string && strstr($string, '..') !== false) { return self::toRange($string); } }, 'range');
+        self::addRecognition(function(?string $string) { $classname = self::toClassname($string); if (null !== $classname) { return $classname; } }, 'string');
+        self::addRecognition(function(?string $string) { $class = self::toClass($string); if (null !== $class) { return $class; } }, 'ReflectionClass');
+        self::addRecognition(function(?string $string) { if (null !== $string && defined($string)) { return constant($string); } }, 'constant');
     }
 
     /**
