@@ -328,7 +328,9 @@ class Parse
 
         $classnameMatches = [];
         if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\.class/', $string, $classnameMatches) != false) {
-            return new \ReflectionClass($classnameMatches[1]);
+            /** @var class-string $class */
+            $class = $classnameMatches[1];
+            return new \ReflectionClass($class);
         }
 
         return null;
