@@ -15,7 +15,7 @@ namespace stubbles\values;
 class Parse
 {
     /**
-     * @type  string
+     * @var  string
      */
     const SEPARATOR_LIST = '|';
     /**

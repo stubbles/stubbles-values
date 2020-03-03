@@ -18,7 +18,7 @@ class ResourceLoader
     /**
      * root path of application
      *
-     * @type  \stubbles\values\Rootpath
+     * @var  \stubbles\values\Rootpath
      */
     private $rootpath;
 
