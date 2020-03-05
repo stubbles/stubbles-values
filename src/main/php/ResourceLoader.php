@@ -49,9 +49,10 @@ class ResourceLoader
      * full path of the resource as first constructor argument, and must not
      * require any other argument.
      *
+     * @template T
      * @param   string  $resource   name of resource to open
-     * @param   string  $withClass  optional  name of class to open resource with
-     * @return  object
+     * @param   class-string<T>  $withClass  optional  name of class to open resource with
+     * @return  T
      * @throws  \InvalidArgumentException  in case the given class does not exist
      * @since   4.0.0
      */
@@ -87,12 +88,28 @@ class ResourceLoader
      */
     public function load(string $resource, callable $loader = null)
     {
-        $checkedPath = $this->checkedPathFor($resource);
-        if (null == $loader) {
-            return file_get_contents($checkedPath);
-        }
+        return $this->loadWith($resource, null === $loader ? 'file_get_contents' : $loader);
+    }
 
-        return $loader($checkedPath);
+    /**
+     * loads resource contents
+     *
+     * Resource can either be a complete path to a resource or a local path. In
+     * case it is a local path it is searched within the src/main/resources
+     * of the current project.
+     * It is not possible to load resources outside of the root path by
+     * providing a complete path, a complete path must always lead to a resource
+     * located within the root path.
+     *
+     * @template T
+     * @param   string               $resource
+     * @param   callable(string): T  $loader    code to load resource with, defaults to file_get_contents()
+     * @return  T     result of call to $loader, or file contents if no loader specified
+     * @since   9.2.0
+     */
+    public function loadWith(string $resource, callable $loader)
+    {
+        return $loader($this->checkedPathFor($resource));
     }
 
     /**

@@ -121,9 +121,9 @@ class ResourceLoaderTest extends TestCase
     public function loadLocalResourceWithLoaderReturnsLoaderResult(): void
     {
         assertThat(
-                $this->resourceLoader->load(
+                $this->resourceLoader->loadWith(
                         'lang' . DIRECTORY_SEPARATOR . 'stubbles.ini',
-                        function($resource)
+                        function(string $resource): string
                         {
                             $rootpath = new Rootpath();
                             assertThat(
@@ -169,9 +169,9 @@ class ResourceLoaderTest extends TestCase
     {
         $rootpath = new Rootpath();
         assertThat(
-                $this->resourceLoader->load(
+                $this->resourceLoader->loadWith(
                         $rootpath->to('src', 'main', 'resources', 'lang', 'stubbles.ini'),
-                        function($resource) use($rootpath)
+                        function(string $resource) use($rootpath): string
                         {
                             assertThat(
                                     $rootpath->to('src', 'main', 'resources', 'lang', 'stubbles.ini'),

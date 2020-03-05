@@ -18,3 +18,6 @@ parameters:
     -
         message: '#method stubbles\\values\\Value::equals\(\) expects bool\|float\|int\|string\|null, stdClass given.#'
         path: src/test/php/ValueEqualsTest.php
+    -
+        message: '#withClass of method stubbles\\values\\ResourceLoader::open\(\) expects class-string<DoesNotExist>, string given.#'
+        path: src/test/php/ResourceLoaderTest.php

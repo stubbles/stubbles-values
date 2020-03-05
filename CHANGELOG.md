@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.2.0 (2020-??-??)
+
+* added `stubbles\values\ResourceLoader::loadWith()`, deprecated second parameter of `stubbles\values\ResourceLoader::load()`, will be removed with 10.0.0
+
 ## 9.1.2 (2020-02-28)
 
 * fixed path issues under Windows with `stubbles\values\Rootpath` and `stubbles\values\ResourceLoader`
