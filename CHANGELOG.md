@@ -1,6 +1,6 @@
 # Changelog
 
-## 9.2.0 (2020-??-??)
+## 9.2.0 (2020-03-06)
 
 * added `stubbles\values\ResourceLoader::loadWith()`, deprecated second parameter of `stubbles\values\ResourceLoader::load()`, will be removed with 10.0.0
 
