@@ -21,3 +21,7 @@ parameters:
     -
         message: '#withClass of method stubbles\\values\\ResourceLoader::open\(\) expects class-string<DoesNotExist>, string given.#'
         path: src/test/php/ResourceLoaderTest.php
+    # Stupidity of different errors from PHPStan between PHP 7.x and PHP 8
+    -
+        message: '#Method stubbles\\values\\Parse::toList\(\) should return array<string>\|null but returns array<int, string>\|false.#'
+        path: src/main/php/Parse.php

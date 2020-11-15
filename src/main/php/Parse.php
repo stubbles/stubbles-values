@@ -216,11 +216,8 @@ class Parse
             return [];
         }
 
-
-        if (strstr($withoutParenthesis, $separator) !== false) {
-            // explode() may return false when $separator is empty
-            $res = explode($separator, $withoutParenthesis);
-            return false === $res ? null : $res;
+        if (strlen($separator) > 0 && strstr($withoutParenthesis, $separator) !== false) {
+            return explode($separator, $withoutParenthesis);
         }
 
         return [$withoutParenthesis];
