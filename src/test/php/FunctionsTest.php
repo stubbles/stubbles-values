@@ -34,13 +34,10 @@ class FunctionsTest extends TestCase
     public function lastErrorMessageShouldContainLastError(): void
     {
         @file_get_contents(__DIR__ . '/doesNotExist.txt');
-        if (defined('HHVM_VERSION')) {
-            $expected = 'No such file or directory';
-        } else {
-            $expected = 'file_get_contents(' . __DIR__ . '/doesNotExist.txt): failed to open stream: No such file or directory';
-        }
-
-        assertThat(lastErrorMessage()->value(), equals($expected));
+        assertThat(
+            lastErrorMessage()->value(),
+            equals('file_get_contents(' . __DIR__ . '/doesNotExist.txt): failed to open stream: No such file or directory')
+        );
     }
 
     /**
