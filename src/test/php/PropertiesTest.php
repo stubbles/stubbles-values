@@ -411,12 +411,13 @@ class PropertiesTest extends TestCase
      */
     public function invalidIniStringThrowsException(): void
     {
+        $end = version_compare(phpversion(), '7.4', '<=') ? '$end' : 'end';
         expect(function() {
                 Properties::fromString("[invalid{");
         })
         ->throws(\InvalidArgumentException::class)
         ->message(contains(
-            'Property string contains errors and can not be parsed: syntax error, unexpected end'
+            'Property string contains errors and can not be parsed: syntax error, unexpected ' . $end
         ));
     }
 
