@@ -414,7 +414,7 @@ class PropertiesTest extends TestCase
         if (defined('HHVM_VERSION')) {
             $expected = "No ending delimiter '^' found: [^([a-z]{3})$]";
         } else {
-            $expected = 'syntax error, unexpected $end';
+            $expected = 'syntax error, unexpected end';
         }
 
         expect(function() {
