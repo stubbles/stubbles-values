@@ -12,7 +12,8 @@
         "phpunit/phpunit": "^9.4",
         "mikey179/vfsstream": "^1.6.8",
         "bovigo/callmap": "^6.2",
-        "bovigo/assert": "^6.1"
+        "bovigo/assert": "^6.1",
+        "phpstan/phpstan": "^0.12.55"
     },
     "autoload": {
         "psr-4": {
@@ -35,6 +36,7 @@
     "prefer-stable": true,
     "scripts": {
         "test": "phpunit",
-        "php-coveralls": "php-coveralls"
+        "php-coveralls": "php-coveralls",
+        "phpstan": "phpstan"
     }
 }
