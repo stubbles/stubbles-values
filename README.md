@@ -25,7 +25,7 @@ command:
 Requirements
 ------------
 
-_stubbles/values_ requires at least PHP 7.3.
+_stubbles/values_ requires at least PHP 7.3. For PHP 8 the minimum version of _stubbles/values_ is 9.3.
 
 
 Available classes
