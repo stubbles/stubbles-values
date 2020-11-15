@@ -253,10 +253,10 @@ class Properties implements \Iterator
     /**
      * returns current section
      *
-     * @return  array<string,string>
+     * @return  array<string,string>|false
      * @see     http://php.net/manual/en/spl.iterators.php
      */
-    public function current(): array
+    public function current()
     {
         return current($this->propertyData);
     }
