@@ -9,10 +9,10 @@
         "ext-iconv": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.0",
+        "phpunit/phpunit": "^9.4",
         "mikey179/vfsstream": "^1.6.8",
-        "bovigo/callmap": "^6.0",
-        "bovigo/assert": "^6.0"
+        "bovigo/callmap": "^6.2",
+        "bovigo/assert": "^6.1"
     },
     "autoload": {
         "psr-4": {
