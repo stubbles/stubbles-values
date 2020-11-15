@@ -411,7 +411,7 @@ class PropertiesTest extends TestCase
      */
     public function invalidIniStringThrowsException(): void
     {
-        $end = version_compare(phpversion(), '7.4', '<=') ? '$end' : 'end';
+        $end = version_compare(PHP_VERSION, '7.4', '<=') ? '$end' : 'end';
         expect(function() {
                 Properties::fromString("[invalid{");
         })
