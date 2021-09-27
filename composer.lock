@@ -59,12 +59,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/callmap.git",
-                "reference": "02c6abd98e714cf8b833a68bdc7933d90059876c"
+                "reference": "d9263fdb60513b90bdf1810d28f523610dffee2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/callmap/zipball/02c6abd98e714cf8b833a68bdc7933d90059876c",
-                "reference": "02c6abd98e714cf8b833a68bdc7933d90059876c",
+                "url": "https://api.github.com/repos/bovigo/callmap/zipball/d9263fdb60513b90bdf1810d28f523610dffee2a",
+                "reference": "d9263fdb60513b90bdf1810d28f523610dffee2a",
                 "shasum": ""
             },
             "require": {
@@ -101,7 +101,7 @@
                 "BSD-3-Clause"
             ],
             "description": "Allows to stub and mock method calls by applying a callmap.",
-            "time": "2021-02-02T21:14:38+00:00"
+            "time": "2021-06-25T09:23:52+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -170,16 +170,16 @@
         },
         {
             "name": "mikey179/vfsstream",
-            "version": "v1.6.8",
+            "version": "v1.6.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/vfsStream.git",
-                "reference": "231c73783ebb7dd9ec77916c10037eff5a2b6efe"
+                "reference": "250c0825537d501e327df879fb3d4cd751933b85"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/231c73783ebb7dd9ec77916c10037eff5a2b6efe",
-                "reference": "231c73783ebb7dd9ec77916c10037eff5a2b6efe",
+                "url": "https://api.github.com/repos/bovigo/vfsStream/zipball/250c0825537d501e327df879fb3d4cd751933b85",
+                "reference": "250c0825537d501e327df879fb3d4cd751933b85",
                 "shasum": ""
             },
             "require": {
@@ -212,7 +212,7 @@
             ],
             "description": "Virtual file system to mock the real file system in unit tests.",
             "homepage": "http://vfs.bovigo.org/",
-            "time": "2019-10-30T15:31:00+00:00"
+            "time": "2021-09-25T08:05:01+00:00"
         },
         {
             "name": "myclabs/deep-copy",
