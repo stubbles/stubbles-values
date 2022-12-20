@@ -154,11 +154,9 @@ class Value
     /**
      * checks that $expected is equal to value
      *
-     * @param   scalar|null  $expected
-     * @return  bool
      * @throws  \InvalidArgumentException
      */
-    public function equals($expected): bool
+    public function equals(mixed $expected): bool
     {
         if (!is_scalar($expected) && null != $expected) {
             throw new \InvalidArgumentException(
