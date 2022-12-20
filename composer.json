@@ -13,7 +13,7 @@
         "mikey179/vfsstream": "^1.6.8",
         "bovigo/callmap": "^6.2",
         "bovigo/assert": "^6.1",
-        "phpstan/phpstan": "^0.12.55"
+        "phpstan/phpstan": "^1.9"
     },
     "autoload": {
         "psr-4": {
