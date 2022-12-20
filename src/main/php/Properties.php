@@ -256,7 +256,7 @@ class Properties implements \Iterator
      * @return  array<string,string>|false
      * @see     http://php.net/manual/en/spl.iterators.php
      */
-    public function current()
+    public function current(): mixed
     {
         return current($this->propertyData);
     }
