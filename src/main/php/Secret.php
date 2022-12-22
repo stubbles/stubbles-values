@@ -14,6 +14,12 @@ declare(strict_types=1);
  * https://github.com/xp-framework/xp-framework/blob/master/core/src/main/php/LICENCE
  */
 namespace stubbles\values;
+
+use InvalidArgumentException;
+use LogicException;
+use RuntimeException;
+use SensitiveParameter;
+use Throwable;
 /**
  * Secret provides a reasonable secure storage for security-sensitive
  * lists of characters, such as passwords.
@@ -31,7 +37,7 @@ namespace stubbles\values;
  * and pass it to a place where an exception might occur, as it might be exposed
  * as method argument.
  *
- * @since  4.0.0
+ * @since 4.0.0
  */
 class Secret
 {
@@ -48,7 +54,7 @@ class Secret
      *
      * @var  array<string,array<string,mixed>>
      */
-    private static $store   = [];
+    private static array $store = [];
     /**
      * callable to encrypt data with before storing it
      *
@@ -83,14 +89,13 @@ class Secret
     /**
      * select en-/decryption mechanism
      *
-     * @param   string  $type
-     * @throws  \InvalidArgumentException  when given backing is unknown
-     * @throws  \LogicException  when trying to change the backing while there are still secure strings in the store
+     * @throws  InvalidArgumentException  when given backing is unknown
+     * @throws  LogicException  when trying to change the backing while there are still secure strings in the store
      */
     public static function switchBacking(string $type): void
     {
         if (count(self::$store) > 0) {
-            throw new \LogicException('Can not switch backing while secured strings are stored');
+            throw new LogicException('Can not switch backing while secured strings are stored');
         }
 
         switch ($type) {
@@ -113,30 +118,30 @@ class Secret
                 break;
 
             default:
-                throw new \InvalidArgumentException('Unknown backing ' . $type);
+                throw new InvalidArgumentException('Unknown backing ' . $type);
         }
     }
 
     /**
      * switches backing to openssl
      *
-     * @throws  \RuntimeException  when openssl extension not available
+     * @throws RuntimeException when openssl extension not available
      */
     private static function useOpenSslBacking(): void
     {
         if (!extension_loaded(self::BACKING_OPENSSL)) {
-            throw new \RuntimeException('Can not use openssl backing, extension openssl not available');
+            throw new RuntimeException('Can not use openssl backing, extension openssl not available');
         }
 
         $key = md5(uniqid());
         $cypherIvLength = openssl_cipher_iv_length('des');
         if (false === $cypherIvLength) {
-          throw new \RuntimeException('Can not calculate cypher iv length using method "des"');
+          throw new RuntimeException('Can not calculate cypher iv length using method "des"');
         }
 
         $iv  = substr(md5(uniqid()), 0, $cypherIvLength);
-        self::$encrypt = function($value) use ($key, $iv) { return openssl_encrypt($value, 'DES', $key,  0, $iv); };
-        self::$decrypt = function($value) use ($key, $iv) { return openssl_decrypt($value, 'DES', $key,  0, $iv); };
+        self::$encrypt = fn($value) => openssl_encrypt($value, 'DES', $key,  0, $iv);
+        self::$decrypt = fn($value) => openssl_decrypt($value, 'DES', $key,  0, $iv);
     }
 
     /**
@@ -147,8 +152,8 @@ class Secret
      */
     private static function usePlaintextBacking(): void
     {
-        self::$encrypt = function($value) { return base64_encode($value); };
-        self::$decrypt = function($value) { return base64_decode($value); };
+        self::$encrypt = fn($value) => base64_encode($value);
+        self::$decrypt = fn($value) => base64_decode($value);
     }
 
     /**
@@ -162,31 +167,30 @@ class Secret
     /**
      * creates an instance for given characters
      *
-     * @param   string|\stubbles\values\Secret  $string  characters to secure
-     * @return  \stubbles\values\Secret
-     * @throws  \InvalidArgumentException
+     * @throws  InvalidArgumentException
      */
-    public static function create($string): self
+    public static function create(#[SensitiveParameter] string|self|null $string): self
     {
         if ($string instanceof self) {
             return $string;
         }
 
         if (empty($string)) {
-            throw new \InvalidArgumentException(
-                    'Given string was null or empty, if you explicitly want to'
-                    . ' create a Secret with value null use'
-                    . ' Secret::forNull()'
+            throw new InvalidArgumentException(
+                'Given string was null or empty, if you explicitly want to'
+                . ' create a Secret with value null use'
+                . ' Secret::forNull()'
             );
         }
 
         $self = new static();
         try {
             $encrypt = self::$encrypt;
-            self::$store[$self->id] = ['payload' => $encrypt($string),
-                                       'length'  => \iconv_strlen($string)
-                                      ];
-        } catch (\Throwable $t) {
+            self::$store[$self->id] = [
+                'payload' => $encrypt($string),
+                'length'  => \iconv_strlen($string)
+            ];
+        } catch (Throwable $t) {
             $t = null;
             // This intentionally catches *ALL* exceptions, in order not to fail
             // and produce a stacktrace containing arguments on the stack that
@@ -201,8 +205,6 @@ class Secret
 
     /**
      * explicitly create an instance where the actual string is null
-     *
-     * @return  \stubbles\values\Secret
      */
     public static function forNull(): self
     {
@@ -221,8 +223,6 @@ class Secret
 
     /**
      * checks whether actual value is null
-     *
-     * @return  bool
      */
     public function isNull(): bool
     {
@@ -231,8 +231,6 @@ class Secret
 
     /**
      * checks if instance contains a string, i.e. encryption did not fail
-     *
-     * @return  bool
      */
     public function isContained(): bool
     {
@@ -245,13 +243,12 @@ class Secret
      * This should be called at the latest possible moment to avoid unneccessary
      * revealing of the value to be intended stored secure.
      *
-     * @return  string
-     * @throws  \LogicException  in case the secure string can not be found
+     * @throws LogicException in case the secure string can not be found
      */
     public function unveil(): ?string
     {
         if (!$this->isContained()) {
-           throw new \LogicException('An error occurred during string encryption.');
+           throw new LogicException('An error occurred during string encryption.');
         }
 
         if ($this->isNull()) {
@@ -268,10 +265,7 @@ class Secret
      * If no $length is provided the substring will be from start position to
      * end of the current secret.
      *
-     * @param   int  $start
-     * @param   int  $length  optional
-     * @return  \stubbles\values\Secret
-     * @throws  \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function substring(int $start, int $length = null): self
     {
@@ -288,8 +282,8 @@ class Secret
                 substr($unveiled, $start)
               : substr($unveiled, $start, $length);
         if (false === $substring) {
-            throw new \InvalidArgumentException(
-                    'Given start offset is out of range'
+            throw new InvalidArgumentException(
+                'Given start offset is out of range'
             );
         }
 
@@ -298,8 +292,6 @@ class Secret
 
     /**
      * returns length of string
-     *
-     * @return  int
      */
     public function length(): int
     {
@@ -309,19 +301,17 @@ class Secret
     /**
      * prevent serialization
      *
-     * @throws  \LogicException
+     * @throws LogicException
      */
     public function __sleep()
     {
-        throw new \LogicException('Cannot serialize instances of ' . get_class($this));
+        throw new LogicException('Cannot serialize instances of ' . get_class($this));
     }
 
     /**
      * override regular __toString() output
-     *
-     * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return get_class($this) . " {\n}\n";
     }

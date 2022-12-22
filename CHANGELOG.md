@@ -15,6 +15,10 @@
    * `asClass()`
 * fixed bug with `stubbles\values\Parse::asBool()` not returning `false` when both value and default are null
 
+### Other changes
+
+* `stubbles\values\Secret::create()` has been amended with the #[\SensitiveParameter] attribute for its parameter to further prevent possibilities for leaks of secrets
+
 ## 9.2.0 (2020-03-06)
 
 * added `stubbles\values\ResourceLoader::loadWith()`, deprecated second parameter of `stubbles\values\ResourceLoader::load()`, will be removed with 10.0.0
