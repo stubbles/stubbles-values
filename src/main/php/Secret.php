@@ -108,13 +108,13 @@ class Secret
                 break;
 
             case '__none':
-                self::$encrypt = function() { throw new \Exception('No backing set'); };
-                self::$decrypt = function() { return null; };
+                self::$encrypt = fn() => throw new \Exception('No backing set');
+                self::$decrypt = fn() => null;
                 break;
 
             case '__none_error':
-                self::$encrypt = function() { throw new \Error('No backing set'); };
-                self::$decrypt = function() { return null; };
+                self::$encrypt = fn() => throw new \Error('No backing set');
+                self::$decrypt = fn() => null;
                 break;
 
             default:
