@@ -7,6 +7,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\values;
+
+use Generator;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertFalse;
@@ -15,51 +17,42 @@ use function bovigo\assert\expect;
 /**
  * Tests for stubbles\values\Pattern.
  *
- * @group  values
- * @since  7.1.0
+ * @group values
+ * @since 7.1.0
  */
 class PatternTest extends TestCase
 {
     /**
      * @return  array<array<string>>
      */
-    public function validValues(): array
+    public function validValues(): Generator
     {
-        return [['/^([a-z]{3})$/', 'foo'],
-                ['/^([a-z]{3})$/i', 'foo'],
-                ['/^([a-z]{3})$/i', 'Bar']
-        ];
+        yield ['/^([a-z]{3})$/', 'foo'];
+        yield ['/^([a-z]{3})$/i', 'foo'];
+        yield ['/^([a-z]{3})$/i', 'Bar'];
     }
 
     /**
-     * @param  string  $pattern
-     * @param  string  $value
      * @test
-     * @dataProvider  validValues
+     * @dataProvider validValues
      */
-    public function validValueEvaluatesToTrue($pattern, $value): void
+    public function validValueEvaluatesToTrue(string $pattern, string $value): void
     {
         assertTrue(pattern($pattern)->matches($value));
     }
 
-    /**
-     * @return  array<array<string>>
-     */
-    public function invalidValues(): array
+    public function invalidValues(): Generator
     {
-        return [['/^([a-z]{3})$/', 'Bar'],
-                ['/^([a-z]{3})$/', 'baz0123'],
-                ['/^([a-z]{3})$/i', 'baz0123']
-        ];
+        yield ['/^([a-z]{3})$/', 'Bar'];
+        yield ['/^([a-z]{3})$/', 'baz0123'];
+        yield ['/^([a-z]{3})$/i', 'baz0123'];
     }
 
     /**
-     * @param  string  $pattern
-     * @param  string  $value
      * @test
-     * @dataProvider  invalidValues
+     * @dataProvider invalidValues
      */
-    public function invalidValueEvaluatesToFalse($pattern, $value): void
+    public function invalidValueEvaluatesToFalse(string $pattern, string $value): void
     {
         assertFalse(pattern($pattern)->matches($value));
     }
@@ -69,7 +62,7 @@ class PatternTest extends TestCase
      */
     public function invalidRegexThrowsRuntimeExceptionOnEvaluation(): void
     {
-        expect(function() { pattern('^([a-z]{3})$')->matches('foo'); })
+        expect(fn() => pattern('^([a-z]{3})$')->matches('foo'))
             ->throws(\RuntimeException::class)
             ->withMessage('Failure while matching "^([a-z]{3})$", reason: internal PCRE error.');
     }

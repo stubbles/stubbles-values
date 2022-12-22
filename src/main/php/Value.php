@@ -7,11 +7,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\values;
+
+use BadMethodCallException;
+use InvalidArgumentException;
+use Traversable;
 /**
  * Provides functionality to work with single values.
  *
  * @api
- * @since  7.2.0
+ * @since 7.2.0
  */
 class Value
 {
@@ -20,15 +24,8 @@ class Value
      *
      * @var  array<string,callable>
      */
-    private static $checks = [];
-    /**
-     * @var  \stubbles\values\Value
-     */
-    private static $null;
-    /**
-     * @var  mixed
-     */
-    private $value;
+    private static array $checks = [];
+    private static Value $null;
 
     /**
      * static initializer
@@ -38,23 +35,9 @@ class Value
         self::$null = new self(null);
     }
 
-    /**
-     * constructor
-     *
-     * @param  mixed  $value  actual result value
-     */
-    private final function __construct($value)
-    {
-        $this->value = $value;
-    }
+    private final function __construct(private mixed $value) { }
 
-    /**
-     * static constructor
-     *
-     * @param   mixed   $value  actual result value
-     * @return  \stubbles\values\Value
-     */
-    public static function of($value): self
+    public static function of(mixed $value): self
     {
         if (null === $value) {
             return self::$null;
@@ -66,8 +49,7 @@ class Value
     /**
      * checks if parameter is null
      *
-     * @return  bool
-     * @since   8.1.0
+     * @since  8.1.0
      */
     public function isNull(): bool
     {
@@ -79,8 +61,7 @@ class Value
      *
      * Value is empty if its value is null, an empty string or an empty array.
      *
-     * @return  bool
-     * @since   8.1.0
+     * @since 8.1.0
      */
     public function isEmpty(): bool
     {
@@ -92,10 +73,8 @@ class Value
 
     /**
      * returns actual value
-     *
-     * @return  mixed
      */
-    public function value()
+    public function value(): mixed
     {
         return $this->value;
     }
@@ -103,11 +82,8 @@ class Value
 
     /**
      * checks that $needle is contained in value
-     *
-     * @param   mixed  $needle
-     * @return  bool
      */
-    public function contains($needle): bool
+    public function contains(mixed $needle): bool
     {
         if (null === $this->value) {
             return is_null($needle);
@@ -117,7 +93,7 @@ class Value
             return false !== strpos($this->value, (string) $needle);
         }
 
-        if (is_array($this->value) || $this->value instanceof \Traversable) {
+        if (is_array($this->value) || $this->value instanceof Traversable) {
             foreach ($this->value as $element) {
                 if ($element === $needle) {
                     return true;
@@ -131,8 +107,7 @@ class Value
     /**
      * checks that value contains any of the given elements
      *
-     * @param   array<mixed>  $elements
-     * @return  bool
+     * @param mixed[] $elements
      */
     public function containsAnyOf(array $elements): bool
     {
@@ -143,7 +118,11 @@ class Value
         foreach ($elements as $needle) {
             if (is_bool($needle) && $this->value === $needle) {
                 return true;
-            } elseif (!is_bool($needle) && ($this->value === $needle || (is_string($this->value) && false !== strpos($this->value, (string) $needle)))) {
+            } elseif (
+                !is_bool($needle)
+                && ($this->value === $needle
+                || (is_string($this->value) && false !== strpos($this->value, (string) $needle)))
+            ) {
                 return true;
             }
         }
@@ -154,13 +133,13 @@ class Value
     /**
      * checks that $expected is equal to value
      *
-     * @throws  \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function equals(mixed $expected): bool
     {
         if (!is_scalar($expected) && null != $expected) {
-            throw new \InvalidArgumentException(
-                    'Can only compare scalar values and null.'
+            throw new InvalidArgumentException(
+                'Can only compare scalar values and null.'
             );
         }
 
@@ -170,9 +149,7 @@ class Value
     /**
      * checks that value is one of the allowed values
      *
-     * @param   array<mixed>  $allowedValues
-     * @param   bool          $strict         optional  whether type must match as well
-     * @return  bool
+     * @param mixed[] $allowedValues
      */
     public function isOneOf(array $allowedValues, bool $strict = false): bool
     {
@@ -191,9 +168,6 @@ class Value
 
     /**
      * checks whether value is matched by given regular expression
-     *
-     * @param   string  $regex  regular expression to apply
-     * @return  bool
      */
     public function isMatchedBy(string $regex): bool
     {
@@ -205,9 +179,6 @@ class Value
      *
      * The given callable function must accept the value to check as first
      * parameter. It must either return true or false.
-     *
-     * @param   callable  $check
-     * @return  bool
      */
     public function satisfies(callable $check): bool
     {
@@ -236,14 +207,12 @@ class Value
      * not allowed to overwrite existing functions, e.g. you can not redefine
      * is_int().
      *
-     * @param   string    $method
-     * @param   callable  $function
-     * @throws  \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public static function defineCheck(string $method, callable $function): void
     {
         if (function_exists($method)) {
-            throw new \InvalidArgumentException('Can not overwrite internal PHP function ' . $method . '().');
+            throw new InvalidArgumentException('Can not overwrite internal PHP function ' . $method . '().');
         }
 
         self::$checks[$method] = $function;
@@ -252,19 +221,16 @@ class Value
     /**
      * intercept calls to dynamicly added methods
      *
-     * @param   string   $method     name of method
-     * @param   mixed[]  $arguments  list of additional arguments for method
-     * @return  bool
-     * @throws  \BadMethodCallException  in case called method does not exist
+     * @param  mixed[] $arguments  list of additional arguments for method
+     * @throws BadMethodCallException  in case called method does not exist
      */
     public function __call(string $method, array $arguments): bool
     {
         if (!isset(self::$checks[$method]) && !function_exists($method)) {
-            throw new \BadMethodCallException('Method ' . __CLASS__ . '::' . $method . '() does not exist.');
+            throw new BadMethodCallException('Method ' . __CLASS__ . '::' . $method . '() does not exist.');
         } elseif (!isset(self::$checks[$method]) && is_callable($method)) {
             return $method($this->value, ...$arguments);
         }
-
 
         $function = self::$checks[$method];
         return $function($this->value, ...$arguments);

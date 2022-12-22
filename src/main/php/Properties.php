@@ -7,6 +7,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\values;
+
+use InvalidArgumentException;
+use LogicException;
+use UnexpectedValueException;
 /**
  * Class to read and parse properties.
  *
@@ -22,17 +26,13 @@ namespace stubbles\values;
 class Properties implements \Iterator
 {
     /**
-     * property data
-     *
-     * @var  array<string,array<string,mixed>>
+     * @var array<string,array<string,mixed>>
      */
-    protected $propertyData;
+    protected array $propertyData;
 
     /**
-     * constructor
-     *
      * @api
-     * @param  array<string,array<string,mixed>>  $propertyData  the property data
+     * @param array<string,array<string,mixed>> $propertyData  the property data
      */
     final public function __construct(array $propertyData = [])
     {
@@ -48,19 +48,17 @@ class Properties implements \Iterator
     }
 
     /**
-     * construct class from string
+     * construct instance from string
      *
      * @api
-     * @param   string  $propertyString
-     * @return  \stubbles\values\Properties
-     * @throws  \InvalidArgumentException
-     * @since   2.0.0
+     * @throws InvalidArgumentException
+     * @since  2.0.0
      */
     public static function fromString(string $propertyString): self
     {
         $propertyData = @parse_ini_string($propertyString, true);
         if (false === $propertyData) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                     'Property string contains errors and can not be parsed: '
                     . lastErrorMessage()->value()
             );
@@ -70,28 +68,26 @@ class Properties implements \Iterator
     }
 
     /**
-     * construct class from a file
+     * construct instance from a file
      *
      * @api
-     * @param   string  $propertiesFile  full path to file containing properties
-     * @return  \stubbles\values\Properties
-     * @throws  \InvalidArgumentException  if file can not be found or is not readable
-     * @throws  \UnexpectedValueException  if file contains errors and can not be parsed
+     * @throws InvalidArgumentException if file can not be found or is not readable
+     * @throws UnexpectedValueException if file contains errors and can not be parsed
      */
     public static function fromFile(string $propertiesFile): self
     {
         if (!file_exists($propertiesFile) || !is_readable($propertiesFile)) {
-            throw new \InvalidArgumentException(
-                    'Property file ' . $propertiesFile . ' not found'
+            throw new InvalidArgumentException(
+                'Property file ' . $propertiesFile . ' not found'
             );
         }
 
         $propertyData = @parse_ini_file($propertiesFile, true);
         if (false === $propertyData) {
-            throw new \UnexpectedValueException(
-                    'Property file at ' . $propertiesFile
-                    . ' contains errors and can not be parsed: '
-                    . lastErrorMessage()->value()
+            throw new UnexpectedValueException(
+                'Property file at ' . $propertiesFile
+                . ' contains errors and can not be parsed: '
+                . lastErrorMessage()->value()
             );
         }
 
@@ -106,9 +102,7 @@ class Properties implements \Iterator
      * section from the other instance overwrite the section from this instance.
      *
      * @api
-     * @param   \stubbles\values\Properties  $otherProperties
-     * @return  \stubbles\values\Properties
-     * @since   1.3.0
+     * @since  1.3.0
      */
     public function merge(Properties $otherProperties): self
     {
@@ -119,28 +113,24 @@ class Properties implements \Iterator
      * checks if a certain section exists
      *
      * @api
-     * @param   string  $section  name of the section
-     * @return  bool
-     * @since   4.0.0
+     * @since  4.0.0
      */
-    public function containSection(string $section): bool
+    public function containSection(string $sectionKey): bool
     {
-        return isset($this->propertyData[$section]);
+        return isset($this->propertyData[$sectionKey]);
     }
 
     /**
      * returns a whole section if it exists or the default if the section does not exist
      *
      * @api
-     * @param   string                 $section  name of the section
-     * @param   array<string,string>   $default  value to return if section does not exist
-     * @return  array<string,string>
-     * @since   4.0.0
+     * @return array<string,string>
+     * @since  4.0.0
      */
-    public function section(string $section, array $default = []): array
+    public function section(string $sectionKey, array $default = []): array
     {
-        if (isset($this->propertyData[$section])) {
-            return $this->propertyData[$section];
+        if (isset($this->propertyData[$sectionKey])) {
+            return $this->propertyData[$sectionKey];
         }
 
         return $default;
@@ -150,15 +140,13 @@ class Properties implements \Iterator
      * returns a list of all keys of a specific section
      *
      * @api
-     * @param   string    $section  name of the section
-     * @param   string[]  $default  value to return if section does not exist
-     * @return  string[]
-     * @since   4.0.0
+     * @return string[]
+     * @since  4.0.0
      */
-    public function keysForSection(string $section, array $default = []): array
+    public function keysForSection(string $sectionKey, array $default = []): array
     {
-        if (isset($this->propertyData[$section])) {
-            return array_keys($this->propertyData[$section]);
+        if (isset($this->propertyData[$sectionKey])) {
+            return array_keys($this->propertyData[$sectionKey]);
         }
 
         return $default;
@@ -168,34 +156,24 @@ class Properties implements \Iterator
      * checks if a certain section contains a certain key
      *
      * @api
-     * @param   string  $section  name of the section
-     * @param   string  $key      name of the key
-     * @return  bool
-     * @since   4.0.0
+     * @since 4.0.0
      */
-    public function containValue(string $section, string $key): bool
+    public function containValue(string $sectionKey, string $key): bool
     {
-        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
-            return true;
-        }
-
-        return false;
+        return isset($this->propertyData[$sectionKey])
+            && isset($this->propertyData[$sectionKey][$key]);
     }
 
     /**
      * returns a value from a section or a default value if the section or key does not exist
      *
      * @api
-     * @param   string  $section  name of the section
-     * @param   string  $key      name of the key
-     * @param   mixed   $default  value to return if section or key does not exist
-     * @return  scalar
-     * @since   4.0.0
+     * @since 4.0.0
      */
-    public function value(string $section, string $key, $default = null)
+    public function value(string $sectionKey, string $key, mixed $default = null): mixed
     {
-        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
-            return $this->propertyData[$section][$key];
+        if (isset($this->propertyData[$sectionKey]) && isset($this->propertyData[$sectionKey][$key])) {
+            return $this->propertyData[$sectionKey][$key];
         }
 
         return $default;
@@ -204,21 +182,17 @@ class Properties implements \Iterator
     /**
      * parses value and returns the parsing result
      *
-     * @param   string  $section
-     * @param   string  $key
-     * @param   mixed   $default
-     * @return  mixed
-     * @see     \stubbles\values\Parse::toType()
-     * @since   4.1.0
+     * @see   \stubbles\values\Parse::toType()
+     * @since 4.1.0
      */
-    public function parseValue(string $section, string $key, $default = null)
+    public function parseValue(string $sectionKey, string $key, $default = null): mixed
     {
-        if (isset($this->propertyData[$section]) && isset($this->propertyData[$section][$key])) {
-            if ($this->propertyData[$section][$key] instanceof Secret) {
-                return $this->propertyData[$section][$key];
+        if (isset($this->propertyData[$sectionKey]) && isset($this->propertyData[$sectionKey][$key])) {
+            if ($this->propertyData[$sectionKey][$key] instanceof Secret) {
+                return $this->propertyData[$sectionKey][$key];
             }
 
-            return Parse::toType($this->propertyData[$section][$key]);
+            return Parse::toType($this->propertyData[$sectionKey][$key]);
         }
 
         return $default;
@@ -228,26 +202,23 @@ class Properties implements \Iterator
      * returns a parser instance for the value
      *
      * In case the value was recognized as password and is therefore an instance
-     * of \stubbles\values\Secret  an IllegalAccessException is thrown as
+     * of \stubbles\values\Secret a LogicException is thrown as
      * this value can not be parsed.
      *
-     * @param   string  $section
-     * @param   string  $key
-     * @return  \stubbles\values\Parse
-     * @throws  \LogicException
-     * @since   5.0.0
+     * @throws LogicException
+     * @since  5.0.0
      */
-    public function parse(string $section, string $key): Parse
+    public function parse(string $sectionKey, string $key): Parse
     {
-        if (!isset($this->propertyData[$section]) || !isset($this->propertyData[$section][$key])) {
+        if (!isset($this->propertyData[$sectionKey]) || !isset($this->propertyData[$sectionKey][$key])) {
             return new Parse(null);
         }
 
-        if ($this->propertyData[$section][$key] instanceof Secret) {
-            throw new \LogicException('Can not parse fields with passwords');
+        if ($this->propertyData[$sectionKey][$key] instanceof Secret) {
+            throw new LogicException('Can not parse fields with passwords');
         }
 
-        return new Parse($this->propertyData[$section][$key]);
+        return new Parse($this->propertyData[$sectionKey][$key]);
     }
 
     /**
@@ -263,9 +234,6 @@ class Properties implements \Iterator
 
     /**
      * returns name of current section
-     *
-     * @return  string
-     * @see     http://php.net/manual/en/spl.iterators.php
      */
     public function key(): string
     {
@@ -274,8 +242,6 @@ class Properties implements \Iterator
 
     /**
      * forwards to next section
-     *
-     * @see  http://php.net/manual/en/spl.iterators.php
      */
     public function next(): void
     {
@@ -284,8 +250,6 @@ class Properties implements \Iterator
 
     /**
      * rewind to first section
-     *
-     * @see  http://php.net/manual/en/spl.iterators.php
      */
     public function rewind(): void
     {
@@ -294,9 +258,6 @@ class Properties implements \Iterator
 
     /**
      * checks if there are more valid sections
-     *
-     * @return  bool
-     * @see     http://php.net/manual/en/spl.iterators.php
      */
     public function valid(): bool
     {

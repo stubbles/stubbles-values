@@ -18,10 +18,10 @@ require_once __DIR__ . '/SecretTest.php';
 /**
  * OpenSSL backed tests for stubbles\values\Secret.
  *
- * @since  4.0.0
- * @group  values
- * @group  secret
- * @requires extension  openssl
+ * @since 4.0.0
+ * @group values
+ * @group secret
+ * @requires extension openssl
  */
 class OpenSslSecretTest extends SecretTest
 {

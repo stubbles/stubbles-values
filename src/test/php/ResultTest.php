@@ -7,6 +7,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\values;
+
+use Generator;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\assertFalse;
@@ -16,8 +18,8 @@ use function bovigo\assert\predicate\isSameAs;
 /**
  * Tests for stubbles\values\Result.
  *
- * @since  6.0.0
- * @group  types
+ * @since 6.0.0
+ * @group types
  */
 class ResultTest extends TestCase
 {
@@ -59,8 +61,8 @@ class ResultTest extends TestCase
     public function filterOnResultOfNullReturnsResultOfNull(): void
     {
         assertThat(
-                Result::of(null)->filter(function($value) { return true; }),
-                isSameAs(Result::of(null))
+            Result::of(null)->filter(fn() => true),
+            isSameAs(Result::of(null))
         );
     }
 
@@ -70,8 +72,8 @@ class ResultTest extends TestCase
     public function filterOnResultOfNonNullReturnsResultOfNullWhenPredicateDenies(): void
     {
         assertThat(
-                Result::of(303)->filter(function($value) { return false; }),
-                isSameAs(Result::of(null))
+            Result::of(303)->filter(fn() => false),
+            isSameAs(Result::of(null))
         );
     }
 
@@ -82,8 +84,8 @@ class ResultTest extends TestCase
     {
         $result = Result::of(303);
         assertThat(
-                $result->filter(function($value) { return true; }),
-                isSameAs($result)
+            $result->filter(fn() => true),
+            isSameAs($result)
         );
     }
 
@@ -93,8 +95,8 @@ class ResultTest extends TestCase
     public function mapResultOfNullReturnsResultOfNull(): void
     {
         assertThat(
-                Result::of(null)->map(function($value) { return 909; }),
-                isSameAs(Result::of(null))
+            Result::of(null)->map(fn() => 909),
+            isSameAs(Result::of(null))
         );
     }
 
@@ -104,8 +106,8 @@ class ResultTest extends TestCase
     public function mapResultOfNonNullReturnsMappedResult(): void
     {
         assertThat(
-                Result::of(303)->map(function($value) { return 909; }),
-                equals(Result::of(909))
+            Result::of(303)->map(fn() => 909),
+            equals(Result::of(909))
         );
     }
 
@@ -131,10 +133,10 @@ class ResultTest extends TestCase
     public function applyhenNullOnResultOfNullReturnsOther(): void
     {
         assertThat(
-                Result::of(null)
-                        ->applyWhenNull(function() { return 909; })
-                        ->value(),
-                equals(909)
+            Result::of(null)
+                ->applyWhenNull(fn() => 909)
+                ->value(),
+            equals(909)
         );
     }
 
@@ -144,102 +146,95 @@ class ResultTest extends TestCase
     public function applyWhenNullOnResultOfNonNullReturnsValue(): void
     {
         assertThat(
-                Result::of(303)
-                        ->applyWhenNull(function() { return 909; })
-                        ->value(),
-                equals(303)
+            Result::of(303)
+                ->applyWhenNull(fn() => 909)
+                ->value(),
+            equals(303)
         );
     }
 
-    /**
-     * @return  array<array<mixed>>
-     */
-    public function emptyValues(): array
+    public function emptyValues(): Generator
     {
-        return [[null], [''], [[]]];
+        yield [null];
+        yield [''];
+        yield [[]];
     }
 
     /**
-     * @param  mixed  $value
      * @test
-     * @dataProvider  emptyValues
-     * @since  6.2.0
+     * @dataProvider emptyValues
+     * @since 6.2.0
      */
-    public function isEmptyForEmptyValues($value): void
+    public function isEmptyForEmptyValues(mixed $value): void
     {
         assertTrue(Result::of($value)->isEmpty());
     }
 
-    /**
-     * @return  array<array<mixed>>
-     */
-    public function nonEmptyValues(): array
+    public function nonEmptyValues(): Generator
     {
-        return [[0], [303], ['foo'], [['foo']]];
+        yield [0];
+        yield [303];
+        yield ['foo'];
+        yield [['foo']];
     }
 
     /**
-     * @param  mixed  $value
      * @test
-     * @dataProvider  nonEmptyValues
-     * @since  6.2.0
+     * @dataProvider nonEmptyValues
+     * @since 6.2.0
      */
-    public function isNotEmptyForNomEmptyValues($value): void
+    public function isNotEmptyForNomEmptyValues(mixed $value): void
     {
         assertFalse(Result::of($value)->isEmpty());
     }
 
     /**
-     * @param  mixed  $value
      * @test
-     * @dataProvider  emptyValues
-     * @since  6.2.0
+     * @dataProvider emptyValues
+     * @since 6.2.0
      */
-    public function whenEmptyOnResultOfEmptyReturnsOther($value): void
+    public function whenEmptyOnResultOfEmptyReturnsOther(mixed $value): void
     {
         assertThat(Result::of($value)->whenEmpty(909)->value(), equals(909));
     }
 
     /**
-     * @param  mixed  $value
      * @test
-     * @dataProvider  nonEmptyValues
-     * @since  6.2.0
+     * @dataProvider nonEmptyValues
+     * @since 6.2.0
      */
-    public function whenEmptyOnResultOfNonEmptyReturnsValue($value): void
+    public function whenEmptyOnResultOfNonEmptyReturnsValue(mixed $value): void
     {
         assertThat(Result::of($value)->whenEmpty(909)->value(), equals($value));
     }
 
     /**
-     * @param  mixed  $value
      * @test
-     * @dataProvider  emptyValues
-     * @since  6.2.0
+     * @dataProvider emptyValues
+     * @since 6.2.0
      */
-    public function applyhenEmptyOnResultOfEmptyReturnsOther($value): void
+    public function applyhenEmptyOnResultOfEmptyReturnsOther(mixed $value): void
     {
         assertThat(
-                Result::of($value)
-                        ->applyWhenEmpty(function() { return 909; })
-                        ->value(),
-                equals(909)
+            Result::of($value)
+                ->applyWhenEmpty(fn() => 909)
+                ->value(),
+            equals(909)
         );
     }
 
     /**
-     * @param  mixed  $value
      * @test
-     * @dataProvider  nonEmptyValues
-     * @since  6.2.0
+     * @dataProvider nonEmptyValues
+     * @since 6.2.0
      */
-    public function applyWhenEmptyOnResultOfNonEmptyReturnsValue($value): void
+    public function applyWhenEmptyOnResultOfNonEmptyReturnsValue(mixed $value): void
     {
         assertThat(
-                Result::of($value)
-                        ->applyWhenEmpty(function() { return 909; })
-                        ->value(),
-                equals($value)
+            Result::of($value)
+                ->applyWhenEmpty(fn() => 909)
+                ->value(),
+            equals($value)
         );
     }
 }

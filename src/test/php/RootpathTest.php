@@ -7,6 +7,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\values;
+use InvalidArgumentException;
 use org\bovigo\vfs\vfsStream;
 use PHPUnit\Framework\TestCase;
 
@@ -22,8 +23,8 @@ use function bovigo\assert\{
 /**
  * Tests for stubbles\values\Rootpath.
  *
- * @since  4.0.0
- * @group  resources
+ * @since 4.0.0
+ * @group resources
  */
 class RootpathTest extends TestCase
 {
@@ -33,8 +34,8 @@ class RootpathTest extends TestCase
     public function constructWithoutArgumentCalculatesRootpathAutomatically(): void
     {
         assertThat(
-                (string) new Rootpath(),
-                equals(realpath(__DIR__ . '/../../../'))
+            (string) new Rootpath(),
+            equals(realpath(__DIR__ . '/../../../'))
         );
     }
 
@@ -43,10 +44,8 @@ class RootpathTest extends TestCase
      */
     public function constructWithNonExistingPathThrowsIllegalArgumentException(): void
     {
-        expect(function() {
-                new Rootpath(__DIR__ . '/doesNotExist');
-        })
-        ->throws(\InvalidArgumentException::class);
+        expect(fn() => new Rootpath(__DIR__ . '/doesNotExist'))
+            ->throws(InvalidArgumentException::class);
     }
 
     /**
@@ -63,8 +62,8 @@ class RootpathTest extends TestCase
     public function constructWithExistingPathTurnsDotsIntoRealpath(): void
     {
         assertThat(
-                (string) new Rootpath(__DIR__ . '/..'),
-                equals(dirname(__DIR__))
+            (string) new Rootpath(__DIR__ . '/..'),
+            equals(dirname(__DIR__))
         );
     }
 
@@ -92,8 +91,8 @@ class RootpathTest extends TestCase
     public function castFromWithoutArgumentCalculatesRootpathAutomatically(): void
     {
         assertThat(
-                (string) Rootpath::castFrom(null),
-                equals(realpath(__DIR__ . '/../../../'))
+            (string) Rootpath::castFrom(null),
+            equals(realpath(__DIR__ . '/../../../'))
         );
     }
 
@@ -102,10 +101,8 @@ class RootpathTest extends TestCase
      */
     public function castFromWithNonExistingPathThrowsIllegalArgumentException(): void
     {
-        expect(function() {
-                Rootpath::castFrom(__DIR__ . '/doesNotExist');
-        })
-        ->throws(\InvalidArgumentException::class);
+        expect(fn() => Rootpath::castFrom(__DIR__ . '/doesNotExist'))
+            ->throws(InvalidArgumentException::class);
     }
 
     /**
@@ -122,9 +119,9 @@ class RootpathTest extends TestCase
     public function toCreatesPath(): void
     {
         assertThat(
-                (string) Rootpath::castFrom(null)
-                        ->to('src', 'test', 'php', 'RootpathTest.php'),
-                equals(__FILE__)
+            (string) Rootpath::castFrom(null)
+                ->to('src', 'test', 'php', 'RootpathTest.php'),
+            equals(__FILE__)
         );
     }
 
@@ -134,7 +131,7 @@ class RootpathTest extends TestCase
     public function doesNotContainNonExistingPath(): void
     {
         assertFalse(
-                Rootpath::castFrom(null)->contains(__DIR__ . '/doesNotExist')
+            Rootpath::castFrom(null)->contains(__DIR__ . '/doesNotExist')
         );
     }
 
@@ -144,7 +141,7 @@ class RootpathTest extends TestCase
     public function doesNotContainPathOutsideRoot(): void
     {
         assertFalse(
-                Rootpath::castFrom(__DIR__)->contains(dirname(__DIR__))
+            Rootpath::castFrom(__DIR__)->contains(dirname(__DIR__))
         );
     }
 
@@ -154,7 +151,7 @@ class RootpathTest extends TestCase
     public function containsPathInsideRoot(): void
     {
         assertTrue(
-                Rootpath::castFrom(__DIR__)->contains(__FILE__)
+            Rootpath::castFrom(__DIR__)->contains(__FILE__)
         );
     }
 
@@ -168,15 +165,12 @@ class RootpathTest extends TestCase
 
     /**
      * returns path to test resources
-     *
-     * @param   string  $last
-     * @return  \stubbles\values\Rootpath
      */
-    private function rootpathToTestResources($last): Rootpath
+    private function rootpathToTestResources(string $last): Rootpath
     {
         return Rootpath::castFrom(
-                (new Rootpath())
-                        ->to('src', 'test', 'resources', 'rootpath', $last)
+            (new Rootpath())
+                ->to('src', 'test', 'resources', 'rootpath', $last)
         );
     }
 
@@ -187,11 +181,11 @@ class RootpathTest extends TestCase
     {
         $rootpath = $this->rootpathToTestResources('psr0');
         assertThat(
-                $rootpath->sourcePathes(),
-                equals([
-                        $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'mikey179' . DIRECTORY_SEPARATOR . 'vfsStream' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
-                        $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'symfony' . DIRECTORY_SEPARATOR . 'yaml')
-                ])
+            $rootpath->sourcePathes(),
+            equals([
+                $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'mikey179' . DIRECTORY_SEPARATOR . 'vfsStream' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
+                $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'symfony' . DIRECTORY_SEPARATOR . 'yaml')
+            ])
         );
     }
 
@@ -202,11 +196,11 @@ class RootpathTest extends TestCase
     {
         $rootpath = $this->rootpathToTestResources('psr4');
         assertThat(
-                $rootpath->sourcePathes(),
-                equals([
-                        $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'stubbles' . DIRECTORY_SEPARATOR . 'core-dev' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
-                        $rootpath->to('src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php')
-                ])
+            $rootpath->sourcePathes(),
+            equals([
+                $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'stubbles' . DIRECTORY_SEPARATOR . 'core-dev' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
+                $rootpath->to('src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php')
+            ])
         );
     }
 
@@ -217,19 +211,19 @@ class RootpathTest extends TestCase
     {
         $rootpath = $this->rootpathToTestResources('all');
         assertThat(
-                $rootpath->sourcePathes(),
-                equals([
-                        $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'mikey179' . DIRECTORY_SEPARATOR . 'vfsStream' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
-                        $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'symfony' . DIRECTORY_SEPARATOR . 'yaml'),
-                        $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'stubbles' . DIRECTORY_SEPARATOR . 'core-dev' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
-                        $rootpath->to('src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php')
-                ])
+            $rootpath->sourcePathes(),
+            equals([
+                $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'mikey179' . DIRECTORY_SEPARATOR . 'vfsStream' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
+                $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'symfony' . DIRECTORY_SEPARATOR . 'yaml'),
+                $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'stubbles' . DIRECTORY_SEPARATOR . 'core-dev' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
+                $rootpath->to('src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php')
+            ])
         );
     }
 
     /**
      * @test
-     * @since  8.1.0
+     * @sinces 8.1.0
      */
     public function defaultRootpathReturnsAutomaticallyCalculatedRootpath(): void
     {
@@ -238,7 +232,7 @@ class RootpathTest extends TestCase
 
     /**
      * @test
-     * @since  8.1.0
+     * @since 8.1.0
      */
     public function defaultRootpathIsAlwaysTheSame(): void
     {

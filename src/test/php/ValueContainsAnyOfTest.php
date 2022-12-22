@@ -7,77 +7,63 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\values;
+
+use Generator;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 /**
  * Tests for stubbles\values\Value::containsAnyOf().
  *
- * @group  values
- * @group  value_checks
- * @since  7.2.0
+ * @group values
+ * @group value_checks
+ * @since 7.2.0
  */
 class ValueContainsAnyOfTest extends TestCase
 {
-    /**
-     * returns tuples which evaluate to true
-     *
-     * @return  array<array<mixed>>
-     */
-    public function tuplesEvaluatingToTrue(): array
+    public function tuplesEvaluatingToTrue(): Generator
     {
-        return [[[true], true],
-                [[false], false],
-                [[5], 5],
-                [[5], '55'],
-                [[5], '25'],
-                [[5], 'foo5'],
-                [[5], 'fo5o'],
-                [['foo', 'bar'], 'foobar'],
-                [['foo', 'bar'], 'foo']
-        ];
+        yield [[true], true];
+        yield [[false], false];
+        yield [[5], 5];
+        yield [[5], '55'];
+        yield [[5], '25'];
+        yield [[5], 'foo5'];
+        yield [[5], 'fo5o'];
+        yield [['foo', 'bar'], 'foobar'];
+        yield [['foo', 'bar'], 'foo'];
     }
 
     /**
-     * @param  array<mixed>  $contained
-     * @param  mixed         $value
      * @test
-     * @dataProvider  tuplesEvaluatingToTrue
+     * @dataProvider tuplesEvaluatingToTrue
      */
-    public function evaluatesToTrue(array $contained, $value): void
+    public function evaluatesToTrue(array $contained, mixed $value): void
     {
         assertTrue(value($value)->containsAnyOf($contained));
     }
 
-    /**
-     * returns tuples which evaluate to false
-     *
-     * @return  array<array<mixed>>
-     */
-    public function tuplesEvaluatingToFalse(): array
+    public function tuplesEvaluatingToFalse(): Generator
     {
-        return [[[true], false],
-                [[false], true],
-                [[false], new \stdClass()],
-                [[false], null],
-                [[5], 'foo'],
-                [[5], 6],
-                [[5], 55],
-                [[5], 25],
-                [[true], 5],
-                [[false], 0],
-                [[true], 'foo'],
-                [['foo', 'baz'], 'bar']
-        ];
+        yield [[true], false];
+        yield [[false], true];
+        yield [[false], new \stdClass()];
+        yield [[false], null];
+        yield [[5], 'foo'];
+        yield [[5], 6];
+        yield [[5], 55];
+        yield [[5], 25];
+        yield [[true], 5];
+        yield [[false], 0];
+        yield [[true], 'foo'];
+        yield [['foo', 'baz'], 'bar'];
     }
 
     /**
-     * @param  array<mixed>  $contained
-     * @param  mixed         $value
      * @test
-     * @dataProvider  tuplesEvaluatingToFalse
+     * @dataProvider tuplesEvaluatingToFalse
      */
-    public function evaluatesToFalse(array $contained, $value): void
+    public function evaluatesToFalse(array $contained, mixed $value): void
     {
         assertFalse(value($value)->containsAnyOf($contained));
     }

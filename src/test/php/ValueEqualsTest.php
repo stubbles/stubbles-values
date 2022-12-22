@@ -7,6 +7,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\values;
+
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
@@ -14,9 +16,9 @@ use function bovigo\assert\expect;
 /**
  * Tests for stubbles\values\Value::equals().
  *
- * @group  values
- * @group  value_checks
- * @since  7.2.0
+ * @group values
+ * @group value_checks
+ * @since 7.2.0
  */
 class ValueEqualsTest extends TestCase
 {
@@ -26,9 +28,8 @@ class ValueEqualsTest extends TestCase
     public function constructionWithObjectThrowsIllegalArgumentException(): void
     {
         $value = value('foo');
-        expect(function() use ($value) {
-                $value->equals(new \stdClass());
-        })->throws(\InvalidArgumentException::class);
+        expect(fn() => $value->equals(new \stdClass()))
+            ->throws(InvalidArgumentException::class);
     }
 
     /**
@@ -45,12 +46,10 @@ class ValueEqualsTest extends TestCase
     }
 
     /**
-     * @param  scalar  $expected
-     * @param  mixed   $value
      * @test
-     * @dataProvider  tuplesEvaluatingToTrue
+     * @dataProvider tuplesEvaluatingToTrue
      */
-    public function evaluatesToTrue($expected, $value): void
+    public function evaluatesToTrue(mixed $expected, mixed $value): void
     {
         assertTrue(value($value)->equals($expected));
     }
@@ -76,12 +75,10 @@ class ValueEqualsTest extends TestCase
     }
 
     /**
-     * @param  scalar  $expected
-     * @param  mixed   $value
      * @test
-     * @dataProvider  tuplesEvaluatingToFalse
+     * @dataProvider tuplesEvaluatingToFalse
      */
-    public function evaluatesToFalse($expected, $value): void
+    public function evaluatesToFalse(mixed $expected, mixed $value): void
     {
         assertFalse(value($value)->equals($expected));
     }

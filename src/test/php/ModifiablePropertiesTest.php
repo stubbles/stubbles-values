@@ -26,12 +26,7 @@ use function bovigo\assert\{
  */
 class ModifiablePropertiesTest extends TestCase
 {
-    /**
-     * instance to test
-     *
-     * @var  \stubbles\values\ModifiableProperties
-     */
-    protected $modifiableProperties;
+    protected ModifiableProperties $modifiableProperties;
 
     protected function setUp(): void
     {

@@ -7,29 +7,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\values;
+
+use DomainException;
+use InvalidArgumentException;
+use OutOfBoundsException;
 /**
  * Class to load resources from arbitrary locations.
  *
- * @since  1.6.0
+ * @since 1.6.0
  * @Singleton
  */
 class ResourceLoader
 {
-    /**
-     * root path of application
-     *
-     * @var  \stubbles\values\Rootpath
-     */
-    private $rootpath;
+    private Rootpath $rootpath;
 
     /**
-     * constructor
-     *
      * If no root path is given it tries to detect it automatically.
-     *
-     * @param  string|\stubbles\values\Rootpath  $rootpath  optional
      */
-    public function __construct($rootpath = null)
+    public function __construct(string|Rootpath $rootpath = null)
     {
         $this->rootpath = Rootpath::castFrom($rootpath);
     }
@@ -50,18 +45,20 @@ class ResourceLoader
      * require any other argument.
      *
      * @template T
-     * @param   string  $resource   name of resource to open
-     * @param   class-string<T>  $withClass  optional  name of class to open resource with
-     * @return  T
-     * @throws  \InvalidArgumentException  in case the given class does not exist
-     * @since   4.0.0
+     * @param  string          $resource name of resource to open
+     * @param  class-string<T> $withClass optional name of class to open resource with
+     * @return T
+     * @throws InvalidArgumentException  in case the given class does not exist
+     * @since  4.0.0
      */
-    public function open(string $resource, string $withClass = 'stubbles\streams\file\FileInputStream')
-    {
+    public function open(
+        string $resource,
+        string $withClass = 'stubbles\streams\file\FileInputStream'
+    ) {
         if (!class_exists($withClass)) {
-            throw new \InvalidArgumentException(
-                    'Can not open ' . $resource . ' with ' . $withClass
-                    . ', class does not exit.'
+            throw new InvalidArgumentException(
+                'Can not open ' . $resource . ' with ' . $withClass
+                . ', class does not exit.'
             );
         }
 
@@ -78,9 +75,7 @@ class ResourceLoader
      * providing a complete path, a complete path must always lead to a resource
      * located within the root path.
      *
-     * @param   string    $resource
-     * @return  string    file contents of specified resource
-     * @since   4.0.0
+     * @since  4.0.0
      */
     public function load(string $resource): string
     {
@@ -112,25 +107,23 @@ class ResourceLoader
      * completes path for given resource
      *
      * In case the complete path is outside of the root path an
-     * IllegalArgumentException is thrown.
+     * OutOfBoundsException is thrown.
      *
-     * @param   string  $resource
-     * @return  string
-     * @throws  \DomainException  in case the given resource does not exist
-     * @throws  \OutOfBoundsException  in case the resource is not within rootpath
+     * @throws DomainException  in case the given resource does not exist
+     * @throws OutOfBoundsException  in case the resource is not within rootpath
      */
     private function checkedPathFor(string $resource): string
     {
         $completePath = $this->completePath($resource);
         if (!file_exists($completePath)) {
-            throw new \DomainException('Resource ' . $completePath . ' not found');
+            throw new DomainException('Resource ' . $completePath . ' not found');
         }
 
         if (!$this->rootpath->contains($completePath)) {
-            throw new \OutOfBoundsException(
-                    'Given resource "' . $resource
-                    . '" located at "' . $completePath
-                    . '" is not inside root path ' . $this->rootpath
+            throw new OutOfBoundsException(
+                'Given resource "' . $resource
+                . '" located at "' . $completePath
+                . '" is not inside root path ' . $this->rootpath
             );
         }
 
@@ -139,9 +132,6 @@ class ResourceLoader
 
     /**
      * returns complete path for given resource
-     *
-     * @param   string  $resource
-     * @return  string
      */
     private function completePath(string $resource): string
     {
@@ -150,10 +140,10 @@ class ResourceLoader
         }
 
         return $this->rootpath
-                . DIRECTORY_SEPARATOR . 'src'
-                . DIRECTORY_SEPARATOR . 'main'
-                . DIRECTORY_SEPARATOR . 'resources'
-                . DIRECTORY_SEPARATOR . $resource;
+            . DIRECTORY_SEPARATOR . 'src'
+            . DIRECTORY_SEPARATOR . 'main'
+            . DIRECTORY_SEPARATOR . 'resources'
+            . DIRECTORY_SEPARATOR . $resource;
     }
 
     /**
@@ -164,28 +154,27 @@ class ResourceLoader
      * and all vendor resources after. Order of vendor resources is also in
      * alphabetical order of vendor/package names.
      *
-     * @param   string  $resourceName  the resource to retrieve the uris for
-     * @return  string[]
-     * @since   4.0.0
+     * @return string[]
+     * @since  4.0.0
      */
     public function availableResourceUris(string $resourceName): array
     {
         $resourceUris = array_values(array_filter(
-                array_map(
-                      function(string $sourcePath) use($resourceName): string
-                      {
-                          return str_replace(
-                              ['/src/main/php', '\src\main\php'],
-                              DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'resources',
-                              $sourcePath
-                            )
-                           . DIRECTORY_SEPARATOR . $resourceName;
-                      },
-                      $this->rootpath->sourcePathes()
-                ),
-                function(string $resourcePath): bool
+            array_map(
+                function(string $sourcePath) use($resourceName): string
                 {
-                    return file_exists($resourcePath);
+                    return str_replace(
+                        ['/src/main/php', '\src\main\php'],
+                        DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'resources',
+                        $sourcePath
+                    )
+                    . DIRECTORY_SEPARATOR . $resourceName;
+                },
+                $this->rootpath->sourcePathes()
+            ),
+            function(string $resourcePath): bool
+            {
+                return file_exists($resourcePath);
                 }
         ));
         sort($resourceUris);

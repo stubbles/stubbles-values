@@ -13,9 +13,9 @@ use function bovigo\assert\assertTrue;
 /**
  * Tests for stubbles\values\Value::contains().
  *
- * @group  values
- * @group  value_checks
- * @since  7.2.0
+ * @group values
+ * @group value_checks
+ * @since 7.2.0
  */
 class ValueContainsTest extends TestCase
 {
@@ -38,13 +38,13 @@ class ValueContainsTest extends TestCase
     }
 
     /**
-     * @param  mixed                      $needle
-     * @param  string|array<mixed>|\Traversable<mixed>  $haystack
      * @test
-     * @dataProvider  tuplesEvaluatingToTrue
+     * @dataProvider tuplesEvaluatingToTrue
      */
-    public function evaluatesToTrue($needle, $haystack): void
-    {
+    public function evaluatesToTrue(
+        mixed $needle,
+        string|array|null $haystack
+    ): void {
         assertTrue(value($haystack)->contains($needle));
     }
 
@@ -64,12 +64,10 @@ class ValueContainsTest extends TestCase
     }
 
     /**
-     * @param  mixed                      $needle
-     * @param  string|array<mixed>|\Traversable<mixed>  $haystack
      * @test
-     * @dataProvider  tuplesEvaluatingToFalse
+     * @dataProvider tuplesEvaluatingToFalse
      */
-    public function evaluatesToFalse($needle, $haystack): void
+    public function evaluatesToFalse(mixed $needle, string|array $haystack): void
     {
         assertFalse(value($haystack)->contains($needle));
     }

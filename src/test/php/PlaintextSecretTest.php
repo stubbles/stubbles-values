@@ -18,9 +18,9 @@ require_once __DIR__ . '/SecretTest.php';
 /**
  * Plain text backed tests for stubbles\values\Secret.
  *
- * @since  4.0.0
- * @group  values
- * @group  secret
+ * @since 4.0.0
+ * @group values
+ * @group secret
  */
 class PlaintextSecretTest extends SecretTest
 {

@@ -7,6 +7,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\values;
+
+use Generator;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
@@ -19,63 +21,44 @@ use function bovigo\assert\assertTrue;
  */
 class ValueIsOneOfTest extends TestCase
 {
-    /**
-     * instance to test
-     *
-     * @var  string[]
-     */
-    private $allowedValues;
+    /** @var  string[] */
+    private array $allowedValues = ['foo', 'bar'];
 
-    protected function setUp(): void
+    public function validValues(): Generator
     {
-        $this->allowedValues = ['foo', 'bar'];
+        yield ['foo'];
+        yield ['bar'];
+        yield [['bar', 'foo']];
     }
 
     /**
-     * @return  array<array<mixed>>
-     */
-    public function validValues(): array
-    {
-        return [['foo'],
-                ['bar'],
-                [['bar', 'foo']]
-        ];
-    }
-
-    /**
-     * @param  mixed  $value
      * @test
-     * @dataProvider  validValues
+     * @dataProvider validValues
      */
-    public function validValueEvaluatesToTrue($value): void
+    public function validValueEvaluatesToTrue(mixed $value): void
     {
         assertTrue(value($value)->isOneOf($this->allowedValues));
     }
 
-    /**
-     * @return  array<array<mixed>>
-     */
-    public function invalidValues(): array
+    public function invalidValues(): Generator
     {
-        return [['baz'],
-                [null],
-                [['bar', 'foo', 'baz']]
-        ];
+        yield ['baz'];
+        yield [null];
+        yield [['bar', 'foo', 'baz']];
     }
 
     /**
-     * @param  mixed  $value
      * @test
-     * @dataProvider  invalidValues
+     * @dataProvider invalidValues
      */
-    public function invalidValueEvaluatesToFalse($value): void
+    public function invalidValueEvaluatesToFalse(mixed $value): void
     {
         assertFalse(value($value)->isOneOf($this->allowedValues));
     }
 
     /**
      * @test
-     * @since  8.1.0
+     * @since 8.1.0
      */
     public function evaluatesToFalseForSimilarValueWhenStrictEnabled(): void
     {
@@ -84,7 +67,7 @@ class ValueIsOneOfTest extends TestCase
 
     /**
      * @test
-     * @since  8.1.0
+     * @since 8.1.0
      */
     public function evaluatesToTrueForSimilarValueWhenStrictNotEnabled(): void
     {
