@@ -6,6 +6,7 @@
 
 * raised minimum required PHP version to 8.0
 * removed decprecated second parameter of `stubbles\values\ResourceLoader::load()`, use `stubbles\values\ResourceLoader::loadWith()` instead
+* `stubbles\values\ResourceLoader::load()` now throws a `stubbles\values\ResourceLoadingFailure` when loading the resource fails
 * The following methods of `stubbles\values\Parse` will now throw a `TypeError` when they fall back to the default value when the type of the specified default value doesn't match the expected return type:
    * `asInt()`
    * `asFloat()`

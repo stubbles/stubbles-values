@@ -76,10 +76,16 @@ class ResourceLoader
      * located within the root path.
      *
      * @since  4.0.0
+     * @throws ResourceLoadingFailure
      */
     public function load(string $resource): string
     {
-        return $this->loadWith($resource, 'file_get_contents');
+        $result = $this->loadWith($resource, 'file_get_contents');
+        if (false === $result) {
+            throw new ResourceLoadingFailure(lastErrorMessage()->value());
+        }
+
+        return $result;
     }
 
     /**
