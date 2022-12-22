@@ -1,5 +1,4 @@
 <?php
-#declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -135,7 +134,7 @@ class Parse
             }
         }
 
-        return (string) $string;
+        return $string;
     }
 
     /**
@@ -382,6 +381,7 @@ class Parse
     public function asString(): string
     {
         if (null === $this->value) {
+            // @phpstan-ignore-next-line
             return (string) $this->default;
         }
 

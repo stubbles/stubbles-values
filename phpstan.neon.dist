@@ -2,22 +2,11 @@ includes:
   - vendor/bovigo/assert/src/main/resources/phpstan/bovigo-assert.neon
 parameters:
   inferPrivatePropertyTypeFromConstructor: true
-  level: 8
+  level: 9
   paths:
     - ./src/main/php
   ignoreErrors:
-    # stubbles\values\Value has dynamicly added methods which are called using __call()
+    # Parse functions are explicitly written with type conversion in mind
     -
-        message: '#Call to an undefined method stubbles\\values\\Value#'
-        path: src/test/php/ValueTest.php
-    # PHP's substr() may return FALSE
-    -
-        message: '#Strict comparison using === between false and string will always evaluate to false.#'
-        path: src/main/php/Secret.php
-    # Test is explicit test that this will fail and throw an exception
-    -
-        message: '#method stubbles\\values\\Value::equals\(\) expects bool\|float\|int\|string\|null, stdClass given.#'
-        path: src/test/php/ValueEqualsTest.php
-    -
-        message: '#withClass of method stubbles\\values\\ResourceLoader::open\(\) expects class-string<DoesNotExist>, string given.#'
-        path: src/test/php/ResourceLoaderTest.php
+        message: '#Parse::as[a-zA-Z]+\(\) should return [a-zA-Z<>\|, -]+\|null but returns mixed#'
+        path: src/main/php/Parse.php

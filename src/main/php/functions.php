@@ -11,12 +11,15 @@ namespace stubbles\values {
     /**
      * returns error message from last error that occurred
      *
+     * 
+     * @phpstan-return Result<string>
      * @since 3.4.2
      */
     function lastErrorMessage(): Result
     {
+        // @phpstan-ignore-next-line
         return Result::of(error_get_last())
-                ->map(function(array $error) { return $error['message']; });
+            ->map(fn(array $error) => $error['message']);
     }
 
     /**
@@ -53,9 +56,13 @@ namespace stubbles\values {
      *
      * @api
      * @since 7.1.0
+     * @template T
+     * @phpstan-param T $value
+     * @phpstan-return Value<T>
      */
     function value(mixed $value): Value
     {
+        // @phpstan-ignore-next-line
         return Value::of($value);
     }
 }

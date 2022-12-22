@@ -14,9 +14,11 @@ namespace stubbles\values;
  * this is a very bad name.
  *
  * @since  6.0.0
+ * @template T
  */
 class Result
 {
+    /** @phpstan-var Result<null> */
     private static Result $null;
 
     /**
@@ -27,14 +29,21 @@ class Result
         self::$null = new self(null);
     }
 
+    /**
+     * @phpstan-param T $value
+     */
     private function __construct(private mixed $value) { }
 
     /**
      * static constructor
+     *
+     * @phpstan-param T $value
+     * @phpstan-return Result<T>
      */
     public static function of(mixed $value): self
     {
         if (null === $value) {
+            // @phpstan-ignore-next-line
             return self::$null;
         }
 
@@ -67,6 +76,8 @@ class Result
 
     /**
      * returns actual value
+     *
+     * @phpstan-return T
      */
     public function value(): mixed
     {
@@ -78,6 +89,8 @@ class Result
      *
      * In case the value is null or or doesn't fulfill the predicate the return
      * value is a null result.
+     *
+     * @phpstan-return Result<T>|Result<null>
      */
     public function filter(callable $predicate): self
     {
@@ -92,6 +105,8 @@ class Result
      * maps the value using mapper into a different result
      *
      * In case the value is null the return value still is a null result.
+     *
+     * @phpstan-return Result<T>|Result<null>
      */
     public function map(callable $mapper): self
     {
@@ -104,6 +119,8 @@ class Result
 
     /**
      * returns the result if value is present, or result of other
+     *
+     * @phpstan-return Result<T>
      */
     public function whenNull(mixed $other): self
     {
@@ -116,6 +133,8 @@ class Result
 
     /**
      * returns the result if value is present, or the result of applied other
+     *
+     * @phpstan-return Result<T>
      */
     public function applyWhenNull(callable $other): self
     {
@@ -129,6 +148,7 @@ class Result
     /**
      * returns the result if value is not empty, or result of other
      *
+     * @phpstan-return Result<T>
      * @since 6.2.0
      */
     public function whenEmpty(mixed $other): self
@@ -143,6 +163,7 @@ class Result
     /**
      * returns the result if value is not empty, or the result of applied other
      *
+     * @phpstan-return Result<T>
      * @since 6.2.0
      */
     public function applyWhenEmpty(callable $other): self

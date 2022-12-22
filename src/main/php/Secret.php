@@ -49,12 +49,10 @@ class Secret
      * backing: base64
      */
     const BACKING_PLAINTEXT = 'base64';
-    /**
-     * actual storage of encrypted strings
-     *
-     * @var  array<string,array<string,mixed>>
-     */
-    private static array $store = [];
+    /** @var array<string,true|string> */
+    private static array $payloads = [];
+    /** @var array<string,int> */
+    private static array $lengths = [];
     /**
      * callable to encrypt data with before storing it
      *
@@ -94,7 +92,7 @@ class Secret
      */
     public static function switchBacking(string $type): void
     {
-        if (count(self::$store) > 0) {
+        if (count(self::$payloads) > 0) {
             throw new LogicException('Can not switch backing while secured strings are stored');
         }
 
@@ -186,16 +184,15 @@ class Secret
         $self = new static();
         try {
             $encrypt = self::$encrypt;
-            self::$store[$self->id] = [
-                'payload' => $encrypt($string),
-                'length'  => \iconv_strlen($string)
-            ];
+            self::$payloads[$self->id] = $encrypt($string);
+            self::$lengths[$self->id] = mb_strlen($string);
         } catch (Throwable $t) {
             $t = null;
             // This intentionally catches *ALL* exceptions, in order not to fail
             // and produce a stacktrace containing arguments on the stack that
             // were supposed to be protected.
-            unset(self::$store[$self->id]);
+            unset(self::$payloads[$self->id]);
+            unset(self::$lengths[$self->id]);
         }
 
         $string = str_repeat('*', strlen($string));
@@ -209,7 +206,8 @@ class Secret
     public static function forNull(): self
     {
         $self = new static();
-        self::$store[$self->id] = ['payload' => true, 'length' => 0];
+        self::$payloads[$self->id] = true;
+        self::$lengths[$self->id] = 0;
         return $self;
     }
 
@@ -218,7 +216,8 @@ class Secret
      */
     public function __destruct()
     {
-        unset(self::$store[$this->id]);
+        unset(self::$payloads[$this->id]);
+        unset(self::$lengths[$this->id]);
     }
 
     /**
@@ -226,7 +225,7 @@ class Secret
      */
     public function isNull(): bool
     {
-        return true === self::$store[$this->id]['payload'];
+        return true === self::$payloads[$this->id];
     }
 
     /**
@@ -234,7 +233,7 @@ class Secret
      */
     public function isContained(): bool
     {
-        return isset(self::$store[$this->id]['payload']);
+        return isset(self::$payloads[$this->id]);
     }
 
     /**
@@ -256,7 +255,7 @@ class Secret
         }
 
         $decrypt = self::$decrypt;
-        return $decrypt(self::$store[$this->id]['payload']);
+        return $decrypt(self::$payloads[$this->id]);
     }
 
     /**
@@ -284,7 +283,7 @@ class Secret
      */
     public function length(): int
     {
-        return self::$store[$this->id]['length'];
+        return self::$lengths[$this->id];
     }
 
     /**

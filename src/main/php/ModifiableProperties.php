@@ -21,7 +21,7 @@ class ModifiableProperties extends Properties
      *
      * @api
      * @param   string               $section
-     * @param   array<string,mixed>  $data
+     * @param   array<string,string|Secret>  $data
      * @return  \stubbles\values\ModifiableProperties
      */
     public function setSection(string $section, array $data): self
@@ -38,7 +38,7 @@ class ModifiableProperties extends Properties
      *
      * @api
      */
-    public function setValue(string $section, string $name, mixed $value): self
+    public function setValue(string $section, string $name, string|Secret $value): self
     {
         if (!isset($this->propertyData[$section])) {
             $this->propertyData[$section] = [];

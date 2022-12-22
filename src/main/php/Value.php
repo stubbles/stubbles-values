@@ -16,6 +16,7 @@ use Traversable;
  *
  * @api
  * @since 7.2.0
+ * @template T
  */
 class Value
 {
@@ -25,6 +26,7 @@ class Value
      * @var  array<string,callable>
      */
     private static array $checks = [];
+    /** @phpstan-var Value<null> */
     private static Value $null;
 
     /**
@@ -35,11 +37,19 @@ class Value
         self::$null = new self(null);
     }
 
+    /**
+     * @phpstan-param T $value
+     */
     private final function __construct(private mixed $value) { }
 
+    /**
+     * @phpstan-param T $value
+     * @phpstan-return Value<T>
+     */
     public static function of(mixed $value): self
     {
         if (null === $value) {
+            // @phpstan-ignore-next-line
             return self::$null;
         }
 
@@ -73,6 +83,8 @@ class Value
 
     /**
      * returns actual value
+     *
+     * @phpstan-return T
      */
     public function value(): mixed
     {
@@ -90,6 +102,7 @@ class Value
         }
 
         if (is_string($this->value)) {
+            // @phpstan-ignore-next-line
             return false !== strpos($this->value, (string) $needle);
         }
 
@@ -121,6 +134,7 @@ class Value
             } elseif (
                 !is_bool($needle)
                 && ($this->value === $needle
+                // @phpstan-ignore-next-line
                 || (is_string($this->value) && false !== strpos($this->value, (string) $needle)))
             ) {
                 return true;
@@ -171,7 +185,11 @@ class Value
      */
     public function isMatchedBy(string $regex): bool
     {
-        return pattern($regex)->matches($this->value);
+        if (is_string($this->value)) {
+            return pattern($regex)->matches($this->value);
+        }
+        
+        return false;
     }
 
     /**

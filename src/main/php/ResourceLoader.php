@@ -85,6 +85,7 @@ class ResourceLoader
             throw new ResourceLoadingFailure(lastErrorMessage()->value());
         }
 
+        // @phpstan-ignore-next-line
         return $result;
     }
 
@@ -98,8 +99,9 @@ class ResourceLoader
      * providing a complete path, a complete path must always lead to a resource
      * located within the root path.
      *
-     * @param  callable $loader  code to load resource with, defaults to file_get_contents()
-     * @return mixed    result of call to $loader
+     * @template T
+     * @phpstan-param  callable(string): T $loader  code to load resource with, defaults to file_get_contents()
+     * @phpstan-return T    result of call to $loader
      * @since  9.2.0
      */
     public function loadWith(string $resource, callable $loader): mixed

@@ -21,18 +21,18 @@ use UnexpectedValueException;
  * }
  * </code>
  *
- * @implements \Iterator<string,array<string,mixed>>
+ * @implements \Iterator<string,array<string,string|Secret>>
  */
 class Properties implements \Iterator
 {
     /**
-     * @var array<string,array<string,mixed>>
+     * @var array<string,array<string,string|Secret>>
      */
     protected array $propertyData;
 
     /**
      * @api
-     * @param array<string,array<string,mixed>> $propertyData  the property data
+     * @param array<string,array<string,string|Secret>> $propertyData  the property data
      */
     final public function __construct(array $propertyData = [])
     {
@@ -125,7 +125,7 @@ class Properties implements \Iterator
      *
      * @api
      * @param  array<string,string> $default
-     * @return array<string,string>
+     * @return array<string,mixed>
      * @since  4.0.0
      */
     public function section(string $sectionKey, array $default = []): array
@@ -226,7 +226,7 @@ class Properties implements \Iterator
     /**
      * returns current section
      *
-     * @return  array<string,string>|false
+     * @return  array<string,mixed>|false
      * @see     http://php.net/manual/en/spl.iterators.php
      */
     public function current(): mixed
