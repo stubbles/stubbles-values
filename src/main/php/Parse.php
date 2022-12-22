@@ -365,7 +365,7 @@ class Parse
         return $this;
     }
 
-    private function parse(string $method, ...$arguments): mixed
+    private function parse(string $method, mixed ...$arguments): mixed
     {
         if (null === $this->value) {
             return $this->default;

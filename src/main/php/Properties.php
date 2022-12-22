@@ -113,7 +113,7 @@ class Properties implements \Iterator
      * checks if a certain section exists
      *
      * @api
-     * @since  4.0.0
+     * @since 4.0.0
      */
     public function containSection(string $sectionKey): bool
     {
@@ -124,6 +124,7 @@ class Properties implements \Iterator
      * returns a whole section if it exists or the default if the section does not exist
      *
      * @api
+     * @param  array<string,string> $default
      * @return array<string,string>
      * @since  4.0.0
      */
@@ -140,6 +141,7 @@ class Properties implements \Iterator
      * returns a list of all keys of a specific section
      *
      * @api
+     * @param  string[] $default
      * @return string[]
      * @since  4.0.0
      */
@@ -185,7 +187,7 @@ class Properties implements \Iterator
      * @see   \stubbles\values\Parse::toType()
      * @since 4.1.0
      */
-    public function parseValue(string $sectionKey, string $key, $default = null): mixed
+    public function parseValue(string $sectionKey, string $key, mixed $default = null): mixed
     {
         if (isset($this->propertyData[$sectionKey]) && isset($this->propertyData[$sectionKey][$key])) {
             if ($this->propertyData[$sectionKey][$key] instanceof Secret) {

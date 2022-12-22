@@ -98,13 +98,11 @@ class ResourceLoader
      * providing a complete path, a complete path must always lead to a resource
      * located within the root path.
      *
-     * @template T
-     * @param   string               $resource
-     * @param   callable(string): T  $loader    code to load resource with, defaults to file_get_contents()
-     * @return  T     result of call to $loader, or file contents if no loader specified
-     * @since   9.2.0
+     * @param  callable $loader  code to load resource with, defaults to file_get_contents()
+     * @return mixed    result of call to $loader
+     * @since  9.2.0
      */
-    public function loadWith(string $resource, callable $loader)
+    public function loadWith(string $resource, callable $loader): mixed
     {
         return $loader($this->checkedPathFor($resource));
     }
