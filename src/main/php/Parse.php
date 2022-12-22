@@ -19,13 +19,13 @@ class Parse
     /**
      * list of values which are treated as boolean true
      *
-     * @var  string[]
+     * @var string[]
      */
     private static array $booleanTrue  = ['yes', 'true', 'on'];
     /**
      * list of known type recognitions
      *
-     * @var  callable[]
+     * @var callable[]
      */
     private static array $recognitions = [];
 
@@ -39,13 +39,17 @@ class Parse
         self::addRecognition(function(?string $string) { if (null !== $string && preg_match('/^[+-]?[0-9]+$/', $string) != false) { return self::toInt($string);} }, 'int');
         self::addRecognition(function(?string $string) { if (null !== $string && preg_match('/^[+-]?[0-9]+\.[0-9]+$/', $string) != false) { return self::toFloat($string); } }, 'float');
         self::addRecognition(
-                function(?string $string)
-                {
-                    if (null !== $string && substr($string, 0, 1) === '[' && substr($string, -1) === ']') {
-                        return (strstr($string, ':') !== false) ? self::toMap($string) : self::toList($string);
-                    }
-                },
-                'array'
+            function(?string $string)
+            {
+                if (
+                    null !== $string
+                    && substr($string, 0, 1) === '['
+                    && substr($string, -1) === ']'
+                ) {
+                    return (strstr($string, ':') !== false) ? self::toMap($string) : self::toList($string);
+                }
+            },
+            'array'
         );
         self::addRecognition(function(?string $string) { if (null !== $string && strstr($string, '..') !== false) { return self::toRange($string); } }, 'range');
         self::addRecognition(function(?string $string) { $classname = self::toClassname($string); if (null !== $classname) { return $classname; } }, 'string');
