@@ -5,14 +5,14 @@
     "license": "BSD-3-Clause",
     "description": "Useful classes to ease the work with values.",
     "require": {
-        "php": "^7.3||^8.0",
+        "php": "^8.0",
         "ext-iconv": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.4",
-        "mikey179/vfsstream": "^1.6.8",
-        "bovigo/callmap": "^6.2",
-        "bovigo/assert": "^6.1",
+        "phpunit/phpunit": "^9.5",
+        "mikey179/vfsstream": "^1.6.11",
+        "bovigo/callmap": "^7.0.x-dev",
+        "bovigo/assert": "^7.0.x-dev",
         "phpstan/phpstan": "^1.9"
     },
     "autoload": {
@@ -29,7 +29,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "9.3.x-dev"
+            "dev-master": "10.0.x-dev"
         }
     },
     "minimum-stability": "dev",

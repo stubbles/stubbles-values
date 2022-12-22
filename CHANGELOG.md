@@ -1,8 +1,8 @@
 # Changelog
 
-## 9.3.0 (2020-11-??)
+## 10.0.0 (2022-12-??)
 
-* Ensured compatibility with PHP 8.
+* raised minimum required PHP version to 8.0
 
 ## 9.2.0 (2020-03-06)
 
