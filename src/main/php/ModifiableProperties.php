@@ -10,7 +10,7 @@ namespace stubbles\values;
 /**
  * Properties instance which allows modification of properties.
  *
- * @since       1.7.0
+ * @since 1.7.0
  */
 class ModifiableProperties extends Properties
 {
@@ -37,12 +37,8 @@ class ModifiableProperties extends Properties
      * be replaced.
      *
      * @api
-     * @param   string  $section
-     * @param   string  $name
-     * @param   mixed   $value
-     * @return  \stubbles\values\ModifiableProperties
      */
-    public function setValue(string $section, string $name, $value): self
+    public function setValue(string $section, string $name, mixed $value): self
     {
         if (!isset($this->propertyData[$section])) {
             $this->propertyData[$section] = [];
@@ -59,12 +55,8 @@ class ModifiableProperties extends Properties
      * be replaced.
      *
      * @api
-     * @param   string  $section
-     * @param   string  $name
-     * @param   bool    $value
-     * @return  \stubbles\values\ModifiableProperties
      */
-    public function setBooleanValue(string $section, string $name, $value): self
+    public function setBooleanValue(string $section, string $name, bool $value): self
     {
         return $this->setValue($section, $name, ((true === $value) ? ('true') : ('false')));
     }
@@ -128,8 +120,7 @@ class ModifiableProperties extends Properties
     /**
      * returns unmodifiable version of properties
      *
-     * @return  \stubbles\values\Properties
-     * @since   4.0.0
+     * @since 4.0.0
      */
     public function unmodifiable(): Properties
     {

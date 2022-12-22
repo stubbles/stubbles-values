@@ -11,8 +11,7 @@ namespace stubbles\values {
     /**
      * returns error message from last error that occurred
      *
-     * @return  \stubbles\values\Result
-     * @since   3.4.2
+     * @since 3.4.2
      */
     function lastErrorMessage(): Result
     {
@@ -23,11 +22,9 @@ namespace stubbles\values {
     /**
      * determines the correct type of a value
      *
-     * @param   mixed   $value
-     * @return  string
-     * @since   3.1.0
+     * @since 3.1.0
      */
-    function typeOf(&$value): string
+    function typeOf(mixed &$value): string
     {
         if (is_object($value)) {
             return get_class($value);
@@ -44,9 +41,7 @@ namespace stubbles\values {
      * creates a pattern from given regular expression which can be used to match other string values
      *
      * @api
-     * @param   string  $regex  regular expression
-     * @return  \stubbles\values\Pattern
-     * @since   7.1.0
+     * @since 7.1.0
      */
     function pattern(string $regex): Pattern
     {
@@ -57,11 +52,9 @@ namespace stubbles\values {
      * creates a value instance
      *
      * @api
-     * @param   mixed  $value
-     * @return  \stubbles\values\Value
-     * @since   7.1.0
+     * @since 7.1.0
      */
-    function value($value): Value
+    function value(mixed $value): Value
     {
         return Value::of($value);
     }
