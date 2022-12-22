@@ -264,8 +264,6 @@ class Secret
      *
      * If no $length is provided the substring will be from start position to
      * end of the current secret.
-     *
-     * @throws InvalidArgumentException
      */
     public function substring(int $start, int $length = null): self
     {
@@ -278,16 +276,7 @@ class Secret
           return self::forNull();
         }
 
-        $substring = null === $length ?
-                substr($unveiled, $start)
-              : substr($unveiled, $start, $length);
-        if (false === $substring) {
-            throw new InvalidArgumentException(
-                'Given start offset is out of range'
-            );
-        }
-
-        return self::create($substring);
+        return self::create(substr($unveiled, $start, $length));
     }
 
     /**
