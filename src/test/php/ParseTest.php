@@ -7,7 +7,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\values;
+
+use Generator;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use TypeError;
+
 use function bovigo\assert\assertThat;
 use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
@@ -27,132 +32,122 @@ class ParseTest extends TestCase
         Parse::__static();
     }
 
-    /**
-     * @return  array<array<mixed>>
-     */
-    public function stringToIntConversions(): array
+    public function stringToIntConversions(): Generator
     {
-        return [
-            [0, '0'],
-            [1, '1'],
-            [-303, '-303'],
-            [80, '80foo'],
-            [3, '3.14'],
-            [0, ''],
-            [null, null]
-        ];
+        yield [0, '0'];
+        yield [1, '1'];
+        yield [-303, '-303'];
+        yield [80, '80foo'];
+        yield [3, '3.14'];
+        yield [0, ''];
+        yield [null, null];
     }
 
     /**
-     * @param  int     $expectedResult
-     * @param  string  $stringToParse
      * @test
-     * @dataProvider  stringToIntConversions
+     * @dataProvider stringToIntConversions
      */
-    public function toIntReturnsValueCastedToInteger($expectedResult, ?string $stringToParse): void
-    {
+    public function toIntReturnsValueCastedToInteger(
+        ?int $expectedResult,
+        ?string $stringToParse
+    ): void {
         assertThat(Parse::toInt($stringToParse), equals($expectedResult));
     }
 
     /**
-     * @param  int     $expectedResult
-     * @param  string  $stringToParse
      * @test
-     * @dataProvider  stringToIntConversions
-     * @since  5.0.0
+     * @dataProvider stringToIntConversions
+     * @since 5.0.0
      */
-    public function asIntReturnsValueCastedToInteger($expectedResult, ?string $stringToParse): void
-    {
+    public function asIntReturnsValueCastedToInteger(
+        ?int $expectedResult,
+        ?string $stringToParse
+    ): void {
         $parse = new Parse($stringToParse);
         assertThat($parse->asInt(), equals($expectedResult));
     }
 
     /**
-     * @param  int     $expectedResult
-     * @param  string  $stringToParse
      * @test
-     * @dataProvider  stringToIntConversions
-     * @since  5.0.0
+     * @dataProvider stringToIntConversions
+     * @since 5.0.0
      */
-    public function asIntWithDefaultReturnsValueCastedToInteger($expectedResult, ?string $stringToParse): void
-    {
+    public function asIntWithDefaultReturnsValueCastedToInteger(
+        ?int $expectedResult,
+        ?string $stringToParse
+    ): void {
         if (null === $stringToParse) {
-            $expectedResult = 'foo';
+            $expectedResult = 303;
         }
 
         $parse = new Parse($stringToParse);
-        assertThat($parse->defaultingTo('foo')->asInt(), equals($expectedResult));
+        assertThat($parse->defaultingTo(303)->asInt(), equals($expectedResult));
     }
 
     /**
      * @test
-     * @since  5.0.0
+     * @since 5.0.0
      */
     public function toIntOnNullReturnsNull(): void
     {
         assertNull(Parse::toInt(null));
     }
 
-    /**
-     * @return  array<array<mixed>>
-     */
-    public function stringToFloatConversions(): array
+    public function stringToFloatConversions(): Generator
     {
-        return [
-            [0.1, '0.1'],
-            [1, '1'],
-            [-3.03, '-3.03'],
-            [8.0, '8.0foo'],
-            [3.14, '3.14'],
-            [0, ''],
-            [null, null]
-        ];
+        yield [0.1, '0.1'];
+        yield [1, '1'];
+        yield [-3.03, '-3.03'];
+        yield [8.0, '8.0foo'];
+        yield [3.14, '3.14'];
+        yield [0, ''];
+        yield [null, null];
     }
 
     /**
-     * @param  float   $expectedResult
-     * @param  string  $stringToParse
      * @test
-     * @dataProvider  stringToFloatConversions
+     * @dataProvider stringToFloatConversions
      */
-    public function toFloatReturnsValueCastedToFloat($expectedResult, ?string $stringToParse): void
-    {
+    public function toFloatReturnsValueCastedToFloat(
+        ?float $expectedResult,
+        ?string $stringToParse
+    ): void {
         assertThat(Parse::toFloat($stringToParse), equals($expectedResult));
     }
 
     /**
-     * @param  float   $expectedResult
-     * @param  string  $stringToParse
      * @test
-     * @dataProvider  stringToFloatConversions
-     * @since  5.0.0
+     * @dataProvider stringToFloatConversions
+     * @since 5.0.0
      */
-    public function asFloatReturnsValueCastedToFloat($expectedResult, ?string $stringToParse): void
-    {
+    public function asFloatReturnsValueCastedToFloat(
+        ?float $expectedResult,
+        ?string $stringToParse
+    ): void {
         $parse = new Parse($stringToParse);
         assertThat($parse->asFloat(), equals($expectedResult));
     }
 
     /**
-     * @param  float   $expectedResult
-     * @param  string  $stringToParse
      * @test
-     * @dataProvider  stringToFloatConversions
-     * @since  5.0.0
+     * @dataProvider stringToFloatConversions
+     * @since 5.0.0
      */
-    public function asFloatWithDefaultReturnsValueCastedToFloat($expectedResult, ?string $stringToParse): void
-    {
+    public function asFloatWithDefaultReturnsValueCastedToFloat(
+        ?float $expectedResult,
+        ?string $stringToParse
+    ): void {
         if (null === $stringToParse) {
-            $expectedResult = 'foo';
+            $expectedResult = 3.03;
         }
 
         $parse = new Parse($stringToParse);
-        assertThat($parse->defaultingTo('foo')->asFloat(), equals($expectedResult));
+        assertThat($parse->defaultingTo(3.03)->asFloat(), equals($expectedResult));
     }
 
     /**
      * @test
-     * @since  5.0.0
+     * @since 5.0.0
      */
     public function toFloatOnNullReturnsNull(): void
     {
@@ -162,21 +157,18 @@ class ParseTest extends TestCase
     /**
      * @return  array<array<mixed>>
      */
-    public function stringToBoolConversions(): array
+    public function stringToBoolConversions(): Generator
     {
-        return [
-            [true, 'yes'],
-            [true, 'true'],
-            [true, 'on'],
-            [false, '3.14'],
-            [false, 'no'],
-            [false, 'false'],
-            [false, 'off'],
-            [false, 'other'],
-            [false, ''],
-            [false, null],
-
-        ];
+        yield [true, 'yes'];
+        yield [true, 'true'];
+        yield [true, 'on'];
+        yield [false, '3.14'];
+        yield [false, 'no'];
+        yield [false, 'false'];
+        yield [false, 'off'];
+        yield [false, 'other'];
+        yield [false, ''];
+        yield [false, null];
     }
 
     /**
@@ -185,315 +177,289 @@ class ParseTest extends TestCase
      * @test
      * @dataProvider  stringToBoolConversions
      */
-    public function toBoolReturnsValueCastedToBool($expectedResult, ?string $stringToParse): void
-    {
+    public function toBoolReturnsValueCastedToBool(
+        bool $expectedResult,
+        ?string $stringToParse
+    ): void {
         assertThat(Parse::toBool($stringToParse), equals($expectedResult));
     }
 
     /**
-     * @param  bool    $expectedResult
-     * @param  string  $stringToParse
      * @test
-     * @dataProvider  stringToBoolConversions
-     * @since  5.0.0
+     * @dataProvider stringToBoolConversions
+     * @since 5.0.0
      */
-    public function asBoolReturnsValueCastedToBool($expectedResult, ?string $stringToParse): void
-    {
+    public function asBoolReturnsValueCastedToBool(
+        bool $expectedResult,
+        ?string $stringToParse
+    ): void {
         $parse = new Parse($stringToParse);
         assertThat($parse->asBool(), equals($expectedResult));
     }
 
     /**
-     * @param  bool    $expectedResult
-     * @param  string  $stringToParse
      * @test
-     * @dataProvider  stringToBoolConversions
-     * @since  5.0.0
+     * @dataProvider stringToBoolConversions
+     * @since 5.0.0
      */
-    public function asBoolWithDefaultReturnsValueCastedToBool($expectedResult, ?string $stringToParse): void
-    {
-        if (null === $stringToParse) {
-            $expectedResult = 'foo';
-        }
-
+    public function asBoolWithDefaultReturnsValueCastedToBool(
+        bool $expectedResult,
+        ?string $stringToParse
+    ): void {
         $parse = new Parse($stringToParse);
         assertThat(
-                $parse->defaultingTo('foo')->asBool(),
-                equals($expectedResult)
+            $parse->defaultingTo(false)->asBool(),
+            equals($expectedResult)
         );
     }
 
-    /**
-     * @return  array<array<mixed>>
-     */
-    public function stringToListConversions(): array
+    public function stringToListConversions(): Generator
     {
-        return [
-            [['foo', 'bar', 'baz'], 'foo|bar|baz', Parse::SEPARATOR_LIST],
-            [['foo|bar|baz'], 'foo|bar|baz', ','],
-            [['foo', 'bar', 'baz'], 'foo,bar,baz', ','],
-            [['foo', 'bar', 'baz'], '[foo|bar|baz]', Parse::SEPARATOR_LIST],
-            [[], '', Parse::SEPARATOR_LIST],
-            [[], '', ','],
-            [[], '[]', Parse::SEPARATOR_LIST],
-            [[], '[]', ','],
-            [null, null, Parse::SEPARATOR_LIST],
-            [['', ''], '|', Parse::SEPARATOR_LIST],
-            [['', ''], ',', ','],
-            [['', ''], '[|]', Parse::SEPARATOR_LIST],
-            [['', ''], '[,]', ','],
-            [['foo'], 'foo', Parse::SEPARATOR_LIST],
-            [['foo'], 'foo', ','],
-            [['foo'], '[foo]', Parse::SEPARATOR_LIST],
-            [['foo'], '[foo]', ',']
-
-        ];
+        yield [['foo', 'bar', 'baz'], 'foo|bar|baz', Parse::SEPARATOR_LIST];
+        yield [['foo|bar|baz'], 'foo|bar|baz', ','];
+        yield [['foo', 'bar', 'baz'], 'foo,bar,baz', ','];
+        yield [['foo', 'bar', 'baz'], '[foo|bar|baz]', Parse::SEPARATOR_LIST];
+        yield [[], '', Parse::SEPARATOR_LIST];
+        yield [[], '', ','];
+        yield [[], '[]', Parse::SEPARATOR_LIST];
+        yield [[], '[]', ','];
+        yield [null, null, Parse::SEPARATOR_LIST];
+        yield [['', ''], '|', Parse::SEPARATOR_LIST];
+        yield [['', ''], ',', ','];
+        yield [['', ''], '[|]', Parse::SEPARATOR_LIST];
+        yield [['', ''], '[,]', ','];
+        yield [['foo'], 'foo', Parse::SEPARATOR_LIST];
+        yield [['foo'], 'foo', ','];
+        yield [['foo'], '[foo]', Parse::SEPARATOR_LIST];
+        yield [['foo'], '[foo]', ','];
     }
 
     /**
-     * @param  mixed   $expectedResult
-     * @param  string  $stringToParse
-     * @param  string  $separator
      * @test
-     * @dataProvider  stringToListConversions
+     * @dataProvider stringToListConversions
      */
     public function toListReturnsValueCastedToList(
-            $expectedResult,
-            ?string $stringToParse,
-            string $separator
+        ?array $expectedResult,
+        ?string $stringToParse,
+        string $separator
     ): void {
         assertThat(Parse::toList($stringToParse, $separator), equals($expectedResult));
     }
 
     /**
-     * @param  mixed   $expectedResult
-     * @param  string  $stringToParse
-     * @param  string  $separator
      * @test
-     * @dataProvider  stringToListConversions
-     * @since  5.0.0
+     * @dataProvider stringToListConversions
+     * @since 5.0.0
      */
     public function asListReturnsValueCastedToList(
-            $expectedResult,
-            ?string $stringToParse,
-            string $separator
+        ?array $expectedResult,
+        ?string $stringToParse,
+        string $separator
     ): void {
         $parse = new Parse($stringToParse);
         assertThat($parse->asList($separator), equals($expectedResult));
     }
 
     /**
-     * @param  mixed   $expectedResult
-     * @param  string  $stringToParse
-     * @param  string  $separator
      * @test
-     * @dataProvider  stringToListConversions
-     * @since  5.0.0
+     * @dataProvider stringToListConversions
+     * @since 5.0.0
      */
     public function asListWithDefaultReturnsValueCastedToList(
-            $expectedResult,
-            ?string $stringToParse,
-            string $separator
+        ?array $expectedResult,
+        ?string $stringToParse,
+        string $separator
     ): void {
         if (null === $stringToParse) {
-            $expectedResult = 'foo';
+            $expectedResult = ['default'];
         }
 
         $parse = new Parse($stringToParse);
         assertThat(
-                $parse->defaultingTo('foo')->asList($separator),
-                equals($expectedResult)
+            $parse->defaultingTo(['default'])->asList($separator),
+            equals($expectedResult)
         );
     }
 
-    /**
-     * @return  array<array<mixed>>
-     */
-    public function stringToMapConversions(): array
+    public function stringToMapConversions(): Generator
     {
-        return [
-            [['foo', 'bar', 'baz'], 'foo|bar|baz'],
-            [['foo', 'bar', 'baz'], '[foo|bar|baz]'],
-            [['foo' => 'bar', 'baz' => 'dummy'], 'foo:bar|baz:dummy'],
-            [['foo' => 'bar', 'baz' => 'dummy'], '[foo:bar|baz:dummy]'],
-            [['foo' => 'bar', 'baz'], 'foo:bar|baz'],
-            [['foo' => 'bar', 'baz'], '[foo:bar|baz]'],
-            [[], ''],
-            [[], '[]'],
-            [null, null],
-            [['', ''], '|'],
-            [['', ''], '[|]'],
-            [['foo'], 'foo'],
-            [['foo'], '[foo]'],
-            [['foo' => 'baz'], 'foo:baz'],
-            [['foo' => 'baz'], '[foo:baz]']
-
-        ];
+        yield [['foo', 'bar', 'baz'], 'foo|bar|baz'];
+        yield [['foo', 'bar', 'baz'], '[foo|bar|baz]'];
+        yield [['foo' => 'bar', 'baz' => 'dummy'], 'foo:bar|baz:dummy'];
+        yield [['foo' => 'bar', 'baz' => 'dummy'], '[foo:bar|baz:dummy]'];
+        yield [['foo' => 'bar', 'baz'], 'foo:bar|baz'];
+        yield [['foo' => 'bar', 'baz'], '[foo:bar|baz]'];
+        yield [[], ''];
+        yield [[], '[]'];
+        yield [null, null];
+        yield [['', ''], '|'];
+        yield [['', ''], '[|]'];
+        yield [['foo'], 'foo'];
+        yield [['foo'], '[foo]'];
+        yield [['foo' => 'baz'], 'foo:baz'];
+        yield [['foo' => 'baz'], '[foo:baz]'];
     }
 
     /**
-     * @param  array<mixed>  $expectedResult
-     * @param  string        $stringToParse
      * @test
      * @dataProvider  stringToMapConversions
      */
-    public function toMapReturnsValueCastedToMap($expectedResult, ?string $stringToParse): void
-    {
+    public function toMapReturnsValueCastedToMap(
+        ?array $expectedResult,
+        ?string $stringToParse
+    ): void {
         assertThat(Parse::toMap($stringToParse), equals($expectedResult));
     }
 
     /**
-     * @param  array<mixed>  $expectedResult
-     * @param  string        $stringToParse
      * @test
      * @dataProvider  stringToMapConversions
      * @since  5.0.0
      */
-    public function asMapReturnsValueCastedToMap($expectedResult, ?string $stringToParse): void
-    {
+    public function asMapReturnsValueCastedToMap(
+        ?array $expectedResult,
+        ?string $stringToParse
+    ): void {
         $parse = new Parse($stringToParse);
         assertThat($parse->asMap(), equals($expectedResult));
     }
 
     /**
-     * @param  array<mixed>  $expectedResult
-     * @param  string        $stringToParse
      * @test
      * @dataProvider  stringToMapConversions
      * @since  5.0.0
      */
-    public function asMapWithDefaultReturnsValueCastedToMap($expectedResult, ?string $stringToParse): void
-    {
+    public function asMapWithDefaultReturnsValueCastedToMap(
+        ?array $expectedResult,
+        ?string $stringToParse
+    ): void {
         if (null === $stringToParse) {
-            $expectedResult = 'foo';
+            $expectedResult = ['foo' => 'default'];
         }
 
         $parse = new Parse($stringToParse);
         assertThat(
-                $parse->defaultingTo('foo')->asMap(),
-                equals($expectedResult)
+            $parse->defaultingTo(['foo' => 'default'])->asMap(),
+            equals($expectedResult)
         );
     }
 
     /**
      * @return  array<array<mixed>>
      */
-    public function stringToRangeConversions(): array
+    public function stringToRangeConversions(): Generator
     {
-        return [
-            [[1, 2, 3, 4, 5], '1..5'],
-            [['a', 'b', 'c', 'd', 'e'], 'a..e'],
-            [[], '1..'],
-            [[], 'a..'],
-            [[], '..5'],
-            [[], '..e'],
-            [[5, 4, 3, 2, 1], '5..1'],
-            [['e', 'd', 'c', 'b', 'a'], 'e..a'],
-            [[], ''],
-            [null, null],
-            [[], 'other']
-
-        ];
+        yield [[1, 2, 3, 4, 5], '1..5'];
+        yield [['a', 'b', 'c', 'd', 'e'], 'a..e'];
+        yield [[], '1..'];
+        yield [[], 'a..'];
+        yield [[], '..5'];
+        yield [[], '..e'];
+        yield [[5, 4, 3, 2, 1], '5..1'];
+        yield [['e', 'd', 'c', 'b', 'a'], 'e..a'];
+        yield [[], ''];
+        yield [null, null];
+        yield [[], 'other'];
     }
 
     /**
-     * @param  mixed[]  $expectedResult
-     * @param  string   $stringToParse
      * @test
      * @dataProvider  stringToRangeConversions
      */
-    public function toRangeReturnsValueCastedToRange($expectedResult, ?string $stringToParse): void
-    {
+    public function toRangeReturnsValueCastedToRange(
+        ?array $expectedResult,
+        ?string $stringToParse
+    ): void {
         assertThat(Parse::toRange($stringToParse), equals($expectedResult));
     }
 
     /**
-     * @param  mixed[]  $expectedResult
-     * @param  string   $stringToParse
      * @test
      * @dataProvider  stringToRangeConversions
      * @since  5.0.0
      */
-    public function asRangeReturnsValueCastedToRange($expectedResult, ?string $stringToParse): void
-    {
+    public function asRangeReturnsValueCastedToRange(
+        ?array $expectedResult,
+        ?string $stringToParse
+    ): void {
         $parse = new Parse($stringToParse);
         assertThat($parse->asRange(), equals($expectedResult));
     }
 
     /**
-     * @param  mixed[]  $expectedResult
-     * @param  string   $stringToParse
      * @test
      * @dataProvider  stringToRangeConversions
      * @since  5.0.0
      */
-    public function asRangeWithDefaultReturnsValueCastedToRange($expectedResult, ?string $stringToParse): void
-    {
+    public function asRangeWithDefaultReturnsValueCastedToRange(
+        ?array $expectedResult,
+        ?string $stringToParse
+    ): void {
         if (null === $stringToParse) {
-            $expectedResult = 'foo';
+            $expectedResult = ['a', 'b', 'c'];
         }
 
         $parse = new Parse($stringToParse);
         assertThat(
-                $parse->defaultingTo('foo')->asRange(),
-                equals($expectedResult)
+            $parse->defaultingTo(['a', 'b', 'c'])->asRange(),
+            equals($expectedResult)
         );
     }
 
     /**
      * @return  array<array<mixed>>
      */
-    public function stringToClassConversions(): array
+    public function stringToClassConversions(): Generator
     {
-        return [
-            [new \ReflectionClass(__CLASS__), __CLASS__ . '.class'],
-            [new \ReflectionClass(SomeInterface::class), SomeInterface::class . '.class'],
-            [null, null],
-            [null, ''],
-            [null, 'other']
-
-        ];
+        yield [new ReflectionClass(__CLASS__), __CLASS__ . '.class'];
+        yield [new ReflectionClass(SomeInterface::class), SomeInterface::class . '.class'];
+        yield [null, null];
+        yield [null, ''];
+        yield [null, 'other'];
     }
 
     /**
-     * @param  \ReflectionClass<object>  $expectedResult
-     * @param  string            $stringToParse
      * @test
      * @dataProvider  stringToClassConversions
      */
-    public function toClassReturnsValueCastedToClassInstance(?\ReflectionClass $expectedResult, ?string $stringToParse): void
-    {
+    public function toClassReturnsValueCastedToClassInstance(
+        ?ReflectionClass $expectedResult,
+        ?string $stringToParse
+    ): void {
         assertThat(Parse::toClass($stringToParse), equals($expectedResult));
     }
 
     /**
-     * @param  \ReflectionClass<object>  $expectedResult
-     * @param  string            $stringToParse
      * @test
-     * @dataProvider  stringToClassConversions
-     * @since  5.0.0
+     * @dataProvider stringToClassConversions
+     * @since 5.0.0
      */
-    public function asClassReturnsValueCastedToClassInstance(?\ReflectionClass $expectedResult, ?string $stringToParse): void
-    {
+    public function asClassReturnsValueCastedToClassInstance(
+        ?ReflectionClass $expectedResult,
+        ?string $stringToParse
+    ): void {        
         $parse = new Parse($stringToParse);
         assertThat($parse->asClass(), equals($expectedResult));
     }
 
     /**
-     * @param  \ReflectionClass<object>  $expectedResult
-     * @param  string            $stringToParse
      * @test
-     * @dataProvider  stringToClassConversions
-     * @since  5.0.0
+     * @dataProvider stringToClassConversions
+     * @since 5.0.0
      */
-    public function asClassWithDefaultReturnsValueCastedToClassInstance(?\ReflectionClass $expectedResult, ?string $stringToParse): void
-    {
+    public function asClassWithDefaultReturnsValueCastedToClassInstance(
+        ?ReflectionClass $expectedResult,
+        ?string $stringToParse
+    ): void {
         if (null === $stringToParse) {
-            $expectedResult = 'foo';
+            $expectedResult = new ReflectionClass($this);
         }
 
         $parse = new Parse($stringToParse);
-        assertThat($parse->defaultingTo('foo')->asClass(), equals($expectedResult));
+        assertThat(
+            $parse->defaultingTo(new ReflectionClass($this))->asClass(),
+            equals($expectedResult)
+        );
     }
 
     /**
@@ -565,8 +531,8 @@ class ParseTest extends TestCase
     public function toClassnameReturnsClassnameOfExistingClass(): void
     {
         assertThat(
-                Parse::toClassname(__CLASS__ . '::class'),
-                equals(__CLASS__)
+            Parse::toClassname(__CLASS__ . '::class'),
+            equals(__CLASS__)
         );
     }
 
@@ -610,35 +576,30 @@ class ParseTest extends TestCase
         assertThat($parse->asClassname(), equals(__CLASS__));
     }
 
-    /**
-     * @return  array<array<mixed>>
-     */
-    public function stringToTypeConversions(): array
+    public function stringToTypeConversions(): Generator
     {
-        return [
-            [null, null],
-            ['', ''],
-            [null, 'null'],
-            [1, '1'],
-            [true, 'yes'],
-            [true, 'true'],
-            [true, 'on'],
-            [0, '0'],
-            [false, 'no'],
-            [false, 'false'],
-            [false, 'off'],
-            [303, '303'],
-            [-303, '-303'],
-            [3.03, '3.03'],
-            [-3.03, '-3.03'],
-            [['foo' => 'bar', 'baz'], '[foo:bar|baz]'],
-            [['foo', 'bar', 'baz'], '[foo|bar|baz]'],
-            [[1, 2, 3, 4, 5], '1..5'],
-            [['a', 'b', 'c', 'd', 'e'], 'a..e'],
-            [new \ReflectionClass(__CLASS__), __CLASS__ . '.class'],
-            [MyClass::TEST_CONSTANT, MyClass::class . '::TEST_CONSTANT'],
-            ['just a string', 'just a string']
-        ];
+        yield [null, null];
+        yield ['', ''];
+        yield [null, 'null'];
+        yield [1, '1'];
+        yield [true, 'yes'];
+        yield [true, 'true'];
+        yield [true, 'on'];
+        yield [0, '0'];
+        yield [false, 'no'];
+        yield [false, 'false'];
+        yield [false, 'off'];
+        yield [303, '303'];
+        yield [-303, '-303'];
+        yield [3.03, '3.03'];
+        yield [-3.03, '-3.03'];
+        yield [['foo' => 'bar', 'baz'], '[foo:bar|baz]'];
+        yield [['foo', 'bar', 'baz'], '[foo|bar|baz]'];
+        yield [[1, 2, 3, 4, 5], '1..5'];
+        yield [['a', 'b', 'c', 'd', 'e'], 'a..e'];
+        yield [new ReflectionClass(__CLASS__), __CLASS__ . '.class'];
+        yield [MyClass::TEST_CONSTANT, MyClass::class . '::TEST_CONSTANT'];
+        yield ['just a string', 'just a string'];
     }
 
     /**
@@ -679,21 +640,16 @@ class ParseTest extends TestCase
         assertTrue(Parse::toType('Binford 6100'));
     }
 
-    /**
-     * @return  array<array<mixed>>
-     */
-    public function methods(): array
+    public function methods(): Generator
     {
-        return [
-            [null, 'asString'],
-            [0, 'asInt'],
-            [0, 'asFloat'],
-            [false, 'asBool'],
-            [null, 'asList'],
-            [null, 'asMap'],
-            [null, 'asRange'],
-            [null, 'asClass'],
-        ];
+        yield [null, 'asString'];
+        yield [0, 'asInt'];
+        yield [0, 'asFloat'];
+        yield [false, 'asBool'];
+        yield [null, 'asList'];
+        yield [null, 'asMap'];
+        yield [null, 'asRange'];
+        yield [null, 'asClass'];
     }
 
     /**
@@ -710,17 +666,25 @@ class ParseTest extends TestCase
         assertThat($parse->$method(), equals($expected));
     }
 
+    public static function typeEnforcingMethods(): Generator
+    {
+        yield ['asInt'];
+        yield ['asFloat'];
+        yield ['asList'];
+        yield ['asMap'];
+        yield ['asRange'];
+        yield ['asClass'];
+    }
+
     /**
-     *
-     * @param  mixed   $expected
-     * @param  string  $method
      * @test
-     * @dataProvider  methods
-     * @since  5.0.0
+     * @dataProvider typeEnforcingMethods
+     * @since 5.0.0
      */
-    public function parseNullWithDefaultReturnsDefault($expected, string $method): void
+    public function parseNullWithDefaultThrowsTypeErrorWhenTypeDoesNotMatch(string $method): void
     {
         $parse = new Parse(null);
-        assertThat($parse->defaultingTo('foo')->$method(), equals('foo'));
+        expect( fn() => $parse->defaultingTo('foo')->$method())
+            ->throws(TypeError::class);
     }
 }

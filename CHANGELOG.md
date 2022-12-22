@@ -2,8 +2,18 @@
 
 ## 10.0.0 (2022-12-??)
 
+### BC breaks
+
 * raised minimum required PHP version to 8.0
 * removed decprecated second parameter of `stubbles\values\ResourceLoader::load()`, use `stubbles\values\ResourceLoader::loadWith()` instead
+* The following methods of `stubbles\values\Parse` will now throw a `TypeError` when they fall back to the default value when the type of the specified default value doesn't match the expected return type:
+   * `asInt()`
+   * `asFloat()`
+   * `asList()`
+   * `asMap()`
+   * `asRange()`
+   * `asClass()`
+* fixed bug with `stubbles\values\Parse::asBool()` not returning `false` when both value and default are null
 
 ## 9.2.0 (2020-03-06)
 

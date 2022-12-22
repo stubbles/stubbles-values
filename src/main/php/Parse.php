@@ -7,29 +7,28 @@
  * file that was distributed with this source code.
  */
 namespace stubbles\values;
+
+use ReflectionClass;
 /**
  * Provides functions for parsing strings to a target type.
  *
- * @since  4.1.0
+ * @since 4.1.0
  */
 class Parse
 {
-    /**
-     * @var  string
-     */
-    const SEPARATOR_LIST = '|';
+    public const SEPARATOR_LIST = '|';
     /**
      * list of values which are treated as boolean true
      *
      * @var  string[]
      */
-    private static $booleanTrue  = ['yes', 'true', 'on'];
+    private static array $booleanTrue  = ['yes', 'true', 'on'];
     /**
      * list of known type recognitions
      *
      * @var  callable[]
      */
-    private static $recognitions = [];
+    private static array $recognitions = [];
 
     /**
      * static initializer
@@ -114,15 +113,12 @@ class Parse
      * string starting with [, ending with ]                => list  (i.e. array, see toList())
      * string containing ..                                 => range (i.e. array, see toRange())
      * <fully\qualified\Classname::class>                   => string representing an existing class name
-     * <fully\qualified\Classname.class>                    => \ReflectionClass
+     * <fully\qualified\Classname.class>                    => ReflectionClass
      * string containing name of a constant                 => value of the constant
      * recognition added via Parse::addRecognition()        => return type of the callable
      * all other                                            => string value as is
-     *
-     * @param   ?mixed   $string  the value to convert
-     * @return  mixed
      */
-    public static function toType($string)
+    public static function toType(mixed $string): mixed
     {
         if (null == $string) {
             return $string;
@@ -144,9 +140,6 @@ class Parse
 
     /**
      * parses string to an integer
-     *
-     * @param   string  $string
-     * @return  int
      */
     public static function toInt(?string $string): ?int
     {
@@ -159,9 +152,6 @@ class Parse
 
     /**
      * parses string to a float
-     *
-     * @param   string  $string
-     * @return  float
      */
     public static function toFloat(?string $string): ?float
     {
@@ -177,9 +167,6 @@ class Parse
      *
      * The return value is true if the string value is either "1", "yes", "true"
      * or "on". In any other case the return value will be false.
-     *
-     * @param   string  $string
-     * @return  bool
      */
     public static function toBool(?string $string): bool
     {
@@ -201,12 +188,13 @@ class Parse
      * </code>
      * The resulting array would be ['foo', 'bar', 'baz']
      *
-     * @param   string  $string
      * @param   string  $separator  optional  character which separates list values
      * @return  string[]
      */
-    public static function toList(?string $string, string $separator = self::SEPARATOR_LIST): ?array
-    {
+    public static function toList(
+        ?string $string,
+        string $separator = self::SEPARATOR_LIST
+    ): ?array {
         if (null === $string) {
             return null;
         }
@@ -225,9 +213,6 @@ class Parse
 
     /**
      * removes leading and trailing parenthesis from list and map strings
-     *
-     * @param   string  $string
-     * @return  string
      */
     private static function removeParenthesis(string $string): string
     {
@@ -252,8 +237,7 @@ class Parse
      * </code>
      * The resulting map would be ['foo' => 'bar', 'baz']
      *
-     * @param   string  $string
-     * @return  array<string>
+     * @return array<string>
      */
     public static function toMap(?string $string): ?array
     {
@@ -285,8 +269,7 @@ class Parse
      * Ranges can be written as 1..5 which will return an array: [1, 2, 3, 4, 5].
      * Works also with letters and reverse order a..e, e..a and 5..1.
      *
-     * @param   string  $string
-     * @return  mixed[]
+     * @return int[]|float[]|string[]|null
      */
     public static function toRange(?string $string): ?array
     {
@@ -314,20 +297,20 @@ class Parse
      * String must have the format <fully\qualified\Classname.class>. In case
      * the string can not be parsed the return value is null.
      *
-     * @param   string  $string
-     * @return  \ReflectionClass<object>
+     * @return ReflectionClass<object>
      */
-    public static function toClass(?string $string): ?\ReflectionClass
+    public static function toClass(?string $string): ?ReflectionClass
     {
         if (empty($string)) {
             return null;
         }
 
         $classnameMatches = [];
-        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\.class/', $string, $classnameMatches) != false) {
+        $classnameMatcher = '/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\.class/';
+        if (preg_match($classnameMatcher, $string, $classnameMatches) != false) {
             /** @var class-string $class */
             $class = $classnameMatches[1];
-            return new \ReflectionClass($class);
+            return new ReflectionClass($class);
         }
 
         return null;
@@ -340,9 +323,8 @@ class Parse
      * the string can not be parsed or the class does not exist the return value
      * is null.
      *
-     * @param   string  $string
-     * @return  string
-     * @since   5.3.0
+     * @return class-string|null
+     * @since  5.3.0
      */
     public static function toClassname(?string $string): ?string
     {
@@ -351,7 +333,8 @@ class Parse
         }
 
         $classnameMatches = [];
-        if (preg_match('/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\::class$/', $string, $classnameMatches) != false) {
+        $classnameMatcher = '/^([a-zA-Z_]{1}[a-zA-Z0-9_\\\\]*)\::class$/';
+        if (preg_match($classnameMatcher, $string, $classnameMatches) != false) {
             if (class_exists($classnameMatches[1])) {
                 return $classnameMatches[1];
             }
@@ -361,17 +344,9 @@ class Parse
     }
 
     /**
-     * a value to parse
-     *
-     * @var  scalar|null
-     */
-    private $value;
-    /**
      * default to be returned in case value is null
-     *
-     * @var  mixed
      */
-    private $default = null;
+    private mixed $default = null;
 
     /**
      * constructor
@@ -379,31 +354,18 @@ class Parse
      * @param  ?scalar  $value
      * @since  5.0.0
      */
-    public function __construct($value)
-    {
-        $this->value = $value;
-    }
+    public function __construct(private mixed $value) { }
 
     /**
      * set a default to be returned in case value is <null>
-     *
-     * @param   mixed  $default
-     * @return  \stubbles\values\Parse
      */
-    public function defaultingTo($default): self
+    public function defaultingTo(mixed $default): self
     {
         $this->default = $default;
         return $this;
     }
 
-    /**
-     * does the actual parsing
-     *
-     * @param   string    $method     static parse method to call
-     * @param   mixed...  $arguments  optional arguments for method to call
-     * @return  mixed
-     */
-    private function parse(string $method, ...$arguments)
+    private function parse(string $method, ...$arguments): mixed
     {
         if (null === $this->value) {
             return $this->default;
@@ -415,10 +377,9 @@ class Parse
     /**
      * returns value as string (i.e., a pass through)
      *
-     * @return  string
-     * @since   5.0.0
+     * @since 5.0.0
      */
-    public function asString()
+    public function asString(): string
     {
         if (null === $this->value) {
             return (string) $this->default;
@@ -430,10 +391,9 @@ class Parse
     /**
      * parses initial value as integer
      *
-     * @return  int
-     * @since   5.0.0
+     * @since 5.0.0
      */
-    public function asInt()
+    public function asInt(): ?int
     {
         return $this->parse('toInt');
     }
@@ -441,10 +401,9 @@ class Parse
     /**
      * parses initial value as float
      *
-     * @return  float
-     * @since   5.0.0
+     * @since 5.0.0
      */
-    public function asFloat()
+    public function asFloat(): ?float
     {
         return $this->parse('toFloat');
     }
@@ -452,22 +411,20 @@ class Parse
     /**
      * parses initial value as bool
      *
-     * @return  bool
-     * @since   5.0.0
+     * @since 5.0.0
      */
-    public function asBool()
+    public function asBool(): bool
     {
-        return $this->parse('toBool');
+        return (bool) $this->parse('toBool');
     }
 
     /**
      * parses initial value as list
      *
-     * @param   string    $separator  optional  character which separates list values
-     * @return  string[]
-     * @since   5.0.0
+     * @return string[]
+     * @since  5.0.0
      */
-    public function asList(string $separator = self::SEPARATOR_LIST)
+    public function asList(string $separator = self::SEPARATOR_LIST): ?array
     {
         return $this->parse('toList', $separator);
     }
@@ -475,10 +432,10 @@ class Parse
     /**
      * parses initial value as list
      *
-     * @return  array<string,mixed>
-     * @since   5.0.0
+     * @return array<string,mixed>
+     * @since  5.0.0
      */
-    public function asMap()
+    public function asMap(): ?array
     {
         return $this->parse('toMap');
     }
@@ -486,10 +443,10 @@ class Parse
     /**
      * parses initial value as range
      *
-     * @return  mixed[]
-     * @since   5.0.0
+     * @return int[]|float[]|string[]|null
+     * @since  5.0.0
      */
-    public function asRange()
+    public function asRange(): ?array
     {
         return $this->parse('toRange');
     }
@@ -497,10 +454,10 @@ class Parse
     /**
      * parses initial value as reflection class
      *
-     * @return  \ReflectionClass<object>
-     * @since   5.0.0
+     * @return ReflectionClass<object>
+     * @since  5.0.0
      */
-    public function asClass()
+    public function asClass(): ?ReflectionClass
     {
         return $this->parse('toClass');
     }
@@ -508,10 +465,10 @@ class Parse
     /**
      * parses initial value as class name
      *
-     * @return  string
-     * @since   5.3.0
+     * @return class-string|null
+     * @since  5.3.0
      */
-    public function asClassname()
+    public function asClassname(): ?string
     {
         return $this->parse('toClassname');
     }
