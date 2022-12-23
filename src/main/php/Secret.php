@@ -85,8 +85,8 @@ class Secret
     /**
      * select en-/decryption mechanism
      *
-     * @throws  InvalidArgumentException  when given backing is unknown
-     * @throws  LogicException  when trying to change the backing while there are still secure strings in the store
+     * @throws InvalidArgumentException  when given backing is unknown
+     * @throws LogicException  when trying to change the backing while there are still secure strings in the store
      */
     public static function switchBacking(string $type): void
     {
@@ -183,8 +183,6 @@ class Secret
 
     /**
      * creates an instance for given characters
-     *
-     * @throws InvalidArgumentException
      */
     public static function create(#[SensitiveParameter] string|self $string): self
     {
@@ -278,6 +276,8 @@ class Secret
      *
      * If no $length is provided the substring will be from start position to
      * end of the current secret.
+     *
+     * @deprecated will be removed with 11.0.0
      */
     public function substring(int $start, int $length = null): self
     {
@@ -290,7 +290,7 @@ class Secret
           return self::forNull();
         }
 
-        return self::create(mb_substr($unveiled, $start, $length));
+        return self::create(substr($unveiled, $start, $length));
     }
 
     /**

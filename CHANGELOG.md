@@ -15,12 +15,12 @@
    * `asRange()`
    * `asClass()`
 * fixed bug with `stubbles\values\Parse::asBool()` not returning `false` when both value and default are null
+* deprecated `stubbles\values\Secret::substring()`, will be removed with 11.0.0
 
 ### Other changes
 
 * `stubbles\values\Secret::create()` has been amended with the #[\SensitiveParameter] attribute for its parameter to further prevent possibilities for leaks of secrets
 * New default backing for `stubbles\values\Secret` is ext_sodium
-* `stubbles\values\Secret::substring()` can now work properly with multibyte strings
 
 ## 9.2.0 (2020-03-06)
 
