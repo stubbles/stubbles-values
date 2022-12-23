@@ -138,8 +138,8 @@ class Secret
         }
 
         $iv  = substr(md5(uniqid()), 0, $cypherIvLength);
-        self::$encrypt = fn($value) => openssl_encrypt($value, 'DES', $key,  0, $iv);
-        self::$decrypt = fn($value) => openssl_decrypt($value, 'DES', $key,  0, $iv);
+        self::$encrypt = function($value) use ($key, $iv) { return openssl_encrypt($value, 'DES', $key,  0, $iv); };
+        self::$decrypt = function($value) use ($key, $iv) { return openssl_decrypt($value, 'DES', $key,  0, $iv); };
     }
 
     /**
