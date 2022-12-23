@@ -19,6 +19,7 @@
 ### Other changes
 
 * `stubbles\values\Secret::create()` has been amended with the #[\SensitiveParameter] attribute for its parameter to further prevent possibilities for leaks of secrets
+* New default backing for `stubbles\values\Secret` is ext_sodium
 
 ## 9.2.0 (2020-03-06)
 

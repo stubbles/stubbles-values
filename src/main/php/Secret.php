@@ -41,6 +41,7 @@ use Throwable;
  */
 class Secret
 {
+    const BACKING_SODIUM    = 'sodium';
     /**
      * backing: openssl
      */
@@ -77,7 +78,9 @@ class Secret
      */
     static function __static(): void
     {
-        if (extension_loaded(self::BACKING_OPENSSL)) {
+        if (extension_loaded(self::BACKING_SODIUM)) {
+            self::useSodiumBacking();
+        } elseif (extension_loaded(self::BACKING_OPENSSL)) {
             self::useOpenSslBacking();
         } else {
             self::usePlaintextBacking();
@@ -97,6 +100,10 @@ class Secret
         }
 
         switch ($type) {
+            case self::BACKING_SODIUM:
+                self::useSodiumBacking();
+                break;
+
             case self::BACKING_OPENSSL:
                 self::useOpenSslBacking();
                 break;
@@ -118,6 +125,23 @@ class Secret
             default:
                 throw new InvalidArgumentException('Unknown backing ' . $type);
         }
+    }
+
+    /**
+     * switches backing to sodium
+     *
+     * @throws RuntimeException when sodium extension not available
+     */
+    private static function useSodiumBacking(): void
+    {
+        if (!extension_loaded(self::BACKING_SODIUM)) {
+            throw new RuntimeException('Can not use sodium backing, extension sodium not available');
+        }
+
+        $nonce= random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
+        $key= sodium_crypto_secretbox_keygen();
+        self::$encrypt = fn($value) => sodium_crypto_secretbox($value, $nonce, $key);
+        self::$decrypt = fn($value) => sodium_crypto_secretbox_open($value, $nonce, $key);
     }
 
     /**
