@@ -184,7 +184,7 @@ class Secret
     /**
      * creates an instance for given characters
      *
-     * @throws  InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public static function create(#[SensitiveParameter] string|self|null $string): self
     {
@@ -294,11 +294,11 @@ class Secret
           return self::forNull();
         }
 
-        return self::create(substr($unveiled, $start, $length));
+        return self::create(mb_substr($unveiled, $start, $length));
     }
 
     /**
-     * returns length of string
+     * returns character length of string
      */
     public function length(): int
     {

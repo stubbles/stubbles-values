@@ -7,7 +7,7 @@
 * raised minimum required PHP version to 8.0
 * removed decprecated second parameter of `stubbles\values\ResourceLoader::load()`, use `stubbles\values\ResourceLoader::loadWith()` instead
 * `stubbles\values\ResourceLoader::load()` now throws a `stubbles\values\ResourceLoadingFailure` when loading the resource fails
-* The following methods of `stubbles\values\Parse` will now throw a `TypeError` when they fall back to the default value when the type of the specified default value doesn't match the expected return type:
+* The following methods of `stubbles\values\Parse` will now throw a `TypeError` when they fall back to the default value in case the type of the specified default value doesn't match the expected return type:
    * `asInt()`
    * `asFloat()`
    * `asList()`
@@ -20,6 +20,7 @@
 
 * `stubbles\values\Secret::create()` has been amended with the #[\SensitiveParameter] attribute for its parameter to further prevent possibilities for leaks of secrets
 * New default backing for `stubbles\values\Secret` is ext_sodium
+* `stubbles\values\Secret::substring()` can now work properly with multibyte strings
 
 ## 9.2.0 (2020-03-06)
 
