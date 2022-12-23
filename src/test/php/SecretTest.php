@@ -76,21 +76,14 @@ abstract class SecretTest extends TestCase
         assertTrue(Secret::forNull()->substring(2, 33)->isNull());
     }
 
-    public function emptyValues(): Generator
-    {
-        yield [null];
-        yield [''];
-    }
-
     /**
      * @test
-     * @dataProvider  emptyValues
      */
-    public function createWithEmptyValueThrowsIllegalArgumentException(?string $value): void
+    public function createWithEmptyValueThrowsIllegalArgumentException(): void
     {
-        expect(fn() => Secret::create($value))
+        expect(fn() => Secret::create(''))
             ->throws(InvalidArgumentException::class)
-            ->withMessage('Given string was null or empty, if you explicitly want to create a Secret with value null use Secret::forNull()');
+            ->withMessage('Can not have secret with empty string.');
     }
 
     /**

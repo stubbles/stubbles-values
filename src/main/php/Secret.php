@@ -186,18 +186,14 @@ class Secret
      *
      * @throws InvalidArgumentException
      */
-    public static function create(#[SensitiveParameter] string|self|null $string): self
+    public static function create(#[SensitiveParameter] string|self $string): self
     {
         if ($string instanceof self) {
             return $string;
         }
 
         if (empty($string)) {
-            throw new InvalidArgumentException(
-                'Given string was null or empty, if you explicitly want to'
-                . ' create a Secret with value null use'
-                . ' Secret::forNull()'
-            );
+            throw new InvalidArgumentException('Can not have secret with empty string.');
         }
 
         $self = new static();
