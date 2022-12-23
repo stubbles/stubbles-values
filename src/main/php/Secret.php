@@ -132,14 +132,14 @@ class Secret
         }
 
         $key = md5(uniqid());
-        $cypherIvLength = openssl_cipher_iv_length('des');
+        $cypherIvLength = openssl_cipher_iv_length('AES-128-CBC');
         if (false === $cypherIvLength) {
           throw new RuntimeException('Can not calculate cypher iv length using method "des"');
         }
 
-        $iv  = substr(md5(uniqid()), 0, $cypherIvLength);
-        self::$encrypt = function($value) use ($key, $iv) { return openssl_encrypt($value, 'DES', $key,  0, $iv); };
-        self::$decrypt = function($value) use ($key, $iv) { return openssl_decrypt($value, 'DES', $key,  0, $iv); };
+        $iv  = openssl_random_pseudo_bytes($cypherIvLength);
+        self::$encrypt = fn($value) => openssl_encrypt($value, 'AES-128-CBC', $key,  0, $iv);
+        self::$decrypt = fn($value) => openssl_decrypt($value, 'AES-128-CBC', $key,  0, $iv);
     }
 
     /**
