@@ -167,7 +167,7 @@ class Secret
      *
      * @throws  InvalidArgumentException
      */
-    public static function create(#[SensitiveParameter] string|self|null $string): self
+    public static function create(string|self|null $string): self
     {
         if ($string instanceof self) {
             return $string;
