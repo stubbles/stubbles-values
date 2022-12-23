@@ -15,6 +15,7 @@ declare(strict_types=1);
  */
 namespace stubbles\values;
 
+use Closure;
 use InvalidArgumentException;
 use LogicException;
 use RuntimeException;
@@ -56,22 +57,16 @@ class Secret
     private static array $lengths = [];
     /**
      * callable to encrypt data with before storing it
-     *
-     * @var  \Closure
      */
-    private static $encrypt;
+    private static Closure $encrypt;
     /**
      * callable to decrypt data with before returning it from store
-     *
-     * @var  \Closure
      */
-    private static $decrypt;
+    private static Closure $decrypt;
     /**
      * id of instance
-     *
-     * @var  string
      */
-    private $id;
+    private string $id;
 
     /**
      * static initializer
