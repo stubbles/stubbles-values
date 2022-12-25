@@ -19,13 +19,13 @@ _stubbles/values_ is distributed as [Composer](https://getcomposer.org/)
 package. To install it as a dependency of your package use the following
 command:
 
-    composer require "stubbles/values": "^9.0"
+    composer require "stubbles/values": "^10.0"
 
 
 Requirements
 ------------
 
-_stubbles/values_ requires at least PHP 7.3. For PHP 8 the minimum version of _stubbles/values_ is 9.3.
+_stubbles/values_ requires at least PHP 8.0.
 
 
 Available classes
@@ -35,12 +35,12 @@ Available classes
 
 Enables to wrap a return value which might be `null`. In other languages or
 libraries this is known as an Optional. To create an instance call
-`Result::of($value)`.
+`Result::of(someCallThatMightReturnNull())`.
 
 
 #### `isPresent()`
 
-Returns `true` when result contains a value which not `null`.
+Returns `true` when result contains a value which is not `null`.
 
 
 #### `isEmpty()`
@@ -61,7 +61,7 @@ Allows to filter the value. In case the value fulfills the given predicate the
 equivalent of `Result::of(null)` is returned.
 
 ```php
-$filter = function($value) { return 303 === $value; };
+$filter = fn($value) => 303 === $value;
 echo Result::of(303)->filter($filter)->value(); // displays 303
 echo Result::of(313)->filter($filter)->value(); // displays nothing
 echo Result::of(null)->filter($filter)->value(); // displays nothing
@@ -74,7 +74,7 @@ Maps the value using the given mapper into a different result. In case the value
 is `null` the return value still is equivalent to `Result::of(null)`.
 
 ```php
-$mapper = function($value) { return 'Roland TB 303'; };
+$mapper = fn($value) => 'Roland TB 303';
 echo Result::of(303)->map($mapper)->value(); // displays "Roland TB 303"
 echo Result::of(null)->map($mapper)->value(); // displays nothing
 ```
@@ -118,7 +118,7 @@ echo Result::of('')->whenEmpty($default)->value(); // displays Roland TB 303
 Returns the result if value is not empty, or result of applied other.
 
 ```php
-$default = function() { return 'Roland TB 303'; };
+$default = fn() => 'Roland TB 303';
 echo Result::of('Roland 909')->applyWhenEmpty($default)->value(); // displays Roland 909
 echo Result::of('')->applyWhenEmpty($default)->value(); // displays Roland TB 303
 ```
@@ -173,6 +173,8 @@ intended stored secure.
 #### `substring(int $start, int $length = null): Secret`
 
 Creates a substring of the secret value as new `Secret` instance.
+
+Please note that this method is deprecated since release 10.0.0 and will be removed with 11.0.0.
 
 
 #### `length(): int`
@@ -296,22 +298,25 @@ $answer = $properties->parseInt('other', 'the.answer'); // $answer now has the v
 ```
 
 
-#### `parseInt($section, $key, $default = 0)`
+#### `parse(string $section, string $key)->asInt(): ?int`
 
-Tries to read the value and convert it to int. If the section or key is not set,
-return value is `$default`.
+Tries to read the value and convert it to int.
 
-
-#### `parseFloat($section, $key, $default = 0.0)`
-
-Tries to read the value and convert it to float. If the section or key is not
-set, return value is `$default`.
+If you want to have a default value in case the section or key is not set, use
+`parse($section, $key)->defaultingTo(42)->asInt()`. Please note that the given default value must be of type `int`.
 
 
-#### `parseBool($section, $key, $default = false)`
+#### `parse(string $section, string $key)->asFloat(): ?float`
 
-Tries to read the value and convert it to boolean. If the section or key is not
-set, return value is `$default`.
+Tries to read the value and convert it to float.
+
+If you want to have a default value in case the section or key is not set, use
+`parse($section, $key)->defaultingTo(3.03)->asFloat()`. Please note that the given default value must be of type `float`.
+
+
+#### `parse(string $section, string $key)->asBool(): ?bool`
+
+Tries to read the value and convert it to boolean.
 
 The following value contents will be converted to `true`:
 
@@ -321,21 +326,26 @@ The following value contents will be converted to `true`:
 
 All other values will evaluate to `false`.
 
+If you want to have a default value of `true` in case the section or key is not set, use
+`parse($section, $key)->defaultingTo(true)->asBool()`. Please note that the given default value must be of type `bool`. It is not required to explicitly specify `false` as default value. In case the section or key is not set `false` will be the return default value if not specified otherwise.
 
-#### `parseArray($section, $key, array $default = null)`
 
-Tries to read the value and convert it to an array. If the section or key is not
-set, return value is `$default`.
+#### `parse(string $section, string $key)->asList(): ?array`
+
+Tries to read the value and convert it to a list (array with integers as key).
+
 
 If the value is empty the return value will be an empty array. If the value is
 not empty it will be splitted at _|_. So if the value would be _key = foo|bar|baz_
 it gets converted to `['foo', 'bar', 'baz']`.
 
+If you want to have a default value in case the section or key is not set, use
+`parse($section, $key)->defaultingTo(['foo', 'bar'])->asList()`. Please note that the given default value must be of type `array`.
 
-#### `parseHash($section, $key, array $default = null)`
 
-Tries to read the value and convert it to a hashmap. If the section or key is
-not set, return value is `$default`.
+#### `parse(string $section, string $key)->asMap(): ?array`
+
+Tries to read the value and convert it to a hashmap.
 
 If the value is empty the return value will be an empty hash. If the value is
 not empty it will be splitted at _|_. The resulting array will be splitted at
@@ -344,11 +354,13 @@ the value in the hash. If no _:_ is present, the whole value will be appended to
 the hash using a numeric value. So _key = foo:bar|baz_ results in
 `['foo' => 'bar', 'baz']`.
 
+If you want to have a default value in case the section or key is not set, use
+`parse($section, $key)->defaultingTo(['foo' => 'bar'])->asMap()`. Please note that the given default value must be of type `array`.
 
-#### `parseRange(string $section, string $key, array $default = [])`
 
-Tries to read the value and convert it to a range. If the section or key is not
-set, return value is `$default`.
+#### `parse(string $section, string $key)->asRange(): ?array`
+
+Tries to read the value and convert it to a range. 
 
 Ranges in properties should be written as _key = 1..5_ the resulting value is
 `[1, 2, 3, 4, 5]`.
@@ -358,6 +370,18 @@ This works also with letters and reverse order:
     letters = a..e
     letter_reverse = e..a
     numbers_reverse = 5..1
+
+If you want to have a default value in case the section or key is not set, use
+`parse($section, $key)->defaultingTo([1, 2, 3])->asRange()`. Please note that the given default value must be of type `array`.
+
+#### `parse(string $section, string $key)->asClass(): ?ReflectionClass`
+
+Tries to read the value and convert it to an instance of `ReflectionClass` for the class name. 
+
+Classes in properties should be written as _key = foo\bar\Baz.class.
+
+If you want to have a default value in case the section or key is not set, use
+`parse($section, $key)->defaultingTo(new ReflectionClass(stdClass::class))->asClass()`. Please note that the given default value must be of type `ReflectionClass`.
 
 
 #### Passwords
@@ -451,7 +475,7 @@ complete path, a complete path must always lead to a resource located within the
 root path.
 
 
-#### `load(string $resource, callable $loader = null)`
+#### `load(string $resource)`
 
 Loads resource contents. Resource can either be a complete path to a resource or
 a local path. In case it is a local path it is searched within the
@@ -461,14 +485,27 @@ It is not possible to load resources outside of the root path by providing a
 complete path, a complete path must always lead to a resource located within the
 root path.
 
-In case no `$loader` is given the resource will be loaded with
-`file_get_contents()`. The given `$loader` must accept a path and return the
+```php
+$props = $resourceLoader->load('some/properties.ini');
+```
+
+#### `loadWith(string $resource, callable $loader)`
+
+Loads resource contents. Resource can either be a complete path to a resource or
+a local path. In case it is a local path it is searched within the
+`src/main/resources` folder of the current project.
+
+It is not possible to load resources outside of the root path by providing a
+complete path, a complete path must always lead to a resource located within the
+root path.
+
+The given `$loader` must accept a path and return the
 result from the load operation:
 
 ```php
-$props = $resourceLoader->load(
+$props = $resourceLoader->loadWith(
         'some/properties.ini',
-        function($path) { return Properties::fromFile($path); }
+        fn($path) => Properties::fromFile($path)
 );
 ```
 

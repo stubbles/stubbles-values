@@ -101,7 +101,7 @@ class ResourceLoader
      *
      * @template T
      * @phpstan-param  callable(string): T $loader  code to load resource with, defaults to file_get_contents()
-     * @phpstan-return T    result of call to $loader
+     * @phpstan-return T result of call to $loader
      * @since  9.2.0
      */
     public function loadWith(string $resource, callable $loader): mixed
