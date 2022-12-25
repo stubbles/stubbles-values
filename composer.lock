@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8c359fc1efc42582992053910cb6ed74",
+    "content-hash": "4a00efa93cb940a0a5d6395204c624d2",
     "packages": [],
     "packages-dev": [
         {
             "name": "bovigo/assert",
-            "version": "dev-main",
+            "version": "v7.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/assert.git",
-                "reference": "7f8a9c14b61f335204fa1e9899c70d7515730dcb"
+                "reference": "40039a3fa7c73a1eab6d1fbc130910772ea3f230"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/assert/zipball/7f8a9c14b61f335204fa1e9899c70d7515730dcb",
-                "reference": "7f8a9c14b61f335204fa1e9899c70d7515730dcb",
+                "url": "https://api.github.com/repos/bovigo/assert/zipball/40039a3fa7c73a1eab6d1fbc130910772ea3f230",
+                "reference": "40039a3fa7c73a1eab6d1fbc130910772ea3f230",
                 "shasum": ""
             },
             "require": {
@@ -31,7 +31,6 @@
                 "phpstan/phpstan": "^1.9",
                 "phpunit/phpunit": "^9.4"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -54,22 +53,22 @@
             "description": "Provides assertions for unit tests.",
             "support": {
                 "issues": "https://github.com/bovigo/assert/issues",
-                "source": "https://github.com/bovigo/assert/tree/main"
+                "source": "https://github.com/bovigo/assert/tree/v7.0.0"
             },
-            "time": "2022-12-22T09:49:12+00:00"
+            "time": "2022-12-25T13:29:55+00:00"
         },
         {
             "name": "bovigo/callmap",
-            "version": "dev-main",
+            "version": "v7.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bovigo/callmap.git",
-                "reference": "abe33ab86fcaac670f363cc25e24ad888c9d9175"
+                "reference": "3d381d53e1995fc8759c840291271583788a8bf2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bovigo/callmap/zipball/abe33ab86fcaac670f363cc25e24ad888c9d9175",
-                "reference": "abe33ab86fcaac670f363cc25e24ad888c9d9175",
+                "url": "https://api.github.com/repos/bovigo/callmap/zipball/3d381d53e1995fc8759c840291271583788a8bf2",
+                "reference": "3d381d53e1995fc8759c840291271583788a8bf2",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +86,6 @@
                 "phpunit/phpunit": "Alternative option for argument verification",
                 "xp-framework/unittest": "Alternative option for argument verification"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -109,9 +107,9 @@
             "description": "Allows to stub and mock method calls by applying a callmap.",
             "support": {
                 "issues": "https://github.com/bovigo/callmap/issues",
-                "source": "https://github.com/bovigo/callmap/tree/main"
+                "source": "https://github.com/bovigo/callmap/tree/v7.0.0"
             },
-            "time": "2022-12-22T10:11:44+00:00"
+            "time": "2022-12-25T15:09:53+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -1956,15 +1954,12 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "bovigo/callmap": 20,
-        "bovigo/assert": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^8.0",
-        "ext-iconv": "*"
+        "ext-mbstring": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.3.0"
