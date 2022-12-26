@@ -133,8 +133,8 @@ class Secret
             throw new RuntimeException('Can not use sodium backing, extension sodium not available');
         }
 
-        $nonce= random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
-        $key= sodium_crypto_secretbox_keygen();
+        $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
+        $key   = sodium_crypto_secretbox_keygen();
         self::$encrypt = fn($value) => sodium_crypto_secretbox($value, $nonce, $key);
         self::$decrypt = fn($value) => sodium_crypto_secretbox_open($value, $nonce, $key);
     }
