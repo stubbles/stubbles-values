@@ -15,10 +15,8 @@ declare(strict_types=1);
  */
 namespace stubbles\values;
 
-use Generator;
 use InvalidArgumentException;
 use LogicException;
-use PHPUnit\Framework\TestCase;
 use function bovigo\assert\{
     assertThat,
     assertFalse,
@@ -30,11 +28,11 @@ use function bovigo\assert\{
     predicate\isSameAs
 };
 /**
- * Base class tests for stubbles\values\Secret.
+ * Base tests for stubbles\values\Secret.
  *
  * @since 4.0.0
  */
-abstract class SecretTest extends TestCase
+trait SecretTests
 {
     /**
      * @test

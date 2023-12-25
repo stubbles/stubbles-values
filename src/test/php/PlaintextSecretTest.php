@@ -14,7 +14,9 @@ declare(strict_types=1);
  * https://github.com/xp-framework/xp-framework/blob/master/core/src/main/php/LICENCE
  */
 namespace stubbles\values;
-require_once __DIR__ . '/SecretTest.php';
+
+use PHPUnit\Framework\TestCase;
+
 /**
  * Plain text backed tests for stubbles\values\Secret.
  *
@@ -22,8 +24,10 @@ require_once __DIR__ . '/SecretTest.php';
  * @group values
  * @group secret
  */
-class PlaintextSecretTest extends SecretTest
+class PlaintextSecretTest extends TestCase
 {
+    use SecretTests;
+
     protected function setUp(): void
     {
         Secret::switchBacking(Secret::BACKING_PLAINTEXT);

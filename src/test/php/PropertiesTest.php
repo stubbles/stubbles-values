@@ -10,6 +10,7 @@ namespace stubbles\values;
 use InvalidArgumentException;
 use LogicException;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
 
@@ -402,6 +403,7 @@ class PropertiesTest extends TestCase
      * @since 2.0.0
      * @group bug213
      */
+    #[WithoutErrorHandler]
     public function invalidIniStringThrowsException(): void
     {
         expect(fn() => Properties::fromString("[invalid{"))

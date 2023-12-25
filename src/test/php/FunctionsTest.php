@@ -7,6 +7,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\values;
+
+use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\predicate\equals;
@@ -31,6 +33,7 @@ class FunctionsTest extends TestCase
      * @test
      * @since  3.4.2
      */
+    #[WithoutErrorHandler]
     public function lastErrorMessageShouldContainLastError(): void
     {
         @file_get_contents(__DIR__ . '/doesNotExist.txt');
