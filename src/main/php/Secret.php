@@ -176,7 +176,7 @@ class Secret
     /**
      * constructor
      */
-    private final function __construct()
+    final private function __construct()
     {
         $this->id = uniqid('', true);
     }
@@ -269,28 +269,6 @@ class Secret
 
         $decrypt = self::$decrypt;
         return $decrypt(self::$payloads[$this->id]);
-    }
-
-    /**
-     * returns a substring of the secured string as a new Secret instance
-     *
-     * If no $length is provided the substring will be from start position to
-     * end of the current secret.
-     *
-     * @deprecated will be removed with 11.0.0
-     */
-    public function substring(int $start, int $length = null): self
-    {
-        if ($this->isNull()) {
-            return $this;
-        }
-
-        $unveiled = $this->unveil();
-        if ($unveiled === null) {
-          return self::forNull();
-        }
-
-        return self::create(substr($unveiled, $start, $length));
     }
 
     /**

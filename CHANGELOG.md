@@ -5,6 +5,7 @@
 ### BC breaks
 
 * raised minimum required PHP version to 8.2
+* removed `stubbles\values\Secret::substring()`, deprecated since 10.0.0
 
 ## 10.0.0 (2022-12-26)
 

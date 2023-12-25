@@ -69,14 +69,6 @@ trait SecretTests
     /**
      * @test
      */
-    public function substringNullStringIsNullString(): void
-    {
-        assertTrue(Secret::forNull()->substring(2, 33)->isNull());
-    }
-
-    /**
-     * @test
-     */
     public function createWithEmptyValueThrowsIllegalArgumentException(): void
     {
         expect(fn() => Secret::create(''))
@@ -183,26 +175,6 @@ trait SecretTests
     public function nonNullSecretDoesNotIdentifyAsNull(): void
     {
         assertFalse(Secret::create('payload')->isNull());
-    }
-
-    /**
-     * @test
-     */
-    public function substringWithValidStartReturnsNewInstance(): void
-    {
-        assertThat(
-            Secret::create('payload')->substring(3, 2)->unveil(),
-            equals('lo')
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function substringWithStartOutOfRangeThrowsIllegalArgumentException(): void
-    {
-        expect(fn() => Secret::create('payload')->substring(50))
-            ->throws(InvalidArgumentException::class);
     }
 
     /**
