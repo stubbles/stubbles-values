@@ -291,6 +291,11 @@ class Parse
             return [];
         }
 
+        if ((int) $min == $min && (int) $max == $max) {
+            $min = (int) $min;
+            $max = (int) $max;
+        }
+
         return range($min, $max);
     }
 
