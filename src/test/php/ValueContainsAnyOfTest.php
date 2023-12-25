@@ -21,7 +21,7 @@ use function bovigo\assert\assertTrue;
  */
 class ValueContainsAnyOfTest extends TestCase
 {
-    public function tuplesEvaluatingToTrue(): Generator
+    public static function tuplesEvaluatingToTrue(): Generator
     {
         yield [[true], true];
         yield [[false], false];
@@ -43,7 +43,7 @@ class ValueContainsAnyOfTest extends TestCase
         assertTrue(value($value)->containsAnyOf($contained));
     }
 
-    public function tuplesEvaluatingToFalse(): Generator
+    public static function tuplesEvaluatingToFalse(): Generator
     {
         yield [[true], false];
         yield [[false], true];

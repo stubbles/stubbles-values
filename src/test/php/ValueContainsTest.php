@@ -24,7 +24,7 @@ class ValueContainsTest extends TestCase
      *
      * @return  array<array<mixed>>
      */
-    public function tuplesEvaluatingToTrue(): array
+    public static function tuplesEvaluatingToTrue(): array
     {
         return [
                 [null, null],
@@ -53,7 +53,7 @@ class ValueContainsTest extends TestCase
      *
      * @return  array<array<mixed>>
      */
-    public function tuplesEvaluatingToFalse(): array
+    public static function tuplesEvaluatingToFalse(): array
     {
         return [
                 [5, 'foo'],

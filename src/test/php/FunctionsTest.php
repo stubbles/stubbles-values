@@ -65,7 +65,7 @@ class FunctionsTest extends TestCase
     /**
      * @return  array<array<mixed>>
      */
-    public function valueTypes(): array
+    public static function valueTypes(): array
     {
         return [
                 [303, 'integer'],

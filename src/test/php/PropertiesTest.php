@@ -80,7 +80,7 @@ class PropertiesTest extends TestCase
     /**
      * @return  array<array<mixed>>
      */
-    public function sections(): array
+    public static function sections(): array
     {
         return [
             ['scalar', [
@@ -211,10 +211,10 @@ class PropertiesTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function existingSectionKeys(): array
+    public static function existingSectionKeys(): array
     {
         $data = [];
-        foreach ($this->sections() as $section) {
+        foreach (self::sections() as $section) {
             foreach (array_keys($section[1]) as $key) {
                 $data[] = [$section[0], $key];
             }
@@ -251,10 +251,10 @@ class PropertiesTest extends TestCase
     /**
      * @return array<array<mixed>>
      */
-    public function existingSectionValues(): array
+    public static function existingSectionValues(): array
     {
         $data = [];
-        foreach ($this->sections() as $section) {
+        foreach (self::sections() as $section) {
             foreach ($section[1] as $key => $value) {
                 $data[] = [$section[0], $key, $value];
             }
@@ -524,7 +524,7 @@ class PropertiesTest extends TestCase
     /**
      * @return array<array<mixed>>
      */
-    public function parseValueList(): array
+    public static function parseValueList(): array
     {
         return [
             ['This is a string', 'scalar', 'stringValue'],
@@ -598,7 +598,7 @@ class PropertiesTest extends TestCase
      * @return array<array<mixed>>
      * @since  5.0.0
      */
-    public function parseList(): array
+    public static function parseList(): array
     {
         return [
             ['This is a string', 'scalar', 'stringValue', 'asString'],

@@ -35,7 +35,7 @@ class ValueEqualsTest extends TestCase
     /**
      * @return  array<array<mixed>>
      */
-    public function tuplesEvaluatingToTrue(): array
+    public static function tuplesEvaluatingToTrue(): array
     {
         return [[true, true],
                 [false, false],
@@ -57,7 +57,7 @@ class ValueEqualsTest extends TestCase
     /**
      * @return  array<array<mixed>>
      */
-    public function tuplesEvaluatingToFalse(): array
+    public static function tuplesEvaluatingToFalse(): array
     {
         return [[true, false],
                 [false, true],

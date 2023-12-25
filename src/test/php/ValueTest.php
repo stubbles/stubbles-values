@@ -100,7 +100,7 @@ class ValueTest extends TestCase
         assertThat(value(303)->value(), equals(303));
     }
 
-    public function validValues(): Generator
+    public static function validValues(): Generator
     {
         yield ['/^([a-z]{3})$/', 'foo'];
         yield ['/^([a-z]{3})$/i', 'foo'];
@@ -116,7 +116,7 @@ class ValueTest extends TestCase
         assertTrue(value($value)->isMatchedBy($pattern));
     }
 
-    public function invalidValues(): Generator
+    public static function invalidValues(): Generator
     {
         yield ['/^([a-z]{3})$/', 'Bar'];
         yield ['/^([a-z]{3})$/', 'baz0123'];

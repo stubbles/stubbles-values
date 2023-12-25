@@ -25,7 +25,7 @@ class PatternTest extends TestCase
     /**
      * @return  array<array<string>>
      */
-    public function validValues(): Generator
+    public static function validValues(): Generator
     {
         yield ['/^([a-z]{3})$/', 'foo'];
         yield ['/^([a-z]{3})$/i', 'foo'];
@@ -41,7 +41,7 @@ class PatternTest extends TestCase
         assertTrue(pattern($pattern)->matches($value));
     }
 
-    public function invalidValues(): Generator
+    public static function invalidValues(): Generator
     {
         yield ['/^([a-z]{3})$/', 'Bar'];
         yield ['/^([a-z]{3})$/', 'baz0123'];

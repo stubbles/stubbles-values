@@ -32,7 +32,7 @@ class ParseTest extends TestCase
         Parse::__static();
     }
 
-    public function stringToIntConversions(): Generator
+    public static function stringToIntConversions(): Generator
     {
         yield [0, '0'];
         yield [1, '1'];
@@ -93,7 +93,7 @@ class ParseTest extends TestCase
         assertNull(Parse::toInt(null));
     }
 
-    public function stringToFloatConversions(): Generator
+    public static function stringToFloatConversions(): Generator
     {
         yield [0.1, '0.1'];
         yield [1, '1'];
@@ -157,7 +157,7 @@ class ParseTest extends TestCase
     /**
      * @return  array<array<mixed>>
      */
-    public function stringToBoolConversions(): Generator
+    public static function stringToBoolConversions(): Generator
     {
         yield [true, 'yes'];
         yield [true, 'true'];
@@ -213,7 +213,7 @@ class ParseTest extends TestCase
         );
     }
 
-    public function stringToListConversions(): Generator
+    public static function stringToListConversions(): Generator
     {
         yield [['foo', 'bar', 'baz'], 'foo|bar|baz', Parse::SEPARATOR_LIST];
         yield [['foo|bar|baz'], 'foo|bar|baz', ','];
@@ -281,7 +281,7 @@ class ParseTest extends TestCase
         );
     }
 
-    public function stringToMapConversions(): Generator
+    public static function stringToMapConversions(): Generator
     {
         yield [['foo', 'bar', 'baz'], 'foo|bar|baz'];
         yield [['foo', 'bar', 'baz'], '[foo|bar|baz]'];
@@ -347,7 +347,7 @@ class ParseTest extends TestCase
     /**
      * @return  array<array<mixed>>
      */
-    public function stringToRangeConversions(): Generator
+    public static function stringToRangeConversions(): Generator
     {
         yield [[1, 2, 3, 4, 5], '1..5'];
         yield [['a', 'b', 'c', 'd', 'e'], 'a..e'];
@@ -409,7 +409,7 @@ class ParseTest extends TestCase
     /**
      * @return  array<array<mixed>>
      */
-    public function stringToClassConversions(): Generator
+    public static function stringToClassConversions(): Generator
     {
         yield [new ReflectionClass(__CLASS__), __CLASS__ . '.class'];
         yield [new ReflectionClass(SomeInterface::class), SomeInterface::class . '.class'];
@@ -576,7 +576,7 @@ class ParseTest extends TestCase
         assertThat($parse->asClassname(), equals(__CLASS__));
     }
 
-    public function stringToTypeConversions(): Generator
+    public static function stringToTypeConversions(): Generator
     {
         yield [null, null];
         yield ['', ''];
@@ -640,7 +640,7 @@ class ParseTest extends TestCase
         assertTrue(Parse::toType('Binford 6100'));
     }
 
-    public function methods(): Generator
+    public static function methods(): Generator
     {
         yield [null, 'asString'];
         yield [0, 'asInt'];

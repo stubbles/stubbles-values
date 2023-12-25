@@ -24,7 +24,7 @@ class ValueIsOneOfTest extends TestCase
     /** @var  string[] */
     private array $allowedValues = ['foo', 'bar'];
 
-    public function validValues(): Generator
+    public static function validValues(): Generator
     {
         yield ['foo'];
         yield ['bar'];
@@ -40,7 +40,7 @@ class ValueIsOneOfTest extends TestCase
         assertTrue(value($value)->isOneOf($this->allowedValues));
     }
 
-    public function invalidValues(): Generator
+    public static function invalidValues(): Generator
     {
         yield ['baz'];
         yield [null];

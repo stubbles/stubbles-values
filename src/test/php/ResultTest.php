@@ -153,7 +153,7 @@ class ResultTest extends TestCase
         );
     }
 
-    public function emptyValues(): Generator
+    public static function emptyValues(): Generator
     {
         yield [null];
         yield [''];
@@ -170,7 +170,7 @@ class ResultTest extends TestCase
         assertTrue(Result::of($value)->isEmpty());
     }
 
-    public function nonEmptyValues(): Generator
+    public static function nonEmptyValues(): Generator
     {
         yield [0];
         yield [303];
