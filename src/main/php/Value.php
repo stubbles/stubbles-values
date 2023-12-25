@@ -40,7 +40,7 @@ class Value
     /**
      * @phpstan-param T $value
      */
-    private final function __construct(private mixed $value) { }
+    final private function __construct(private mixed $value) { }
 
     /**
      * @phpstan-param T $value
