@@ -1,5 +1,11 @@
 # Changelog
 
+## 11.0.0
+
+### BC breaks
+
+* raised minimum required PHP version to 8.2
+
 ## 10.0.0 (2022-12-26)
 
 ### BC breaks
