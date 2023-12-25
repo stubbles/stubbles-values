@@ -9,6 +9,9 @@ declare(strict_types=1);
 namespace stubbles\values;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
@@ -16,10 +19,10 @@ use function bovigo\assert\expect;
 /**
  * Tests for stubbles\values\Value::equals().
  *
- * @group values
- * @group value_checks
  * @since 7.2.0
  */
+#[Group('values')]
+#[Group('value_checks')]
 class ValueEqualsTest extends TestCase
 {
     /**
@@ -45,10 +48,8 @@ class ValueEqualsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider tuplesEvaluatingToTrue
-     */
+    #[Test]
+    #[DataProvider('tuplesEvaluatingToTrue')]
     public function evaluatesToTrue(mixed $expected, mixed $value): void
     {
         assertTrue(value($value)->equals($expected));
@@ -74,10 +75,8 @@ class ValueEqualsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider tuplesEvaluatingToFalse
-     */
+    #[Test]
+    #[DataProvider('tuplesEvaluatingToFalse')]
     public function evaluatesToFalse(mixed $expected, mixed $value): void
     {
         assertFalse(value($value)->equals($expected));

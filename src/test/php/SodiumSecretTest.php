@@ -15,16 +15,18 @@ declare(strict_types=1);
  */
 namespace stubbles\values;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Sodium backed tests for stubbles\values\Secret.
  *
  * @since 10.0.0
- * @group values
- * @group secret
- * @requires extension sodium
  */
+#[Group('values')]
+#[Group('secret')]
+#[RequiresPhpExtension('sodium')]
 class SodiumSecretTest extends TestCase
 {
     use SecretTests;

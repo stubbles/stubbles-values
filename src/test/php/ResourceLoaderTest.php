@@ -11,6 +11,8 @@ use bovigo\callmap\NewInstance;
 use DomainException;
 use InvalidArgumentException;
 use OutOfBoundsException;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use stubbles\streams\file\FileInputStream;
 
@@ -28,8 +30,8 @@ use function bovigo\assert\{
  * Tests for stubbles\values\ResourceLoader.
  *
  * @since 1.6.0
- * @group app
  */
+#[Group('app')]
 class ResourceLoaderTest extends TestCase
 {
     private ResourceLoader $resourceLoader;
@@ -40,9 +42,9 @@ class ResourceLoaderTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function openNonExistingResourceThrowsDomainException(): void
     {
         expect(fn() => $this->resourceLoader->open('lang/doesNotExist.ini'))
@@ -50,9 +52,9 @@ class ResourceLoaderTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function loadNonExistingResourceThrowsDomainException(): void
     {
         expect(fn() => $this->resourceLoader->load('lang/doesNotExist.ini'))
@@ -60,9 +62,9 @@ class ResourceLoaderTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function openLocalResourceReturnsInputStream(): void
     {
         assertThat(
@@ -72,9 +74,9 @@ class ResourceLoaderTest extends TestCase
     }
 
     /**
-     * @test
      * @since 7.0.0
      */
+    #[Test]
     public function openLocalResourceWithOtherUsesOther(): void
     {
         $myClass = NewInstance::classname(FileInputStream::class);
@@ -85,9 +87,9 @@ class ResourceLoaderTest extends TestCase
     }
 
     /**
-     * @test
      * @since 7.0.0
      */
+    #[Test]
     public function openLocalResourceWithNonExistingClassThrowsInvalidArgumentException(): void
     {
         expect(fn() => $this->resourceLoader->open('lang/stubbles.ini', 'DoesNotExist'))
@@ -95,9 +97,9 @@ class ResourceLoaderTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function loadLocalResourceWithoutLoaderReturnsContent(): void
     {
         assertThat(
@@ -107,9 +109,9 @@ class ResourceLoaderTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function loadLocalResourceWithLoaderReturnsLoaderResult(): void
     {
         assertThat(
@@ -130,9 +132,9 @@ class ResourceLoaderTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function openResourceWithCompletePathInRootReturnsInputStream(): void
     {
         assertThat(
@@ -142,9 +144,9 @@ class ResourceLoaderTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function loadResourceWithCompletePathInRootWithoutLoaderReturnsContent(): void
     {
         assertThat(
@@ -154,9 +156,9 @@ class ResourceLoaderTest extends TestCase
     }
 
     /**
-     * @test
      * @since  4.0.0
      */
+    #[Test]
     public function loadLocalWithCompletePathWithLoaderReturnsLoaderResult(): void
     {
         $rootpath = new Rootpath();
@@ -177,9 +179,9 @@ class ResourceLoaderTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function openResourceWithCompletePathOutsideRootThrowsDomainException(): void
     {
         $tmpName = tempnam(sys_get_temp_dir(), 'test.txt');
@@ -192,9 +194,9 @@ class ResourceLoaderTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function loadResourceWithCompletePathOutsideRootThrowsDomainException(): void
     {
         $tmpName = tempnam(sys_get_temp_dir(), 'test.txt');
@@ -207,9 +209,9 @@ class ResourceLoaderTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function openResourceWithCompleteRealpathOutsideRootThrowsOutOfBoundsException(): void
     {
         $resourceLoader = new ResourceLoader(__DIR__);
@@ -218,9 +220,9 @@ class ResourceLoaderTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function loadResourceWithCompleteRealpathOutsideRootThrowsOutOfBoundsException(): void
     {
         $resourceLoader = new ResourceLoader(__DIR__);
@@ -228,9 +230,7 @@ class ResourceLoaderTest extends TestCase
             ->throws(OutOfBoundsException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsListOfAllResourceUrisForExistingFile(): void
     {
         assertThat(
@@ -245,9 +245,7 @@ class ResourceLoaderTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsEmptyListOfAllResourceUrisForNonExistingFile(): void
     {
         assertEmptyArray(

@@ -17,6 +17,8 @@ namespace stubbles\values;
 
 use InvalidArgumentException;
 use LogicException;
+use PHPUnit\Framework\Attributes\Test;
+
 use function bovigo\assert\{
     assertThat,
     assertFalse,
@@ -34,41 +36,31 @@ use function bovigo\assert\{
  */
 trait SecretTests
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function forNullReturnsNullOnUnveil(): void
     {
         assertNull(Secret::forNull()->unveil());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canContainNull(): void
     {
         assertTrue(Secret::forNull()->isContained());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function forNullIdentifiesAsNull(): void
     {
         assertTrue(Secret::forNull()->isNull());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lengthOfNullStringIsZero(): void
     {
         assertThat(Secret::forNull()->length(), equals(0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createWithEmptyValueThrowsIllegalArgumentException(): void
     {
         expect(fn() => Secret::create(''))
@@ -76,18 +68,14 @@ trait SecretTests
             ->withMessage('Can not have secret with empty string.');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function notSerializable(): void
     {
         expect(fn() => serialize(Secret::create('payload')))
             ->throws(LogicException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varExportNotRevealingPayload(): void
     {
         assertThat(
@@ -96,9 +84,7 @@ trait SecretTests
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function varDumpNotRevealingPayload(): void
     {
         ob_start();
@@ -110,9 +96,9 @@ trait SecretTests
     }
 
     /**
-     * @test
      * @since 4.1.2
      */
+    #[Test]
     public function varDumpNotRevealingLength(): void
     {
         ob_start();
@@ -123,9 +109,7 @@ trait SecretTests
         assertThat($output, doesNotContain('length'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function stringCastNotRevealingPayload(): void
     {
         assertThat(
@@ -134,9 +118,7 @@ trait SecretTests
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function arrayCastNotRevealingPayload(): void
     {
         assertThat(
@@ -145,59 +127,45 @@ trait SecretTests
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function isContainedReturnsTrueWhenEncryptionDoesNotFail(): void
     {
         assertTrue(Secret::create('payload')->isContained());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unveilRevealsOriginalData(): void
     {
         assertThat(Secret::create('payload')->unveil(), equals('payload'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function lengthReturnsStringLengthOfOriginalData(): void
     {
         assertThat(Secret::create('payload')->length(), equals(7));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function nonNullSecretDoesNotIdentifyAsNull(): void
     {
         assertFalse(Secret::create('payload')->isNull());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function bigData(): void
     {
         $data = str_repeat('*', 1024000);
         assertThat(Secret::create($data)->unveil(), equals($data));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function createFromSecretReturnsInstance(): void
     {
         $secret = Secret::create('payload');
         assertThat(Secret::create($secret), isSameAs($secret));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function creationNeverThrowsException(): void
     {
         Secret::switchBacking('__none');
@@ -206,9 +174,9 @@ trait SecretTests
     }
 
     /**
-     * @test
      * @since  8.0.0
      */
+    #[Test]
     public function creationNeverThrowsError(): void
     {
         Secret::switchBacking('__none_error');
@@ -216,9 +184,7 @@ trait SecretTests
             ->doesNotThrow();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function secretDoesNotContainAnythingWithoutBacking(): void
     {
         Secret::switchBacking('__none');
@@ -226,9 +192,7 @@ trait SecretTests
         assertFalse($secret->isContained());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function unveilThrowsLogicExceptionWhenCreationHasFailed(): void
     {
         Secret::switchBacking('__none');
@@ -237,18 +201,14 @@ trait SecretTests
             ->throws(LogicException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function switchToInvalidBackingTypeThrowsIllegalArgumentException(): void
     {
         expect(fn() => Secret::switchBacking('nope'))
             ->throws(InvalidArgumentException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function switchBackingWhenSecretInstancesExistThrowsIllegalStateException(): void
     {
         $secret = Secret::create('payload');
@@ -256,9 +216,7 @@ trait SecretTests
             ->throws(LogicException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canSwitchBackingWhenAllSecretInstancesDestroyed(): void
     {
         $secret = Secret::create('payload');

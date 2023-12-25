@@ -8,6 +8,9 @@ declare(strict_types=1);
  */
 namespace stubbles\values;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
@@ -16,23 +19,23 @@ use function bovigo\assert\predicate\equals;
  * Tests for stubbles\*().
  *
  * @since  3.1.0
- * @group  lang
  */
+#[Group('lang')]
 class FunctionsTest extends TestCase
 {
     /**
-     * @test
      * @since  3.4.2
      */
+    #[Test]
     public function lastErrorMessageShouldBeNullByDefault(): void
     {
         assertThat(lastErrorMessage(), equals(Result::of(null)));
     }
 
     /**
-     * @test
      * @since  3.4.2
      */
+    #[Test]
     #[WithoutErrorHandler]
     public function lastErrorMessageShouldContainLastError(): void
     {
@@ -48,18 +51,18 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
      * @since  7.0.0
      */
+    #[Test]
     public function typeOfOjectReturnsNameOfClass(): void
     {
         assertThat(typeOf($this), equals(__CLASS__));
     }
 
     /**
-     * @test
      * @since  7.0.0
      */
+    #[Test]
     public function typeOfResourceReturnsResourceWithResourceType(): void
     {
         $fp = fopen(__FILE__, 'r');
@@ -83,12 +86,11 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @param  mixed   $value
-     * @param  string  $expectedType
-     * @test
-     * @dataProvider  valueTypes
+     * @param  mixed  $value
      * @since  7.0.0
      */
+    #[Test]
+    #[DataProvider('valueTypes')]
     public function typeOfOtherValuesReturnsNativeType($value, string $expectedType): void
     {
         assertThat(typeOf($value), equals($expectedType));

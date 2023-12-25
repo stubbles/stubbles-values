@@ -15,15 +15,16 @@ declare(strict_types=1);
  */
 namespace stubbles\values;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Plain text backed tests for stubbles\values\Secret.
  *
  * @since 4.0.0
- * @group values
- * @group secret
  */
+#[Group('values')]
+#[Group('secret')]
 class PlaintextSecretTest extends TestCase
 {
     use SecretTests;

@@ -10,6 +10,9 @@ namespace stubbles\values;
 use InvalidArgumentException;
 use LogicException;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\WithoutErrorHandler;
 use PHPUnit\Framework\TestCase;
 use UnexpectedValueException;
@@ -28,10 +31,9 @@ use function bovigo\assert\{
 };
 /**
  * Tests for stubbles\values\Properties.
- *
- * @group  values
- * @group  properties
  */
+#[Group('values')]
+#[Group('properties')]
 class PropertiesTest extends TestCase
 {
     protected Properties $properties;
@@ -122,27 +124,21 @@ class PropertiesTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider sections
-     */
+    #[Test]
+    #[DataProvider('sections')]
     public function containSectionReturnsTrueForExistingSections(string $name): void
     {
         assertTrue($this->properties->containSection($name));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containSectionReturnsFalseForNonExistingSections(): void
     {
         assertFalse($this->properties->containSection('doesNotExist'));
     }
 
-    /**
-     * @test
-     * @dataProvider sections
-     */
+    #[Test]
+    #[DataProvider('sections')]
     public function sectionWithoutDefaultValueReturnsSectionValues(
         string $name,
         mixed $value
@@ -153,18 +149,14 @@ class PropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sectionWithoutDefaultValueReturnsEmptyArrayIfSectionDoesNotExist(): void
     {
         assertEmptyArray($this->properties->section('doesNotExist'));
     }
 
-    /**
-     * @test
-     * @dataProvider sections
-     */
+    #[Test]
+    #[DataProvider('sections')]
     public function sectionWithDefaultValueReturnsSectionValues(string $name, mixed $value): void
     {
         assertThat(
@@ -173,9 +165,7 @@ class PropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function sectionWithDefaultValueReturnsDefaultValueIfSectionDoesNotExist(): void
     {
         assertThat(
@@ -184,10 +174,8 @@ class PropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider sections
-     */
+    #[Test]
+    #[DataProvider('sections')]
     public function keysForSectionReturnsListOfKeysForGivenSection(
         string $name,
         mixed $value
@@ -198,9 +186,7 @@ class PropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function keysForSectionReturnsDefaultListOfSectionDoesNotExist(): void
     {
         assertThat(
@@ -224,26 +210,20 @@ class PropertiesTest extends TestCase
         return $data;
     }
 
-    /**
-     * @test
-     * @dataProvider existingSectionKeys
-     */
+    #[Test]
+    #[DataProvider('existingSectionKeys')]
     public function containValueReturnsTrueIfValueExist(string $section, string $key): void
     {
         assertTrue($this->properties->containValue($section, $key));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containValueReturnsFalseIfValueDoesNotExist(): void
     {
         assertFalse($this->properties->containValue('empty', 'any'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containValueReturnsFalseIfSectionDoesNotExist(): void
     {
         assertFalse($this->properties->containValue('doesNotExist', 'any'));
@@ -264,10 +244,8 @@ class PropertiesTest extends TestCase
         return $data;
     }
 
-    /**
-     * @test
-     * @dataProvider  existingSectionValues
-     */
+    #[Test]
+    #[DataProvider('existingSectionValues')]
     public function valueWithoutDefaultValueReturnsValueIfExists(
         string $section,
         string $key,
@@ -276,26 +254,20 @@ class PropertiesTest extends TestCase
         assertThat($this->properties->value($section, $key), equals($expectedValue));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valueWithoutDefaultValueReturnsNullIfValueDoesNotExist(): void
     {
         assertNull($this->properties->value('empty', 'any'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valueWithoutDefaultValueReturnsNullIfSectionDoesNotExist(): void
     {
         assertNull($this->properties->value('doesNotExist', 'any'));
     }
 
-    /**
-     * @test
-     * @dataProvider  existingSectionValues
-     */
+    #[Test]
+    #[DataProvider('existingSectionValues')]
     public function valueWithDefaultValueReturnsValueIfExists(
         string $section,
         string $key,
@@ -307,9 +279,7 @@ class PropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valueWithDefaultValueReturnsDefaultValueIfValueDoesNotExist(): void
     {
         assertThat(
@@ -318,9 +288,7 @@ class PropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valueWithDefaultValueReturnsDefaultValueIfSectionDoesNotExist(): void
     {
         assertThat(
@@ -329,10 +297,8 @@ class PropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     * @group bug249
-     */
+    #[Test]
+    #[Group('bug249')]
     public function iteratingOverInstanceIteratesOverSections(): void
     {
         foreach ($this->properties as $section => $sectionData) {
@@ -342,10 +308,10 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @test
-     * @group bug249
      * @since 1.3.2
      */
+    #[Test]
+    #[Group('bug249')]
     public function iteratingAfterIterationShouldRestartIteration(): void
     {
         $firstIterationEntries = 0;
@@ -363,18 +329,14 @@ class PropertiesTest extends TestCase
         assertThat($secondIterationEntries, equals($firstIterationEntries));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromNonExistantFileThrowsInvalidArgumentException(): void
     {
         expect(fn() => Properties::fromFile(__DIR__ . '/doesNotExist.ini'))
             ->throws(InvalidArgumentException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidIniFileThrowsIOException(): void
     {
         $root = vfsStream::setup('config');
@@ -385,9 +347,7 @@ class PropertiesTest extends TestCase
             ->throws(UnexpectedValueException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validIniFileReturnsInstance(): void
     {
         $root = vfsStream::setup('config');
@@ -399,10 +359,10 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @test
      * @since 2.0.0
-     * @group bug213
      */
+    #[Test]
+    #[Group('bug213')]
     #[WithoutErrorHandler]
     public function invalidIniStringThrowsException(): void
     {
@@ -414,10 +374,10 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @test
      * @since 2.0.0
-     * @group bug213
      */
+    #[Test]
+    #[Group('bug213')]
     public function validIniStringReturnsInstance(): void
     {
         $properties = Properties::fromString("[foo]\nbar=baz");
@@ -425,9 +385,9 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @test
      * @since 1.3.0
      */
+    #[Test]
     public function mergeMergesTwoPropertiesInstancesAndReturnsNewInstance(): void
     {
         $properties1 = new Properties(['foo' => ['bar' => 'baz']]);
@@ -440,9 +400,9 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @test
      * @since 1.3.0
      */
+    #[Test]
     public function mergeMergesProperties(): void
     {
         $properties1 = new Properties(['foo' => ['bar' => 'baz']]);
@@ -453,9 +413,9 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @test
-     * @since  1.3.0
+     * @since 1.3.0
      */
+    #[Test]
     public function mergeOverwritesSectionsOfMergingInstanceWithThoseFromMergedInstance(): void
     {
         $properties1 = new Properties([
@@ -469,10 +429,10 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @test
-     * @group secure_string
      * @since 4.0.0
      */
+    #[Test]
+    #[Group('secure_string')]
     public function propertiesWithKeyPasswordBecomeInstancesOfSecret(): void
     {
         assertThat(
@@ -482,10 +442,10 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @test
-     * @group secure_string
      * @since 4.1.2
      */
+    #[Test]
+    #[Group('secure_string')]
     public function propertiesWhereKeyEndsWithPasswordBecomeInstancesOfSecret(): void
     {
         assertThat(
@@ -496,10 +456,10 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @test
-     * @group secure_string
      * @since 4.1.0
      */
+    #[Test]
+    #[Group('secure_string')]
     public function parseSecretValueReturnsSecretInstance(): void
     {
         assertThat(
@@ -511,9 +471,10 @@ class PropertiesTest extends TestCase
 
     /**
      * @test
-     * @group secret
      * @since 5.0.0
      */
+    #[Test]
+    #[Group('secret')]
     public function parseSecretThrowsIllegalAccessException(): void
     {
         expect(fn() => (new Properties(['foo' => ['password' => 'baz']]))
@@ -560,10 +521,10 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider parseValueList
      * @since 4.1.0
      */
+    #[Test]
+    #[DataProvider('parseValueList')]
     public function parseValueReturnsValueCastedToRecognizedType(
         mixed $expected,
         string $section,
@@ -573,9 +534,9 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.1.0
      */
+    #[Test]
     public function parseValueWithNonExistingKeyReturnsDefault(): void
     {
         assertThat(
@@ -585,9 +546,9 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.1.0
      */
+    #[Test]
     public function parseValueFromNonExistingSectionReturnsDefault(): void
     {
         assertThat(
@@ -634,10 +595,10 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider parseList
      * @since 5.0.0
      */
+    #[Test]
+    #[DataProvider('parseList')]
     public function parseReturnsValueCastedToRecognizedType(
         mixed $expected,
         string $section,
@@ -651,9 +612,9 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @test
      * @since 5.0.0
      */
+    #[Test]
     public function parseNonExistingReturnsNullInstance(): void
     {
         assertThat(
@@ -663,9 +624,9 @@ class PropertiesTest extends TestCase
     }
 
     /**
-     * @test
      * @since 5.0.0
      */
+    #[Test]
     public function parseFromNonExistingSectionReturnsDefault(): void
     {
         assertThat(

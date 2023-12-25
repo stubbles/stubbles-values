@@ -9,6 +9,8 @@ declare(strict_types=1);
 namespace stubbles\values;
 use InvalidArgumentException;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
@@ -24,13 +26,11 @@ use function bovigo\assert\{
  * Tests for stubbles\values\Rootpath.
  *
  * @since 4.0.0
- * @group resources
  */
+#[Group('resources')]
 class RootpathTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function constructWithoutArgumentCalculatesRootpathAutomatically(): void
     {
         assertThat(
@@ -39,26 +39,20 @@ class RootpathTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructWithNonExistingPathThrowsIllegalArgumentException(): void
     {
         expect(fn() => new Rootpath(__DIR__ . '/doesNotExist'))
             ->throws(InvalidArgumentException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructWithExistingPath(): void
     {
         assertThat((string) new Rootpath(__DIR__), equals(__DIR__));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructWithExistingPathTurnsDotsIntoRealpath(): void
     {
         assertThat(
@@ -67,27 +61,21 @@ class RootpathTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructWithVfsStreamUriDoesNotApplyRealpath(): void
     {
         $root = vfsStream::setup()->url();
         assertThat((string) new Rootpath($root), equals($root));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function castFromInstanceReturnsInstance(): void
     {
         $rootpath = new Rootpath();
         assertThat(Rootpath::castFrom($rootpath), isSameAs($rootpath));
     }
 
-     /**
-     * @test
-     */
+    #[Test]
     public function castFromWithoutArgumentCalculatesRootpathAutomatically(): void
     {
         assertThat(
@@ -96,26 +84,20 @@ class RootpathTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function castFromWithNonExistingPathThrowsIllegalArgumentException(): void
     {
         expect(fn() => Rootpath::castFrom(__DIR__ . '/doesNotExist'))
             ->throws(InvalidArgumentException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function castFromWithExistingPath(): void
     {
         assertThat((string) Rootpath::castFrom(__DIR__), equals(__DIR__));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toCreatesPath(): void
     {
         assertThat(
@@ -125,9 +107,7 @@ class RootpathTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotContainNonExistingPath(): void
     {
         assertFalse(
@@ -135,9 +115,7 @@ class RootpathTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doesNotContainPathOutsideRoot(): void
     {
         assertFalse(
@@ -145,9 +123,7 @@ class RootpathTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsPathInsideRoot(): void
     {
         assertTrue(
@@ -155,9 +131,7 @@ class RootpathTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function listOfSourcePathesIsEmptyIfNoAutoloaderPresent(): void
     {
         assertEmptyArray(Rootpath::castFrom(__DIR__)->sourcePathes());
@@ -174,66 +148,94 @@ class RootpathTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function listOfSourcePathesWorksWithPsr0Only(): void
     {
         $rootpath = $this->rootpathToTestResources('psr0');
         assertThat(
             $rootpath->sourcePathes(),
             equals([
-                $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'mikey179' . DIRECTORY_SEPARATOR . 'vfsStream' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
-                $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'symfony' . DIRECTORY_SEPARATOR . 'yaml')
+                $rootpath->to(
+                    'vendor' . DIRECTORY_SEPARATOR . 'mikey179'
+                    . DIRECTORY_SEPARATOR . 'vfsStream'
+                    . DIRECTORY_SEPARATOR . 'src'
+                    . DIRECTORY_SEPARATOR . 'main'
+                    . DIRECTORY_SEPARATOR . 'php'
+                ),
+                $rootpath->to(
+                    'vendor' . DIRECTORY_SEPARATOR . 'symfony' . DIRECTORY_SEPARATOR . 'yaml'
+                )
             ])
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function listOfSourcePathesWorksWithPsr4Only(): void
     {
         $rootpath = $this->rootpathToTestResources('psr4');
         assertThat(
             $rootpath->sourcePathes(),
             equals([
-                $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'stubbles' . DIRECTORY_SEPARATOR . 'core-dev' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
-                $rootpath->to('src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php')
+                $rootpath->to(
+                    'vendor' . DIRECTORY_SEPARATOR . 'stubbles'
+                    . DIRECTORY_SEPARATOR . 'core-dev'
+                    . DIRECTORY_SEPARATOR . 'src'
+                    . DIRECTORY_SEPARATOR . 'main'
+                    . DIRECTORY_SEPARATOR . 'php'
+                ),
+                $rootpath->to(
+                    'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'
+                )
             ])
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function listOfSourcePathesContainsPsr0AndPsr4(): void
     {
         $rootpath = $this->rootpathToTestResources('all');
         assertThat(
             $rootpath->sourcePathes(),
             equals([
-                $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'mikey179' . DIRECTORY_SEPARATOR . 'vfsStream' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
-                $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'symfony' . DIRECTORY_SEPARATOR . 'yaml'),
-                $rootpath->to('vendor' . DIRECTORY_SEPARATOR . 'stubbles' . DIRECTORY_SEPARATOR . 'core-dev' . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'),
-                $rootpath->to('src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php')
+                $rootpath->to(
+                    'vendor'
+                    . DIRECTORY_SEPARATOR . 'mikey179'
+                    . DIRECTORY_SEPARATOR . 'vfsStream'
+                    . DIRECTORY_SEPARATOR . 'src'
+                    . DIRECTORY_SEPARATOR . 'main'
+                    . DIRECTORY_SEPARATOR . 'php'
+                ),
+                $rootpath->to(
+                    'vendor' . DIRECTORY_SEPARATOR . 'symfony' . DIRECTORY_SEPARATOR . 'yaml'
+                ),
+                $rootpath->to(
+                    'vendor'
+                    . DIRECTORY_SEPARATOR . 'stubbles'
+                    . DIRECTORY_SEPARATOR . 'core-dev'
+                    . DIRECTORY_SEPARATOR . 'src'
+                    . DIRECTORY_SEPARATOR . 'main'
+                    . DIRECTORY_SEPARATOR . 'php'
+                ),
+                $rootpath->to(
+                    'src' . DIRECTORY_SEPARATOR . 'main' . DIRECTORY_SEPARATOR . 'php'
+                )
             ])
         );
     }
 
     /**
-     * @test
      * @sinces 8.1.0
      */
+    #[Test]
     public function defaultRootpathReturnsAutomaticallyCalculatedRootpath(): void
     {
         assertThat(Rootpath::default(), equals(realpath(__DIR__ . '/../../../')));
     }
 
     /**
-     * @test
      * @since 8.1.0
      */
+    #[Test]
     public function defaultRootpathIsAlwaysTheSame(): void
     {
         assertThat(Rootpath::default(), equals(Rootpath::default()));

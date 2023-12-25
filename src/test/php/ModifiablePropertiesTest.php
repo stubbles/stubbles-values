@@ -8,6 +8,8 @@ declare(strict_types=1);
  */
 namespace stubbles\values;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
@@ -21,35 +23,35 @@ use function bovigo\assert\{
  * Tests for stubbles\values\ModifiableProperties.
  *
  * @since  1.7.0
- * @group  values
- * @group  properties
  */
+#[Group('values')]
+#[Group('properties')]
 class ModifiablePropertiesTest extends TestCase
 {
     protected ModifiableProperties $modifiableProperties;
 
     protected function setUp(): void
     {
-        $this->modifiableProperties = new ModifiableProperties(
-                ['scalar' => ['stringValue' => 'This is a string',
-                              'intValue'    => '303',
-                              'floatValue'  => '3.13',
-                              'boolValue'   => 'true'
-                             ],
-                 'array'  => ['arrayValue'  => 'foo|bar|baz',
-                              'hashValue'   => 'foo:bar|baz',
-                             ],
-                 'range'  => ['rangeValue1' => '1..5',
-                              'rangeValue2' => 'a..e'
-                             ],
-                 'empty'  => []
-                ]
-        );
+        $this->modifiableProperties = new ModifiableProperties([
+                'scalar' => [
+                        'stringValue' => 'This is a string',
+                        'intValue'    => '303',
+                        'floatValue'  => '3.13',
+                        'boolValue'   => 'true'
+                ],
+                'array'  => [
+                        'arrayValue'  => 'foo|bar|baz',
+                        'hashValue'   => 'foo:bar|baz',
+                ],
+                'range'  => [
+                        'rangeValue1' => '1..5',
+                        'rangeValue2' => 'a..e'
+                ],
+                'empty'  => []
+        ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setNonExistingSectionEnsuresSectionIsContained(): void
     {
         assertTrue(
@@ -58,9 +60,7 @@ class ModifiablePropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setNonExistingSectionAddsSection(): void
     {
         assertThat(
@@ -70,9 +70,7 @@ class ModifiablePropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setExistingSectionReplacesSection(): void
     {
         assertThat(
@@ -82,9 +80,7 @@ class ModifiablePropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setNonExistingValueForNonExistingSectionEnsuresSectionIsContained(): void
     {
         assertTrue(
@@ -93,9 +89,7 @@ class ModifiablePropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setNonExistingValueForNonExistingSectionAddsSectionAndValue(): void
     {
         assertThat(
@@ -105,9 +99,7 @@ class ModifiablePropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setNonExistingValueForExistingSectionAddsValueToSection(): void
     {
         assertThat(
@@ -122,9 +114,7 @@ class ModifiablePropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setExistingValueForExistingSectionReplacesValueInSection(): void
     {
         assertThat(
@@ -134,9 +124,7 @@ class ModifiablePropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setBooleanTrueTransformsToPropertyStorage(): void
     {
         assertThat(
@@ -146,9 +134,7 @@ class ModifiablePropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setBooleanFalseTransformsToPropertyStorage(): void
     {
         assertThat(
@@ -158,9 +144,7 @@ class ModifiablePropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setArrayValueTransformsToPropertyStorage(): void
     {
         assertThat(
@@ -170,9 +154,7 @@ class ModifiablePropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setHashValueTransformsToPropertyStorage(): void
     {
         assertThat(
@@ -185,9 +167,7 @@ class ModifiablePropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setIntegerRangeValueTransformsToPropertyStorage(): void
     {
         assertThat(
@@ -200,9 +180,7 @@ class ModifiablePropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setReverseIntegerRangeValueTransformsToPropertyStorage(): void
     {
         assertThat(
@@ -215,9 +193,7 @@ class ModifiablePropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setCharacterRangeValueTransformsToPropertyStorage(): void
     {
         assertThat(
@@ -230,9 +206,7 @@ class ModifiablePropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function setReverseCharacterRangeValueTransformsToPropertyStorage(): void
     {
         assertThat(
@@ -245,9 +219,7 @@ class ModifiablePropertiesTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function fromNonExistantFileThrowsInvalidArgumentException(): void
     {
         expect(function() {
@@ -256,9 +228,7 @@ class ModifiablePropertiesTest extends TestCase
             ->throws(\InvalidArgumentException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidIniFileThrowsException(): void
     {
         $root = vfsStream::setup('config');
@@ -271,9 +241,7 @@ class ModifiablePropertiesTest extends TestCase
             ->throws(\UnexpectedValueException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function validIniFileReturnsInstance(): void
     {
         $root = vfsStream::setup('config');
@@ -285,10 +253,10 @@ class ModifiablePropertiesTest extends TestCase
     }
 
     /**
-     * @test
      * @since  2.0.0
-     * @group  bug213
      */
+    #[Test]
+    #[Group('bug213')]
     public function invalidIniStringThrowsException(): void
     {
         expect(function() {
@@ -298,10 +266,10 @@ class ModifiablePropertiesTest extends TestCase
     }
 
     /**
-     * @test
      * @since  2.0.0
-     * @group  bug213
      */
+    #[Test]
+    #[Group('bug213')]
     public function validIniStringReturnsInstance(): void
     {
         $properties = ModifiableProperties::fromString("[foo]\nbar=baz");
@@ -309,9 +277,9 @@ class ModifiablePropertiesTest extends TestCase
     }
 
     /**
-     * @test
      * @since  4.0.0
      */
+    #[Test]
     public function mergeReturnsModifiableProperties(): void
     {
         assertThat(
@@ -321,9 +289,9 @@ class ModifiablePropertiesTest extends TestCase
     }
 
     /**
-     * @test
      * @since  4.0.0
      */
+    #[Test]
     public function unmodifiableTurnsModifiableIntoNonModifiableProperties(): void
     {
         assertThat(

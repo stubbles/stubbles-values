@@ -7,16 +7,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\values;
+
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 /**
  * Tests for stubbles\values\Value::contains().
  *
- * @group values
- * @group value_checks
  * @since 7.2.0
  */
+#[Group('values')]
+#[Group('value_checks')]
 class ValueContainsTest extends TestCase
 {
 /**
@@ -37,10 +41,8 @@ class ValueContainsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider tuplesEvaluatingToTrue
-     */
+    #[Test]
+    #[DataProvider('tuplesEvaluatingToTrue')]
     public function evaluatesToTrue(
         mixed $needle,
         string|array|null $haystack
@@ -63,10 +65,8 @@ class ValueContainsTest extends TestCase
         ];
     }
 
-    /**
-     * @test
-     * @dataProvider tuplesEvaluatingToFalse
-     */
+    #[Test]
+    #[DataProvider('tuplesEvaluatingToFalse')]
     public function evaluatesToFalse(mixed $needle, string|array $haystack): void
     {
         assertFalse(value($haystack)->contains($needle));

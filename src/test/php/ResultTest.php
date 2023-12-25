@@ -9,6 +9,9 @@ declare(strict_types=1);
 namespace stubbles\values;
 
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertThat;
 use function bovigo\assert\assertFalse;
@@ -19,45 +22,35 @@ use function bovigo\assert\predicate\isSameAs;
  * Tests for stubbles\values\Result.
  *
  * @since 6.0.0
- * @group types
  */
+#[Group('types')]
 class ResultTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function resultOfNullIsAlwaysSame(): void
     {
         assertThat(Result::of(null), isSameAs(Result::of(null)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resultOfNullMeansResultNotPresent(): void
     {
         assertFalse(Result::of(null)->isPresent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function resultOfNonNullMeansResultPresent(): void
     {
         assertTrue(Result::of(303)->isPresent());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function valueReturnsResultValue(): void
     {
         assertThat(Result::of(303)->value(), equals(303));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterOnResultOfNullReturnsResultOfNull(): void
     {
         assertThat(
@@ -66,9 +59,7 @@ class ResultTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterOnResultOfNonNullReturnsResultOfNullWhenPredicateDenies(): void
     {
         assertThat(
@@ -77,9 +68,7 @@ class ResultTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function filterOnResultOfNonNullReturnsResultWhenPredicateApproves(): void
     {
         $result = Result::of(303);
@@ -89,9 +78,7 @@ class ResultTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapResultOfNullReturnsResultOfNull(): void
     {
         assertThat(
@@ -100,9 +87,7 @@ class ResultTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function mapResultOfNonNullReturnsMappedResult(): void
     {
         assertThat(
@@ -111,25 +96,19 @@ class ResultTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function whenNullOnResultOfNullReturnsOther(): void
     {
         assertThat(Result::of(null)->whenNull(909)->value(), equals(909));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function whenNullOnResultOfNonNullReturnsValue(): void
     {
         assertThat(Result::of(303)->whenNull(909)->value(), equals(303));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function applyhenNullOnResultOfNullReturnsOther(): void
     {
         assertThat(
@@ -140,9 +119,7 @@ class ResultTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function applyWhenNullOnResultOfNonNullReturnsValue(): void
     {
         assertThat(
@@ -161,10 +138,10 @@ class ResultTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider emptyValues
      * @since 6.2.0
      */
+    #[Test]
+    #[DataProvider('emptyValues')]
     public function isEmptyForEmptyValues(mixed $value): void
     {
         assertTrue(Result::of($value)->isEmpty());
@@ -179,40 +156,40 @@ class ResultTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider nonEmptyValues
      * @since 6.2.0
      */
+    #[Test]
+    #[DataProvider('nonEmptyValues')]
     public function isNotEmptyForNomEmptyValues(mixed $value): void
     {
         assertFalse(Result::of($value)->isEmpty());
     }
 
     /**
-     * @test
-     * @dataProvider emptyValues
      * @since 6.2.0
      */
+    #[Test]
+    #[DataProvider('emptyValues')]
     public function whenEmptyOnResultOfEmptyReturnsOther(mixed $value): void
     {
         assertThat(Result::of($value)->whenEmpty(909)->value(), equals(909));
     }
 
     /**
-     * @test
-     * @dataProvider nonEmptyValues
      * @since 6.2.0
      */
+    #[Test]
+    #[DataProvider('nonEmptyValues')]
     public function whenEmptyOnResultOfNonEmptyReturnsValue(mixed $value): void
     {
         assertThat(Result::of($value)->whenEmpty(909)->value(), equals($value));
     }
 
     /**
-     * @test
-     * @dataProvider emptyValues
      * @since 6.2.0
      */
+    #[Test]
+    #[DataProvider('emptyValues')]
     public function applyhenEmptyOnResultOfEmptyReturnsOther(mixed $value): void
     {
         assertThat(
@@ -224,10 +201,10 @@ class ResultTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider nonEmptyValues
      * @since 6.2.0
      */
+    #[Test]
+    #[DataProvider('nonEmptyValues')]
     public function applyWhenEmptyOnResultOfNonEmptyReturnsValue(mixed $value): void
     {
         assertThat(

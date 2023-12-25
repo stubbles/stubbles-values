@@ -9,6 +9,9 @@ declare(strict_types=1);
 namespace stubbles\values;
 
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertFalse;
@@ -17,13 +20,13 @@ use function bovigo\assert\expect;
 /**
  * Tests for stubbles\values\Pattern.
  *
- * @group values
  * @since 7.1.0
  */
+#[Group('values')]
 class PatternTest extends TestCase
 {
     /**
-     * @return  array<array<string>>
+     * @return  array<string[]>
      */
     public static function validValues(): Generator
     {
@@ -32,15 +35,16 @@ class PatternTest extends TestCase
         yield ['/^([a-z]{3})$/i', 'Bar'];
     }
 
-    /**
-     * @test
-     * @dataProvider validValues
-     */
+    #[Test]
+    #[DataProvider('validValues')]
     public function validValueEvaluatesToTrue(string $pattern, string $value): void
     {
         assertTrue(pattern($pattern)->matches($value));
     }
 
+    /**
+     * @return  array<string[]>
+     */
     public static function invalidValues(): Generator
     {
         yield ['/^([a-z]{3})$/', 'Bar'];
@@ -48,18 +52,14 @@ class PatternTest extends TestCase
         yield ['/^([a-z]{3})$/i', 'baz0123'];
     }
 
-    /**
-     * @test
-     * @dataProvider invalidValues
-     */
+    #[Test]
+    #[DataProvider('invalidValues')]
     public function invalidValueEvaluatesToFalse(string $pattern, string $value): void
     {
         assertFalse(pattern($pattern)->matches($value));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invalidRegexThrowsRuntimeExceptionOnEvaluation(): void
     {
         expect(fn() => pattern('^([a-z]{3})$')->matches('foo'))

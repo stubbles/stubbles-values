@@ -9,16 +9,19 @@ declare(strict_types=1);
 namespace stubbles\values;
 
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
 /**
  * Tests for stubbles\values\Value::containsAnyOf().
  *
- * @group values
- * @group value_checks
  * @since 7.2.0
  */
+#[Group('values')]
+#[Group('value_checks')]
 class ValueContainsAnyOfTest extends TestCase
 {
     public static function tuplesEvaluatingToTrue(): Generator
@@ -34,10 +37,8 @@ class ValueContainsAnyOfTest extends TestCase
         yield [['foo', 'bar'], 'foo'];
     }
 
-    /**
-     * @test
-     * @dataProvider tuplesEvaluatingToTrue
-     */
+    #[Test]
+    #[DataProvider('tuplesEvaluatingToTrue')]
     public function evaluatesToTrue(array $contained, mixed $value): void
     {
         assertTrue(value($value)->containsAnyOf($contained));
@@ -59,10 +60,8 @@ class ValueContainsAnyOfTest extends TestCase
         yield [['foo', 'baz'], 'bar'];
     }
 
-    /**
-     * @test
-     * @dataProvider tuplesEvaluatingToFalse
-     */
+    #[Test]
+    #[DataProvider('tuplesEvaluatingToFalse')]
     public function evaluatesToFalse(array $contained, mixed $value): void
     {
         assertFalse(value($value)->containsAnyOf($contained));

@@ -15,16 +15,18 @@ declare(strict_types=1);
  */
 namespace stubbles\values;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\TestCase;
 
 /**
  * OpenSSL backed tests for stubbles\values\Secret.
  *
  * @since 4.0.0
- * @group values
- * @group secret
- * @requires extension openssl
  */
+#[Group('values')]
+#[Group('secret')]
+#[RequiresPhpExtension('openssl')]
 class OpenSslSecretTest extends TestCase
 {
     use SecretTests;
