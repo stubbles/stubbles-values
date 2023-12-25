@@ -37,11 +37,13 @@ class FunctionsTest extends TestCase
     public function lastErrorMessageShouldContainLastError(): void
     {
         @file_get_contents(__DIR__ . '/doesNotExist.txt');
-        // Use strtolower as PHP changed the error message to contain "Failed" instead of "failed".
-        // TODO: remove strtolower once PHP 8 is required.
         assertThat(
-            strtolower(lastErrorMessage()->value()),
-            equals(strtolower('file_get_contents(' . __DIR__ . '/doesNotExist.txt): Failed to open stream: No such file or directory'))
+            lastErrorMessage()->value(),
+            equals(
+                'file_get_contents('
+                . __DIR__
+                . '/doesNotExist.txt): Failed to open stream: No such file or directory'
+            )
         );
     }
 
