@@ -63,7 +63,7 @@ class PatternTest extends TestCase
     public function invalidRegexThrowsRuntimeExceptionOnEvaluation(): void
     {
         expect(fn() => pattern('^([a-z]{3})$')->matches('foo'))
-            ->throws(\RuntimeException::class)
+            ->throws(PatternMatchFailed::class)
             ->withMessage('Failure while matching "^([a-z]{3})$", reason: internal PCRE error.');
     }
 }

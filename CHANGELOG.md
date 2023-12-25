@@ -7,6 +7,11 @@
 * raised minimum required PHP version to 8.2
 * removed `stubbles\values\Secret::substring()`, deprecated since 10.0.0
 
+### Other changes
+
+* `stubbles\values\pattern()->matches()` now throws a more specific `stubbles\values\PatternMatchFailed` instead of the generic `\RuntimeException`. However,
+the new exception extends `\RuntimeException`, so no bc break should come from that.
+
 ## 10.0.0 (2022-12-26)
 
 ### BC breaks

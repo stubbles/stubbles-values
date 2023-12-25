@@ -15,7 +15,7 @@ use RuntimeException;
  * The predicate uses preg_match() and checks if the value occurs exactly
  * one time. Please make sure that the supplied regular expression contains
  * correct delimiters, they will not be applied automatically. The matches()
- * method throws a \RuntimeException in case the regular expression is invalid.
+ * method throws a PatternMatchFailed in case the regular expression is invalid.
  *
  * @since 7.1.0
  */
@@ -39,20 +39,20 @@ class Pattern
     /**
      * test that the given value complies with the regular expression
      *
-     * @throws RuntimeException in case the used regular expresion is invalid
+     * @throws PatternMatchFailed in case the used regular expresion is invalid
      */
     public function matches(string $value): bool
     {
         $check = @preg_match($this->pattern, $value);
         if (false === $check) {
-            throw new RuntimeException(sprintf(
+            throw new PatternMatchFailed(sprintf(
                 'Failure while matching "%s", reason: %s.',
                 $this->pattern,
                 $this->messageFor(preg_last_error())
             ));
         }
 
-        return ((1 != $check) ? (false) : (true));
+        return (1 != $check) ? false : true;
     }
 
     /**
