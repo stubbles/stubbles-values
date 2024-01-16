@@ -54,7 +54,7 @@ class ResourceLoader
     public function open(
         string $resource,
         string $withClass = 'stubbles\streams\file\FileInputStream'
-    ) {
+    ): object {
         if (!class_exists($withClass)) {
             throw new InvalidArgumentException(
                 'Can not open ' . $resource . ' with ' . $withClass

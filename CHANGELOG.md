@@ -1,5 +1,9 @@
 # Changelog
 
+## 11.0.1 (2024-01-16)
+
+* clarified return type `object` of `stubbles\values\ResourceLoader::open()`
+
 ## 11.0.0 (2023-12-25)
 
 ### BC breaks
