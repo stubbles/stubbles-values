@@ -1,8 +1,9 @@
 # Changelog
 
-## 12.0.0 (????-??-??)
+## 12.0.0 (2025-11-29)
 
 * raised minimum required PHP version to 8.3
+* ensured compatibility with PHP 8.5
 
 ## 11.0.1 (2024-01-16)
 
