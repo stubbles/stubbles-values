@@ -15,7 +15,7 @@ use ReflectionClass;
  */
 class Parse
 {
-    public const SEPARATOR_LIST = '|';
+    public const string SEPARATOR_LIST = '|';
     /**
      * list of values which are treated as boolean true
      *

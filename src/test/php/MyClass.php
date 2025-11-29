@@ -12,5 +12,5 @@ namespace stubbles\values;
  */
 class MyClass
 {
-    const TEST_CONSTANT = 'baz';
+    public const string TEST_CONSTANT = 'baz';
 }

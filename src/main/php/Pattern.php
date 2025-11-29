@@ -24,7 +24,7 @@ class Pattern
     /**
      * map of pcre error codes and according error messages
      */
-    private const ERRORS = [
+    private const array ERRORS = [
         PREG_NO_ERROR              => 'invalid regular expression',
         PREG_INTERNAL_ERROR        => 'internal PCRE error',
         PREG_BACKTRACK_LIMIT_ERROR => 'backtrack limit exhausted',

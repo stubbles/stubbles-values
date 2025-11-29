@@ -42,15 +42,15 @@ use Throwable;
  */
 class Secret
 {
-    const BACKING_SODIUM    = 'sodium';
+    public const string BACKING_SODIUM    = 'sodium';
     /**
      * backing: openssl
      */
-    const BACKING_OPENSSL   = 'openssl';
+    public const string BACKING_OPENSSL   = 'openssl';
     /**
      * backing: base64
      */
-    const BACKING_PLAINTEXT = 'base64';
+    public const string BACKING_PLAINTEXT = 'base64';
     /** @var array<string,true|string> */
     private static array $payloads = [];
     /** @var array<string,int> */
