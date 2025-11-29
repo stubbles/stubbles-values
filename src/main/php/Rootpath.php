@@ -52,7 +52,7 @@ class Rootpath
      *
      * @throws InvalidArgumentException in case a root path is given but does not exist
      */
-    public function __construct(string $rootpath = null)
+    public function __construct(?string $rootpath = null)
     {
         if (null !== $rootpath && !file_exists($rootpath)) {
             throw new InvalidArgumentException(

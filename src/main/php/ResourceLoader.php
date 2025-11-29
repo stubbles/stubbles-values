@@ -24,7 +24,7 @@ class ResourceLoader
     /**
      * If no root path is given it tries to detect it automatically.
      */
-    public function __construct(string|Rootpath $rootpath = null)
+    public function __construct(string|Rootpath|null $rootpath = null)
     {
         $this->rootpath = Rootpath::castFrom($rootpath);
     }
