@@ -1,5 +1,9 @@
 # Changelog
 
+## 12.0.0 (????-??-??)
+
+* raised minimum required PHP version to 8.3
+
 ## 11.0.1 (2024-01-16)
 
 * clarified return type `object` of `stubbles\values\ResourceLoader::open()`

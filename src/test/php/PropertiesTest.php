@@ -125,7 +125,7 @@ class PropertiesTest extends TestCase
     }
 
     #[Test]
-    #[DataProvider('sections')]
+    #[DataProvider('sections', validateArgumentCount:false)]
     public function containSectionReturnsTrueForExistingSections(string $name): void
     {
         assertTrue($this->properties->containSection($name));
