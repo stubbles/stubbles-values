@@ -8,7 +8,9 @@ declare(strict_types=1);
  */
 namespace stubbles\values;
 
-use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use TypeError;
@@ -21,9 +23,9 @@ use function bovigo\assert\predicate\equals;
 /**
  * Tests for stubbles\values\Parse.
  *
- * @group  values
  * @since  4.1.0
  */
+#[Group('values')]
 class ParseTest extends TestCase
 {
     protected function tearDown(): void
@@ -32,7 +34,7 @@ class ParseTest extends TestCase
         Parse::__static();
     }
 
-    public static function stringToIntConversions(): Generator
+    public static function stringToIntConversions(): iterable
     {
         yield [0, '0'];
         yield [1, '1'];
@@ -43,10 +45,8 @@ class ParseTest extends TestCase
         yield [null, null];
     }
 
-    /**
-     * @test
-     * @dataProvider stringToIntConversions
-     */
+    #[Test]
+    #[DataProvider('stringToIntConversions')]
     public function toIntReturnsValueCastedToInteger(
         ?int $expectedResult,
         ?string $stringToParse
@@ -55,10 +55,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider stringToIntConversions
      * @since 5.0.0
      */
+    #[Test]
+    #[DataProvider('stringToIntConversions')]
     public function asIntReturnsValueCastedToInteger(
         ?int $expectedResult,
         ?string $stringToParse
@@ -68,10 +68,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider stringToIntConversions
      * @since 5.0.0
      */
+    #[Test]
+    #[DataProvider('stringToIntConversions')]
     public function asIntWithDefaultReturnsValueCastedToInteger(
         ?int $expectedResult,
         ?string $stringToParse
@@ -85,15 +85,15 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
      * @since 5.0.0
      */
+    #[Test]
     public function toIntOnNullReturnsNull(): void
     {
         assertNull(Parse::toInt(null));
     }
 
-    public static function stringToFloatConversions(): Generator
+    public static function stringToFloatConversions(): iterable
     {
         yield [0.1, '0.1'];
         yield [1, '1'];
@@ -104,10 +104,8 @@ class ParseTest extends TestCase
         yield [null, null];
     }
 
-    /**
-     * @test
-     * @dataProvider stringToFloatConversions
-     */
+    #[Test]
+    #[DataProvider('stringToFloatConversions')]
     public function toFloatReturnsValueCastedToFloat(
         ?float $expectedResult,
         ?string $stringToParse
@@ -116,10 +114,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider stringToFloatConversions
      * @since 5.0.0
      */
+    #[Test]
+    #[DataProvider('stringToFloatConversions')]
     public function asFloatReturnsValueCastedToFloat(
         ?float $expectedResult,
         ?string $stringToParse
@@ -129,10 +127,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider stringToFloatConversions
      * @since 5.0.0
      */
+    #[Test]
+    #[DataProvider('stringToFloatConversions')]
     public function asFloatWithDefaultReturnsValueCastedToFloat(
         ?float $expectedResult,
         ?string $stringToParse
@@ -146,9 +144,9 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
      * @since 5.0.0
      */
+    #[Test]
     public function toFloatOnNullReturnsNull(): void
     {
         assertNull(Parse::toFloat(null));
@@ -157,7 +155,7 @@ class ParseTest extends TestCase
     /**
      * @return  array<array<mixed>>
      */
-    public static function stringToBoolConversions(): Generator
+    public static function stringToBoolConversions(): iterable
     {
         yield [true, 'yes'];
         yield [true, 'true'];
@@ -171,12 +169,8 @@ class ParseTest extends TestCase
         yield [false, null];
     }
 
-    /**
-     * @param  bool    $expectedResult
-     * @param  string  $stringToParse
-     * @test
-     * @dataProvider  stringToBoolConversions
-     */
+    #[Test]
+    #[DataProvider('stringToBoolConversions')]
     public function toBoolReturnsValueCastedToBool(
         bool $expectedResult,
         ?string $stringToParse
@@ -185,10 +179,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider stringToBoolConversions
      * @since 5.0.0
      */
+    #[Test]
+    #[DataProvider('stringToBoolConversions')]
     public function asBoolReturnsValueCastedToBool(
         bool $expectedResult,
         ?string $stringToParse
@@ -198,10 +192,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider stringToBoolConversions
      * @since 5.0.0
      */
+    #[Test]
+    #[DataProvider('stringToBoolConversions')]
     public function asBoolWithDefaultReturnsValueCastedToBool(
         bool $expectedResult,
         ?string $stringToParse
@@ -213,7 +207,7 @@ class ParseTest extends TestCase
         );
     }
 
-    public static function stringToListConversions(): Generator
+    public static function stringToListConversions(): iterable
     {
         yield [['foo', 'bar', 'baz'], 'foo|bar|baz', Parse::SEPARATOR_LIST];
         yield [['foo|bar|baz'], 'foo|bar|baz', ','];
@@ -234,10 +228,8 @@ class ParseTest extends TestCase
         yield [['foo'], '[foo]', ','];
     }
 
-    /**
-     * @test
-     * @dataProvider stringToListConversions
-     */
+    #[Test]
+    #[DataProvider('stringToListConversions')]
     public function toListReturnsValueCastedToList(
         ?array $expectedResult,
         ?string $stringToParse,
@@ -247,10 +239,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider stringToListConversions
      * @since 5.0.0
      */
+    #[Test]
+    #[DataProvider('stringToListConversions')]
     public function asListReturnsValueCastedToList(
         ?array $expectedResult,
         ?string $stringToParse,
@@ -261,10 +253,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider stringToListConversions
      * @since 5.0.0
      */
+    #[Test]
+    #[DataProvider('stringToListConversions')]
     public function asListWithDefaultReturnsValueCastedToList(
         ?array $expectedResult,
         ?string $stringToParse,
@@ -281,7 +273,7 @@ class ParseTest extends TestCase
         );
     }
 
-    public static function stringToMapConversions(): Generator
+    public static function stringToMapConversions(): iterable
     {
         yield [['foo', 'bar', 'baz'], 'foo|bar|baz'];
         yield [['foo', 'bar', 'baz'], '[foo|bar|baz]'];
@@ -300,10 +292,8 @@ class ParseTest extends TestCase
         yield [['foo' => 'baz'], '[foo:baz]'];
     }
 
-    /**
-     * @test
-     * @dataProvider  stringToMapConversions
-     */
+    #[Test]
+    #[DataProvider('stringToMapConversions')]
     public function toMapReturnsValueCastedToMap(
         ?array $expectedResult,
         ?string $stringToParse
@@ -312,10 +302,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider  stringToMapConversions
      * @since  5.0.0
      */
+    #[Test]
+    #[DataProvider('stringToMapConversions')]
     public function asMapReturnsValueCastedToMap(
         ?array $expectedResult,
         ?string $stringToParse
@@ -325,10 +315,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider  stringToMapConversions
      * @since  5.0.0
      */
+    #[Test]
+    #[DataProvider('stringToMapConversions')]
     public function asMapWithDefaultReturnsValueCastedToMap(
         ?array $expectedResult,
         ?string $stringToParse
@@ -347,7 +337,7 @@ class ParseTest extends TestCase
     /**
      * @return  array<array<mixed>>
      */
-    public static function stringToRangeConversions(): Generator
+    public static function stringToRangeConversions(): iterable
     {
         yield [[1, 2, 3, 4, 5], '1..5'];
         yield [['a', 'b', 'c', 'd', 'e'], 'a..e'];
@@ -362,10 +352,8 @@ class ParseTest extends TestCase
         yield [[], 'other'];
     }
 
-    /**
-     * @test
-     * @dataProvider  stringToRangeConversions
-     */
+    #[Test]
+    #[DataProvider('stringToRangeConversions')]
     public function toRangeReturnsValueCastedToRange(
         ?array $expectedResult,
         ?string $stringToParse
@@ -374,10 +362,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider  stringToRangeConversions
      * @since  5.0.0
      */
+    #[Test]
+    #[DataProvider('stringToRangeConversions')]
     public function asRangeReturnsValueCastedToRange(
         ?array $expectedResult,
         ?string $stringToParse
@@ -387,10 +375,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider  stringToRangeConversions
      * @since  5.0.0
      */
+    #[Test]
+    #[DataProvider('stringToRangeConversions')]
     public function asRangeWithDefaultReturnsValueCastedToRange(
         ?array $expectedResult,
         ?string $stringToParse
@@ -409,7 +397,7 @@ class ParseTest extends TestCase
     /**
      * @return  array<array<mixed>>
      */
-    public static function stringToClassConversions(): Generator
+    public static function stringToClassConversions(): iterable
     {
         yield [new ReflectionClass(__CLASS__), __CLASS__ . '.class'];
         yield [new ReflectionClass(SomeInterface::class), SomeInterface::class . '.class'];
@@ -418,10 +406,8 @@ class ParseTest extends TestCase
         yield [null, 'other'];
     }
 
-    /**
-     * @test
-     * @dataProvider  stringToClassConversions
-     */
+    #[Test]
+    #[DataProvider('stringToClassConversions')]
     public function toClassReturnsValueCastedToClassInstance(
         ?ReflectionClass $expectedResult,
         ?string $stringToParse
@@ -430,10 +416,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider stringToClassConversions
      * @since 5.0.0
      */
+    #[Test]
+    #[DataProvider('stringToClassConversions')]
     public function asClassReturnsValueCastedToClassInstance(
         ?ReflectionClass $expectedResult,
         ?string $stringToParse
@@ -443,10 +429,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider stringToClassConversions
      * @since 5.0.0
      */
+    #[Test]
+    #[DataProvider('stringToClassConversions')]
     public function asClassWithDefaultReturnsValueCastedToClassInstance(
         ?ReflectionClass $expectedResult,
         ?string $stringToParse
@@ -462,9 +448,7 @@ class ParseTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function toClassWithNonExistingClassThrowsReflectionException(): void
     {
         expect(function() {
@@ -474,9 +458,9 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
      * @since  5.0.0
      */
+    #[Test]
     public function asClassWithNonExistingClassThrowsReflectionException(): void
     {
         $parse = new Parse('does\not\Exist.class');
@@ -485,9 +469,9 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
      * @since  5.0.0
      */
+    #[Test]
     public function asClassWithNonExistingClassAndDefaultThrowsReflectionException(): void
     {
         $parse = new Parse('does\not\Exist.class');
@@ -498,36 +482,36 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
      * @since  5.3.0
      */
+    #[Test]
     public function toClassnameReturnsNullForNull(): void
     {
         assertNull(Parse::toClassname(null));
     }
 
     /**
-     * @test
      * @since  5.3.0
      */
+    #[Test]
     public function toClassnameReturnsNullForEmptyString(): void
     {
         assertNull(Parse::toClassname(''));
     }
 
     /**
-     * @test
      * @since  5.3.0
      */
+    #[Test]
     public function toClassnameReturnsNullForNonExistingClass(): void
     {
         assertNull(Parse::toClassname('does\not\Exist::class'));
     }
 
     /**
-     * @test
      * @since  5.3.0
      */
+    #[Test]
     public function toClassnameReturnsClassnameOfExistingClass(): void
     {
         assertThat(
@@ -537,9 +521,9 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
      * @since  5.3.0
      */
+    #[Test]
     public function asClassnameReturnsNullForNull(): void
     {
         $parse = new Parse(null);
@@ -547,9 +531,9 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
      * @since  5.3.0
      */
+    #[Test]
     public function asClassnameReturnsNullForEmptyString(): void
     {
         $parse = new Parse('');
@@ -557,9 +541,9 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
      * @since  5.3.0
      */
+    #[Test]
     public function asClassnameReturnsNullForNonExistingClass(): void
     {
         $parse = new Parse('does\not\Exist::class');
@@ -567,16 +551,16 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
      * @since  5.3.0
      */
+    #[Test]
     public function asClassnameReturnsClassnameOfExistingClass(): void
     {
         $parse = new Parse(__CLASS__ . '::class');
         assertThat($parse->asClassname(), equals(__CLASS__));
     }
 
-    public static function stringToTypeConversions(): Generator
+    public static function stringToTypeConversions(): iterable
     {
         yield [null, null];
         yield ['', ''];
@@ -602,45 +586,35 @@ class ParseTest extends TestCase
         yield ['just a string', 'just a string'];
     }
 
-    /**
-     * @param  mixed   $expectedResult
-     * @param  string  $stringToParse
-     * @test
-     * @dataProvider  stringToTypeConversions
-     */
-    public function toTypeReturnsValueCastedToRecognizedType($expectedResult, ?string $stringToParse): void
+    #[Test]
+    #[DataProvider('stringToTypeConversions')]
+    public function toTypeReturnsValueCastedToRecognizedType(mixed $expectedResult, ?string $stringToParse): void
     {
         assertThat(Parse::toType($stringToParse), equals($expectedResult));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userDefinedRecognitionWithSuccessReturnsValueFromUserDefinedConversion(): void
     {
         Parse::addRecognition(function($string) { if ('Binford 6100' === $string) { return 'More power!'; } }, 'binford');
         assertThat(Parse::toType('Binford 6100'), equals('More power!'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function userDefinedRecognitionWithoutSuccessReturnsValueAsString(): void
     {
         Parse::addRecognition(function($string) { if ('Binford 6100' === $string) { return 'More power!'; } }, 'binford');
         assertThat(Parse::toType('Binford 610'), equals('Binford 610'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canReplaceExistingRecognition(): void
     {
         Parse::addRecognition(function($string) { if ('Binford 6100' === $string) { return true; } }, 'booleanTrue');
         assertTrue(Parse::toType('Binford 6100'));
     }
 
-    public static function methods(): Generator
+    public static function methods(): iterable
     {
         yield [null, 'asString'];
         yield [0, 'asInt'];
@@ -653,20 +627,17 @@ class ParseTest extends TestCase
     }
 
     /**
-     *
-     * @param  mixed   $expected
-     * @param  string  $method
-     * @test
-     * @dataProvider  methods
      * @since  5.0.0
      */
-    public function parseNullReturnsNull($expected, string $method): void
+    #[Test]
+    #[DataProvider('methods')]
+    public function parseNullReturnsNull(mixed $expected, string $method): void
     {
         $parse = new Parse(null);
         assertThat($parse->$method(), equals($expected));
     }
 
-    public static function typeEnforcingMethods(): Generator
+    public static function typeEnforcingMethods(): iterable
     {
         yield ['asInt'];
         yield ['asFloat'];
@@ -677,10 +648,10 @@ class ParseTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider typeEnforcingMethods
      * @since 5.0.0
      */
+    #[Test]
+    #[DataProvider('typeEnforcingMethods')]
     public function parseNullWithDefaultThrowsTypeErrorWhenTypeDoesNotMatch(string $method): void
     {
         $parse = new Parse(null);
