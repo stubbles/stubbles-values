@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b8793d6a200c6db8aaca0fd18e9a644a",
+    "content-hash": "7b9e5f1a259441ff45383fd00c2ca5f6",
     "packages": [],
     "packages-dev": [
         {
@@ -1783,6 +1783,46 @@
             "time": "2024-10-20T05:08:20+00:00"
         },
         {
+            "name": "stubbles/ioc-attributes",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/stubbles/stubbles-ioc-attributes.git",
+                "reference": "66c71f4359ddce551dd2f40e78f3bcfa15179b9d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stubbles/stubbles-ioc-attributes/zipball/66c71f4359ddce551dd2f40e78f3bcfa15179b9d",
+                "reference": "66c71f4359ddce551dd2f40e78f3bcfa15179b9d",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.3"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "stubbles\\ioc\\attributes\\": "src/main/php"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "Attributes for dependency injection with stubbles/ioc.",
+            "support": {
+                "issues": "https://github.com/stubbles/stubbles-ioc-attributes/issues",
+                "source": "https://github.com/stubbles/stubbles-ioc-attributes/tree/main"
+            },
+            "time": "2026-02-08T08:49:01+00:00"
+        },
+        {
             "name": "theseer/tokenizer",
             "version": "2.0.1",
             "source": {
@@ -1843,5 +1883,5 @@
         "ext-mbstring": "*"
     },
     "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.9.0"
 }

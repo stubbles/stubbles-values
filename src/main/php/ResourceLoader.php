@@ -11,12 +11,15 @@ namespace stubbles\values;
 use DomainException;
 use InvalidArgumentException;
 use OutOfBoundsException;
+use stubbles\ioc\attributes\Singleton;
+
 /**
  * Class to load resources from arbitrary locations.
  *
  * @since 1.6.0
  * @Singleton
  */
+#[Singleton]
 class ResourceLoader
 {
     private Rootpath $rootpath;

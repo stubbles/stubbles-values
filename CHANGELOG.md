@@ -1,5 +1,9 @@
 # Changelog
 
+## 12.1.0 (2026-??-??)
+
+* added `#[Singleton]` attribute from stubbles/ioc-attributes to `stubbles\values\ResourceLoader` and `stubbles\values\Rootpath`
+
 ## 12.0.0 (2025-11-29)
 
 * raised minimum required PHP version to 8.3

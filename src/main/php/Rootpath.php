@@ -8,6 +8,8 @@ declare(strict_types=1);
  */
 namespace stubbles\values;
 use InvalidArgumentException;
+use stubbles\ioc\attributes\Singleton;
+
 /**
  * Represents the root path within a project.
  *
@@ -18,6 +20,7 @@ use InvalidArgumentException;
  * @since 4.0.0
  * @Singleton
  */
+#[Singleton]
 class Rootpath
 {
     /**
